@@ -6,35 +6,35 @@
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-     
-     <!-- Root Context: defines shared resources visible to all other web components -->
-           <!-- Root Context: defines shared resources visible to all other web components -->
-     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-           <property name="poolName" value="springHikariCP" />
-           <!-- <property name="connectionTestQuery" value="SELECT 1" /> -->         
-           <property name="maximumPoolSize" value="100" />
-           <property name="idleTimeout" value="30000" />
-           <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-           <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@10.10.10.15:1521:XE"></property>
-           
-           <property name="username" value="portfolio"></property>
-           <property name="password" value="1234"></property>
-           <property name="minimumIdle" value="3"></property>           
-     </bean>
-     <!-- HikariCP configuration -->
-     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
-           destroy-method="close">
-           <constructor-arg ref="hikariConfig" />
-     </bean>
-     
-     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-           <property name="dataSource" ref="dataSource" />
-     </bean>
-     <mybatis-spring:scan base-package="org.mvc.mapper"/>
-     
-     <context:component-scan base-package="org.mvc.service"></context:component-scan>
-    
-     
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="poolName" value="springHikariCP" />
+		<!-- <property name="connectionTestQuery" value="SELECT 1" /> -->
+		<property name="maximumPoolSize" value="100" />
+		<property name="idleTimeout" value="30000" />
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@10.10.10.15:1521:XE"></property>
+
+		<property name="username" value="portfolio"></property>
+		<property name="password" value="1234"></property>
+		<property name="minimumIdle" value="3"></property>
+	</bean>
+	<!-- HikariCP configuration -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<mybatis-spring:scan base-package="org.mvc.mapper" />
+
+	<context:component-scan base-package="org.mvc.service"></context:component-scan>
+
+
 </beans>
 
 

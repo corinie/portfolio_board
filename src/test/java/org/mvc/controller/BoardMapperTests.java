@@ -35,43 +35,40 @@ public class BoardMapperTests {
 	}
 	
 	@Test
-	public void list() {
-		
-		List<BoardVO> list = new ArrayList<BoardVO>();
-		
-		Criteria cri = new Criteria();
-		
-		cri.setPage(10);
-		
-		mapper.list(cri);
-	}
-	
-	@Test
 	public void read() {
-		
 		int bno = 1515555;
-		
 		mapper.read(bno);
 	}
 	
 	@Test
-	public void delete() {
-			
-		int bno = 1515555;
-		
-		mapper.delete(bno);
-		
-	}
-	
-	@Test
 	public void update() {
-		
 		BoardVO vo = new BoardVO();
 		vo.setBno(1545555);
 		vo.setTitle("UpdateTitle");
 		vo.setContent("UpdateContent");
 		
 		mapper.update(vo);
+	}
+	
+	@Test
+	public void delete() {	
+		int bno = 1515555;
+		mapper.delete(bno);
+	}
+	
+	@Test
+	public void list() {
+		List<BoardVO> list = new ArrayList<BoardVO>();
+		Criteria cri = new Criteria();
+		cri.setPage(10);
+		
+		mapper.list(cri);
+	}
+	
+	@Test
+	public void total() {
+		int count = mapper.total();
+		log.info(count);
 	}
 	
 }

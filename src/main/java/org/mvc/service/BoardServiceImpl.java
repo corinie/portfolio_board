@@ -19,32 +19,34 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> list(Criteria cri) {
-		
 		return mapper.list(cri);
 	}
 
 	@Override
 	public int insert(BoardVO vo) {
-		
 		return mapper.insert(vo);
 	}
 
 	@Override
 	public BoardVO read(int bno) {
-		
 		return mapper.read(bno);
 	}
 
 	@Override
 	public int delete(int bno) {
-		
 		return mapper.delete(bno);
 	}
 
 	@Override
 	public int update(BoardVO vo) {
-		
 		return mapper.update(vo);
 	}
+
+	@Override
+	public int total() {
+		return mapper.total();
+	}
+	
+	
 
 }

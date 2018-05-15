@@ -1,99 +1,70 @@
 
 
-<%@ include file="../includes/header.jsp" %>
+<%@ include file="../includes/header.jsp"%>
 
-	<!-- //header -->
-	<!-- about-heading -->
-	<div class="about-heading">
-		<h2>Our <span>Blog</span></h2>
-	</div>
-	<!-- //about-heading -->
-	<!-- blog -->
-	<div class="blog">
-		<div class="container">
-			<div class="agile-blog-grids">
-				<div class="container">
+<!-- //header -->
+<!-- about-heading -->
+<div class="about-heading">
+	<h2>
+		Our <span>Blog</span>
+	</h2>
+</div>
+<!-- //about-heading -->
+<!-- blog -->
+<div class="blog">
+	<div class="container">
+		<div class="agile-blog-grids">
+			<div class="container">
+				<c:forEach items="${list }" var="item">
 					<div class="agile-blog-grid">
 						<div class="blog-left-grids">
 							<div class="blog-left-left">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</div>
 							<div class="blog-left-right">
+
 								<div class="blog-left-right-top">
-									<h4><a href="single.html">Integer et turpis augue. In hac habitasse platea dictumst.</a></h4>
-									<p>Posted By <a href="#">Admin</a> &nbsp;&nbsp; on June 2, 2016 &nbsp;&nbsp; <a href="#">Comments (10)</a></p>
+									<h4>
+										<a href="/board/view?bno=${item.bno}&page=${pm.page}"><c:out value="${item.title }"></c:out></a>
+									</h4>
+									<p>
+										Writer &nbsp;&nbsp; <c:out value="${item.writer }"></c:out>
+										&nbsp;&nbsp;  <c:out value="${item.regdate }"></c:out>
+									</p>
 								</div>
 								<div class="blog-left-right-bottom">
-									<p>Vivamus fermentum vel lacus ac ornare. Vestibulum pulvinar massa pharetra risus pharetra, eu blandit risus viverra. Aenean in ultrices enim, ut tincidunt libero. Phasellus libero enim, semper ac felis eget, efficitur ultrices orci. Aenean tincidunt lacus lorem, non varius enim luctus sed. Quisque eu aliquet quam, et sollicitudin nibh. Duis finibus at felis eu laoreet. Nulla non lacus sem.</p>
+									<p> <c:out value="${item.bno}"></c:out></p>
 
 								</div>
-							</div>
-							<div class="clearfix"> </div>
-						</div>
-					</div>
-					<div class="agile-blog-grid">
-						<div class="blog-left-grids">
-							<div class="blog-left-left">
-								<i class="fa fa-pencil" aria-hidden="true"></i>
-							</div>
-							<div class="blog-left-right">
-								<div class="blog-left-right-top">
-									<h4><a href="single.html">Integer et turpis augue. In hac habitasse platea dictumst.</a></h4>
-									<p>Posted By <a href="#">Admin</a> &nbsp;&nbsp; on June 2, 2016 &nbsp;&nbsp; <a href="#">Comments (10)</a></p>
-								</div>
-								<div class="blog-left-right-bottom">
-									<p>Vivamus fermentum vel lacus ac ornare. Vestibulum pulvinar massa pharetra risus pharetra, eu blandit risus viverra. Aenean in ultrices enim, ut tincidunt libero. Phasellus libero enim, semper ac felis eget, efficitur ultrices orci. Aenean tincidunt lacus lorem, non varius enim luctus sed. Quisque eu aliquet quam, et sollicitudin nibh. Duis finibus at felis eu laoreet. Nulla non lacus sem.</p>
 
-								</div>
 							</div>
-							<div class="clearfix"> </div>
+							<div class="clearfix"></div>
 						</div>
 					</div>
-					<div class="agile-blog-grid">
-						<div class="blog-left-grids">
-							<div class="blog-left-left">
-								<i class="fa fa-pencil" aria-hidden="true"></i>
-							</div>
-							<div class="blog-left-right">
-								<div class="blog-left-right-top">
-									<h4><a href="single.html">Integer et turpis augue. In hac habitasse platea dictumst.</a></h4>
-									<p>Posted By <a href="#">Admin</a> &nbsp;&nbsp; on June 2, 2016 &nbsp;&nbsp; <a href="#">Comments (10)</a></p>
-								</div>
-								<div class="blog-left-right-bottom">
-									<p>Vivamus fermentum vel lacus ac ornare. Vestibulum pulvinar massa pharetra risus pharetra, eu blandit risus viverra. Aenean in ultrices enim, ut tincidunt libero. Phasellus libero enim, semper ac felis eget, efficitur ultrices orci. Aenean tincidunt lacus lorem, non varius enim luctus sed. Quisque eu aliquet quam, et sollicitudin nibh. Duis finibus at felis eu laoreet. Nulla non lacus sem.</p>
-								</div>
-							</div>
-							<div class="clearfix"> </div>
-						</div>
-					</div>
-					<h1>${list }</h1>
-					<nav>
-						<ul class="pagination">
-							<li>
-								<a href="#" aria-label="Previous">
-									<span aria-hidden="true">«</span>
-								</a>
-							</li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li>
-								<a href="#" aria-label="Next">
-									<span aria-hidden="true">»</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				<div class="col-md-4 agile-blog-grid-right">
-
-				</div>
-				<div class="clearfix"> </div>
+				</c:forEach>
+				<nav>
+					<ul class="pagination">
+					<c:if test="${pm.prev}">
+						<li><a href="/board/list?page=${pm.start -1}" aria-label="Previous"> 
+						<span aria-hidden="true">◁</span></a></li>
+					</c:if>
+					
+						<c:forEach begin="${pm.start}" end="${pm.end}" var="page">
+							<li><a href="/board/list?page=${page}">${page}</a>
+						</c:forEach>
+						
+						<c:if test="${pm.next}">
+						<li><a href="/board/list?page=${pm.end +1}" aria-label="Next"> 
+						<span aria-hidden="true">▷</span></a></li>
+					</c:if>
+					</ul>
+				</nav>
 			</div>
+			<div class="col-md-4 agile-blog-grid-right"></div>
+			<div class="clearfix"></div>
 		</div>
 	</div>
-	<!-- //blog -->
+</div>
+<!-- //blog -->
 
-	<%@ include file="../includes/footer.jsp" %>
+<%@ include file="../includes/footer.jsp"%>

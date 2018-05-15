@@ -7,32 +7,98 @@
 
 
 	<insert id="insert">
-	insert into tbl_board (bno,title,content,writer)
-	values (seq_board.nextval, #{title},#{content},#{writer})
+		insert into tbl_board (bno,title,content,writer)
+		values (seq_board.nextval, #{title},#{content},#{writer})
 	</insert>
-	
+
 	<select id="read" resultType="org.mvc.domain.BoardVO">
-	select * from tbl_board where bno = #{bno}
+		select * from tbl_board where bno =
+		#{bno}
 	</select>
 
 	<update id="update">
-	update tbl_board set title = #{title}, content = #{content}, updatedate = sysdate where bno = #{bno}
+		update tbl_board set title = #{title}, content =
+		#{content}, updatedate =
+		sysdate where bno = #{bno}
 	</update>
-	
+
 	<update id="delete">
-	update tbl_board set deleteyn = 'y' where bno = #{bno} 
-	</update>	
-	
+		update tbl_board set deleteyn = 'y' where bno =
+		#{bno}
+	</update>
+
 	<select id="list" resultType="org.mvc.domain.BoardVO">
-	select * from (<![CDATA[
+		select * from (<![CDATA[
 	select * from (
 	select /*+INDEX_DESC (tbl_board pk_board)*/ rownum rn, bno, title, content, writer, hits, replycount, deleteyn, regdate, updatedate 
 	from tbl_board where deleteyn = 'n' and bno>0) board
 	where rn <= #{page} * 10) board where rn > (#{page} - 1) * 10]]>
 	</select>
-	
+
 	<select id="total" resultType="int">
-	select count(bno) from tbl_board where deleteyn = 'n'
+		select count(bno) from tbl_board
+		where deleteyn = 'n'
+	</select>
+
+	<select id="searchList" resultType="org.mvc.domain.BoardVO">
+	
+	select * from
+    (
+    select * from 
+        (
+        select  rownum rn , bno, title, content, writer, hits, replycount, deleteyn, regdate, updatedate from 
+            (
+            select /*+INDEX_DESC (tbl_board pk_board)*/ * from tbl_board 
+           <where>
+			<foreach collection="arr" separator=" or " item="key">
+				<if test="key eq 't'.toString()">
+				title like '%'||#{keyword}||'%'
+				</if>
+				<if test="key eq 'c'.toString()">
+				content like '%'||#{keyword}||'%'
+				</if>
+				<if test="key eq 'w'.toString()">
+				writer like '%'||#{keyword}||'%'
+				</if>
+			</foreach>
+		</where>
+
+            and <![CDATA[ bno > 0 and deleteyn = 'n' 
+            )
+        ) where rn <= 1 * 10
+    )board where rn > (1 - 1) * 10]]>
+	
 	</select>
 	
+	<select id="searchTotal" resultType="int">
+	
+	select count(bno) from
+    (
+    select * from 
+        (
+         select  rownum rn , bno, title, content, writer, hits, replycount, deleteyn, regdate, updatedate from 
+            (
+            select /*+INDEX_DESC (tbl_board pk_board)*/ * from tbl_board 
+           <where>
+			<foreach collection="arr" separator=" or " item="key">
+				<if test="key eq 't'.toString()">
+				title like '%'||#{keyword}||'%'
+				</if>
+				<if test="key eq 'c'.toString()">
+				content like '%'||#{keyword}||'%'
+				</if>
+				<if test="key eq 'w'.toString()">
+				writer like '%'||#{keyword}||'%'
+				</if>
+			</foreach>
+		</where>
+
+            and <![CDATA[ bno > 0 and deleteyn = 'n' 
+            )
+        ) where rn <= 1 * 10
+    )board where rn > (1 - 1) * 10]]>
+	
+	</select>
+
+
 </mapper>

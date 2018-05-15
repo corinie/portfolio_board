@@ -17,10 +17,7 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper mapper;
 	
 
-	@Override
-	public List<BoardVO> list(Criteria cri) {
-		return mapper.list(cri);
-	}
+	
 
 	@Override
 	public int insert(BoardVO vo) {
@@ -45,6 +42,21 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int total() {
 		return mapper.total();
+	}
+	
+	@Override
+	public List<BoardVO> list(Criteria cri) {
+		return mapper.list(cri);
+	}
+
+	@Override
+	public List<BoardVO> searchList(Criteria cri) {
+		return mapper.searchList(cri);
+	}
+
+	@Override
+	public int searchTotal(Criteria cri) {
+		return mapper.searchTotal(cri);
 	}
 	
 	

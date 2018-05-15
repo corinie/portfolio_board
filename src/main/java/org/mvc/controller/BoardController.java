@@ -7,11 +7,13 @@ import org.mvc.service.BoardService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -32,9 +34,12 @@ public class BoardController {
 	}
 	
 	@PostMapping("/register")
-	public void insertPost(BoardVO vo) {
+	public String insertPost(BoardVO vo, RedirectAttributes rattr) {
 		log.info("post insert");
-		service.insert(vo);	
+		service.insert(vo);
+		rattr.addFlashAttribute("message", "rsuccess");
+		
+		return "redirect:/board/list";
 	}
 	
 	@GetMapping("/view")
@@ -53,19 +58,19 @@ public class BoardController {
 	}
 	
 	@PostMapping("/update")
-	public String updatePost(BoardVO vo, int page) {
+	public String updatePost(BoardVO vo, int page, RedirectAttributes rattr) {
 		log.info("post update");
 		service.update(vo);	
-		
+		rattr.addFlashAttribute("message", "usuccess");
 		return "redirect:/board/list?page="+page;
 	}
 	
 	
 	@PostMapping("/delete")
-	public String delete(int bno) {
+	public String delete(int bno, RedirectAttributes rattr) {
 		log.info("post delete");
 		service.delete(bno);
-		
+		rattr.addFlashAttribute("message", "dsuccess");
 		return "redirect:/board/list";
 	}
 	
@@ -76,5 +81,14 @@ public class BoardController {
 		PageMaker pm = new PageMaker(cri, service.total());
 		model.addAttribute("pm",pm);
 		model.addAttribute("list", list);
+	}
+	
+	@GetMapping("/searchlist")
+	public void searchList(Criteria cri, Model model) {
+		List<BoardVO> list = service.searchList(cri);
+		PageMaker pm = new PageMaker(cri, service.searchTotal(cri));
+		model.addAttribute("pm", pm);
+		model.addAttribute("list",list);
+			
 	}
 }

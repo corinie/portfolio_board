@@ -15,7 +15,7 @@
 	<div class="container">
 		<div class="agile-blog-grids">
 			<div class="container">
-				<c:forEach items="${list }" var="item">
+				<c:forEach items="${list}" var="item">
 					<div class="agile-blog-grid">
 						<div class="blog-left-grids">
 							<div class="blog-left-left">
@@ -25,29 +25,24 @@
 
 								<div class="blog-left-right-top">
 									<h4>
-										<a href="/board/view?bno=${item.bno}&page=${pm.page}"><c:out
-												value="${item.title }"></c:out></a>
+										<a href="/board/view?bno=${item.bno}&page=${pm.page}"><c:out value="${item.title }"></c:out></a>
 									</h4>
 									<p>
-										Writer &nbsp;&nbsp;
-										<c:out value="${item.writer }"></c:out>
-										&nbsp;&nbsp;
-										<c:out value="${item.regdate }"></c:out>
+										Writer &nbsp;&nbsp; <c:out value="${item.writer }"></c:out>
+										&nbsp;&nbsp;  <c:out value="${item.regdate }"></c:out>
 									</p>
 								</div>
 								<div class="blog-left-right-bottom">
-									<p>
-										<c:out value="${item.bno}"></c:out>
-									</p>
+									<p> <c:out value="${item.bno}"></c:out></p>
 								</div>
 							</div>
 							<div class="clearfix"></div>
 						</div>
 					</div>
-
-
+					
+				
 				</c:forEach>
-
+				
 				<div>
 				<form action="/board/searchlist">
 					<select name="type">

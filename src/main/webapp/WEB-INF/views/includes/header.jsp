@@ -78,8 +78,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
 						<nav>
 							<ul class="nav navbar-nav">
-								<li><a href="index.html" class="hvr-sweep-to-bottom">Home</a></li>
-								<li><a href="about.html" class="hvr-sweep-to-bottom">About</a></li>
+								<li><a href="/board/list" class="hvr-sweep-to-bottom">Home</a></li>
+								<li><a href="/board/register" class="hvr-sweep-to-bottom">Register</a></li>
 								<li><a href="plans.html" class="hvr-sweep-to-bottom">Plans</a></li>
 								<li><a href="#" class="dropdown-toggle hvr-sweep-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pages<span class="caret"></span></a>
 									<ul class="dropdown-menu">

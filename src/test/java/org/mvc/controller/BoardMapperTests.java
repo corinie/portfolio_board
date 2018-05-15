@@ -71,4 +71,17 @@ public class BoardMapperTests {
 		log.info(count);
 	}
 	
+	@Test
+	public void searchList() {
+		
+		Criteria cri = new Criteria();
+		cri.setPage(1);
+		cri.setKeyword("up");
+		cri.setType("t");
+		log.info("================================================================================");
+		log.info(cri.getKeyword());
+		log.info(cri.getType());
+		mapper.searchList(cri);
+	}
+	
 }

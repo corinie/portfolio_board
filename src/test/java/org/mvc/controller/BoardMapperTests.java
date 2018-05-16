@@ -84,4 +84,6 @@ public class BoardMapperTests {
 		mapper.searchList(cri);
 	}
 	
+	
+	
 }

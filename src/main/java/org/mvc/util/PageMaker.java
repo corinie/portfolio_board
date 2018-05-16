@@ -1,8 +1,13 @@
 package org.mvc.util;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Getter
 @ToString
 public class PageMaker {
@@ -42,5 +47,7 @@ public class PageMaker {
 		this.end = tempLast;
 		
 	}
+	
+
 
 }

@@ -25,8 +25,9 @@
 
 								<div class="blog-left-right-top">
 									<h4>
-										<a href="/board/view?bno=${item.bno}&page=${pm.page}"><c:out
-												value="${item.title }"></c:out></a>
+									
+										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}"><c:out
+												value="${item.title}"></c:out></a>	
 									</h4>
 									<p>
 										Writer &nbsp;&nbsp;
@@ -44,12 +45,10 @@
 							<div class="clearfix"></div>
 						</div>
 					</div>
-
-
 				</c:forEach>
-
+				<!--SEARCH VAR-->
 				<div>
-				<form action="/board/searchlist">
+				<form action="/board/list">
 					<select name="type">
 						<option value="t">title</option>
 						<option value="c">content</option>
@@ -66,23 +65,12 @@
 						<a href="/board/register"><button class="label label-success">REGISTER</button></a>
 					</h3>
 				</div>
-
+				<!--SEARCH VAR END-->
+				
 				<!--PAGINATION-->
 				<nav>
 					<ul class="pagination">
-						<c:if test="${pm.prev}">
-							<li><a href="/board/list?page=${pm.start -1}"
-								aria-label="Previous"> <span aria-hidden="true">◁</span></a></li>
-						</c:if>
-
-						<c:forEach begin="${pm.start}" end="${pm.end}" var="page">
-							<li><a href="/board/list?page=${page}">${page}</a>
-						</c:forEach>
-
-						<c:if test="${pm.next}">
-							<li><a href="/board/list?page=${pm.end +1}"
-								aria-label="Next"> <span aria-hidden="true">▷</span></a></li>
-						</c:if>
+						
 					</ul>
 				</nav>
 				<!--PAGINATION END-->
@@ -93,6 +81,11 @@
 	</div>
 </div>
 <!-- //blog -->
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 
 <script>
 
@@ -106,6 +99,60 @@
 		alert("wow delete success baby !");
 	}
 	
+
+</script>
+
+<script>
+
+var pagination = $(".pagination");
+var str = "";
+var url = "<li><a href='/board/list?";
+var bno = "";
+var type = "${param.type}";
+var keyword = "${param.keyword}";
+
+$(document).ready(function () {
+	
+	if(type) {
+		
+		bno = $(".view").data("bno");
+		
+		param = "/board/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
+		
+		$(".view").attr("href", param);
+		
+	}
+	
+	paging();
+});
+
+function paging() {
+	
+	if(type){
+		url += "type="+type+"&keyword="+keyword+"&"; 
+		}
+
+		if(${pm.prev}){
+			str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+		}
+
+		for(var i = ${pm.start}; i<= ${pm.end}; i++){
+			str += url+"page="+i+"'>"+i+"</a></li>";
+		}
+		
+		if(${pm.next}){
+			str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+		}
+		
+		
+			
+		pagination.html(str);
+		
+}
+	
+
+
+
 
 </script>
 

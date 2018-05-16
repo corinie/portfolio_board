@@ -10,7 +10,7 @@
 				<div class="col-md-8 agile-blog-grid-left">
 					<div class="agile-blog-grid">
 						<div class="agile-blog-grid-left-img">
-							<a href="/board/list?page=${param.page}"><button class="label label-danger">Home</button></a>
+							<a href="/board/list${cri.getUrl(param.bno)}"><button class="label label-danger">back</button></a>
 							<a href="single.html"><img src="images/2a.jpg" alt="" /></a>
 						</div>
 						<div class="blog-left-grids">
@@ -27,14 +27,12 @@
 								</div>
 							</div>
 							<div align="right">
-							<a href="/board/update?bno=${vo.bno}&page=${param.page}"><button class="label label-default">UPDATE</button></a>
+							<a href="/board/update${cri.getUrl(param.bno)}"><button class="label label-default">UPDATE</button></a>
 							<form method="post" action="/board/delete?bno=${vo.bno}"><button class="label label-default">DELETE</button></form>
 							</div>
 							<div class="clearfix"> </div>
 						</div>
 						<!--VIEW END-->
-						
-						
 						<!--REPLY LIST-->
 						<div class="response">
 								<h3>Responses</h3>
@@ -111,4 +109,10 @@
 			</div>
 		</div>
 	</div>
+	
+	<script>
+	
+	
+	
+	</>
 	<%@ include file="../includes/footer.jsp"%>

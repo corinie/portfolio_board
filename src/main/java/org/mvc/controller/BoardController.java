@@ -7,7 +7,6 @@ import org.mvc.service.BoardService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +42,11 @@ public class BoardController {
 	}
 	
 	@GetMapping("/view")
-	public void read(int bno, Model model) {
+	public void read(int bno, Criteria cri, Model model) {
 		log.info("get view");
 		
 		model.addAttribute("vo", service.read(bno));
+		model.addAttribute("cri", cri);
 	}
 	
 	
@@ -58,11 +58,15 @@ public class BoardController {
 	}
 	
 	@PostMapping("/update")
-	public String updatePost(BoardVO vo, int page, RedirectAttributes rattr) {
+	public String updatePost(BoardVO vo, String type, String keyword, int page, RedirectAttributes rattr) {
 		log.info("post update");
 		service.update(vo);	
 		rattr.addFlashAttribute("message", "usuccess");
-		return "redirect:/board/list?page="+page;
+		if(type == null) {
+			return "redirect:/board/list?page="+page;
+		}else {
+			return "redirect:/board/list?page="+page+"&type="+type+"&keyword="+keyword;
+		}
 	}
 	
 	
@@ -77,18 +81,19 @@ public class BoardController {
 
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
-		List<BoardVO> list = service.list(cri);
-		PageMaker pm = new PageMaker(cri, service.total());
-		model.addAttribute("pm",pm);
+		List<BoardVO> list = null;
+		PageMaker pm = null;
+		if(cri.getType() == null) {
+			list = service.list(cri);
+			pm = new PageMaker(cri, service.total());
+		}
+		else if(cri.getType() != null) {
+			list = service.searchList(cri);
+			pm = new PageMaker(cri, service.searchTotal(cri));
+		}
+		model.addAttribute("cri",cri);
+		model.addAttribute("pm", pm);
 		model.addAttribute("list", list);
 	}
 	
-	@GetMapping("/searchlist")
-	public void searchList(Criteria cri, Model model) {
-		List<BoardVO> list = service.searchList(cri);
-		PageMaker pm = new PageMaker(cri, service.searchTotal(cri));
-		model.addAttribute("pm", pm);
-		model.addAttribute("list",list);
-			
-	}
 }

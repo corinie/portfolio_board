@@ -2,8 +2,8 @@ package org.mvc.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mvc.domain.ReplyVO;
-import org.mvc.mapper.ReplyMapper;
+import org.mvc.domain.CommentVO;
+import org.mvc.mapper.CommentMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,20 +14,20 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
-public class ReplyMapperTests {
+public class CommentMapperTests {
 	
 	
 	@Setter(onMethod_= {@Autowired})
-	private ReplyMapper mapper;
+	private CommentMapper mapper;
 	
 	
 	@Test
 	public void testInsert() {
 		for(int i=0; i < 100; i++) {
-			ReplyVO vo = new ReplyVO();
+			CommentVO vo = new CommentVO();
 			vo.setBno(1500000+i);
-			vo.setReply("reply"+i);
-			vo.setReplyer("user"+i);
+			vo.setComment("comment"+i);
+			vo.setCommenter("user"+i);
 			
 			mapper.insert(vo);	
 		}
@@ -40,9 +40,9 @@ public class ReplyMapperTests {
 	
 	@Test
 	public void testUpdate() {
-		ReplyVO vo = new ReplyVO();
-		vo.setRno(1);
-		vo.setReply("replyupdate");
+		CommentVO vo = new CommentVO();
+		vo.setCno(1);
+		vo.setComment("commentupdate");
 		
 		mapper.update(vo);
 		mapper.read(1);

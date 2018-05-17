@@ -4,18 +4,15 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mvc.mapper.BoardMapper">
 
-
 	<!--CRUD -->
 	<insert id="rootInsert">
 		insert into tbl_board (bno, rbno, pbno, title, writer, content)
-		values(seq_board.nextval, seq_board.currval, seq_board.currval,
-		#{title}, #{writer}, #{content})
+			values(seq_board.nextval, seq_board.currval, seq_board.currval, #{title}, #{writer}, #{content})
 	</insert>
 
 	<insert id="branchInsert">
 		insert into tbl_board (bno, rbno, pbno, depth, title, writer, content)
-		values(seq_board.nextval, #{rbno}, #{bno}, #{depth}+1, #{title},
-		#{writer}, #{content})
+			values(seq_board.nextval, #{rbno}, #{bno}, #{depth}+1, #{title}, #{writer}, #{content})
 	</insert>
 
 	<select id="read" resultType="org.mvc.domain.BoardVO">
@@ -23,46 +20,72 @@
 	</select>
 
 	<update id="update">
-		update tbl_board set title = #{title}, content = #{content}, updatedate =
-		sysdate where bno = #{bno}
+		update tbl_board set title = #{title}, content = #{content}, updatedate = sysdate where bno = #{bno}
 	</update>
 
 	<update id="delete">
 		update tbl_board set deleteyn = decode(boardcount, 0, 'y', 'm') where bno = #{bno}
 	</update>
+	
+	
+
+
 
 	<!--LIST -->
 	<select id="list" resultType="org.mvc.domain.BoardVO">
 		select * from 
-			(select * from
-				(select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, title, content, writer, deleteyn, regdate, updatedate from 
-					(select /*+INDEX_DESC(tbl_board pk_board) */ * from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0)
+			(
+			select * from
+				(
+				select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, 
+					title, content, writer, deleteyn, regdate, updatedate from 
+					(
+					select /*+INDEX_DESC(tbl_board pk_board) */ * 
+						from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0
+					)
 				) <![CDATA[ where rn <= (#{page} * 10)
 			) where rn > (#{page} - 1) * 10 ]]> 
 	</select>
 
 	<select id="total" resultType="int">
-		select /*+INDEX_DESC(tbl_board pk_board) */ count(bno) from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0
+		select /*+INDEX_DESC(tbl_board pk_board) */ count(bno) 
+			from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0
 	</select>
+
 
 
 	<!--SEARCH -->
 	<select id="searchList" resultType="org.mvc.domain.BoardVO">
 		select * from 
-			(select * from 
-				(select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, title, content, writer, deleteyn, regdate, updatedate  from 
-					(select /*+INDEX_DESC(tbl_board pk_board) */ * from tbl_board where deleteyn = 'n' and depth = 0) 
+			(
+			select * from 
+				(
+				select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, title, content, writer, deleteyn, regdate, updatedate  from 
+					(
+					select /*+INDEX_DESC(tbl_board pk_board) */ * from tbl_board where deleteyn = 'n' and depth = 0
+					) 
 		<include refid="searchoption" />
-    <![CDATA[) where rn <= (#{page}* 10)) where rn > (#{page}-1)*10]]>
+    			)<![CDATA[ where rn <= (#{page}* 10)
+    		) where rn > (#{page}-1)*10]]>
 	</select>
 
 	<select id="searchTotal" resultType="int">
 		select count(bno) from 
-			(select /*+INDEX_DESC(tbl_board pk_board) */ * from tbl_board where deleteyn = 'n' and depth = 0)
+			(
+			select /*+INDEX_DESC(tbl_board pk_board) */ * 
+				from tbl_board where deleteyn = 'n' and depth = 0)
 		<include refid="searchoption" />
 	</select>
 
-
+	<!--REPLY SQL -->
+	<update id="boardCount">
+		update tbl_board set boardcount = boardcount + 1 where bno = #{bno}
+	</update>
+	
+	<select id="replyList" resultType="org.mvc.domain.BoardVO">
+		select * from tbl_board where pbno = #{bno} 
+			start with depth = 0 connect by NOCYCLE prior bno = pbno order siblings by rbno desc, bno asc
+	</select>
 
 	<!--SEARCH OPTION -->
 	<sql id="searchoption">
@@ -81,6 +104,8 @@
 			</foreach>
 		</where>
 	</sql>
+	
+	
 
 
 </mapper>

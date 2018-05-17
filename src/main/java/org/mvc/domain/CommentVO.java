@@ -5,9 +5,9 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class ReplyVO {
-	private int rno,gno,bno;
-	private String replyer, reply;
+public class CommentVO {
+	private int cno,gno,bno;
+	private String commenter, comment;
 	private Date regdate,updatedate;
 
 }

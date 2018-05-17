@@ -25,9 +25,9 @@
 
 								<div class="blog-left-right-top">
 									<h4>
-									
-										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}"><c:out
-												value="${item.title}"></c:out></a>	
+										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}">
+										<c:out value="${item.title}"></c:out></a>&nbsp;
+										<a href="${item.bno }" class="replyBtn">(${item.boardcount })</a>
 									</h4>
 									<p>
 										Writer &nbsp;&nbsp;
@@ -41,6 +41,12 @@
 										<c:out value="${item.bno}"></c:out>
 									</p>
 								</div>
+							</div>
+							<div class="replyList">
+							<div id="${item.bno}">
+							
+							</div>
+							
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -110,19 +116,37 @@ var url = "<li><a href='/board/list?";
 var bno = "";
 var type = "${param.type}";
 var keyword = "${param.keyword}";
+var replyBtn = $(".replyBtn");
+var replystr = "";
+
+replyBtn.on("click", function (e) {
+	
+	var num = e.target.attributes.href.nodeValue;
+	console.dir(e.target.attributes.href.nodeValue);
+	var replyList = $("#"+num);
+	e.preventDefault();
+	
+	$.getJSON("/reply/"+num, function (data) {
+		$(data).each(function () {
+			if(this.depth != 0){
+				replystr += "&nbsp;&nbsp;<div class='agile-blog-grid'><div class='blog-left-grids'><div class='blog-left-left'><i class='fa fa-pencil' aria-hidden='true'></i></div><div class='blog-left-right'><div class='blog-left-right-top'><h5><div class='blog-left-right-top'><h5><a href='/board/view${cri.getUrl("+this.bno+")}' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>	<a href='"+this.bno+"' class='replyBtn'>("+this.boardcount+")</a></h5><p>Writer &nbsp;&nbsp;"+this.writer+"&nbsp;&nbsp;"+this.regdate+"</p></div></div><div class='blog-left-right-bottom'><p>"+this.bno+"</p></div></div><div class='replyList'><div id='"+this.bno+"'></div></div></div></div>";
+				
+				
+			}
+			replyList.html(replystr);
+		})
+		replystr = "";
+	})
+	
+});
 
 $(document).ready(function () {
 	
 	if(type) {
-		
 		bno = $(".view").data("bno");
-		
 		param = "/board/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
-		
 		$(".view").attr("href", param);
-		
 	}
-	
 	paging();
 });
 
@@ -131,29 +155,17 @@ function paging() {
 	if(type){
 		url += "type="+type+"&keyword="+keyword+"&"; 
 		}
-
 		if(${pm.prev}){
 			str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
 		}
-
 		for(var i = ${pm.start}; i<= ${pm.end}; i++){
 			str += url+"page="+i+"'>"+i+"</a></li>";
 		}
-		
 		if(${pm.next}){
 			str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
 		}
-		
-		
-			
 		pagination.html(str);
-		
 }
-	
-
-
-
-
 </script>
 
 <%@ include file="../includes/footer.jsp"%>

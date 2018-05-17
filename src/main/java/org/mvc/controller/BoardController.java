@@ -35,10 +35,27 @@ public class BoardController {
 	@PostMapping("/register")
 	public String insertPost(BoardVO vo, RedirectAttributes rattr) {
 		log.info("post insert");
-		service.insert(vo);
+		service.rootInsert(vo);
 		rattr.addFlashAttribute("message", "rsuccess");
 		
 		return "redirect:/board/list";
+	}
+	
+	@GetMapping("/replyregister")
+	public void branchInsert(int bno, Model model) {
+		log.info("get branchinsert");
+		
+		model.addAttribute("vo", service.read(bno));
+	}
+	
+	@PostMapping("/replyregister")
+	public String branchInsertPost(BoardVO vo, RedirectAttributes rattr) {
+		log.info("post branchinsert");
+		
+		service.branchInsert(vo, vo.getBno());
+		rattr.addFlashAttribute("message", "brsuccess");
+		
+		return "redirect:/board/view?bno="+vo.getBno();
 	}
 	
 	@GetMapping("/view")

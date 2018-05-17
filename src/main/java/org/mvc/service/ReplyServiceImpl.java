@@ -2,8 +2,8 @@ package org.mvc.service;
 
 import java.util.List;
 
-import org.mvc.domain.ReplyVO;
-import org.mvc.mapper.ReplyMapper;
+import org.mvc.domain.CommentVO;
+import org.mvc.mapper.CommentMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +14,20 @@ import lombok.Setter;
 public class ReplyServiceImpl implements ReplyService{
 
 	@Setter(onMethod_={@Autowired})
-	private ReplyMapper mapper;
+	private CommentMapper mapper;
 	
 	@Override
-	public void insert(ReplyVO vo) {
+	public void insert(CommentVO vo) {
 		mapper.insert(vo);
 	}
 
 	@Override
-	public ReplyVO read(int rno) {
+	public CommentVO read(int rno) {
 		return mapper.read(rno);
 	}
 
 	@Override
-	public void update(ReplyVO vo) {
+	public void update(CommentVO vo) {
 		mapper.update(vo);
 	}
 
@@ -37,7 +37,7 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 
 	@Override
-	public List<ReplyVO> list(Criteria cri, int bno) {
+	public List<CommentVO> list(Criteria cri, int bno) {
 		return mapper.list(cri, bno);
 	}
 

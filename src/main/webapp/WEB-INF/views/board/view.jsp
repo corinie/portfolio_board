@@ -42,21 +42,23 @@
 							<form method="post" action="/board/delete?bno=${vo.bno}">
 								<button class="label label-default">DELETE</button>
 							</form>
+							<a href="/board/commentregister${cri.getUrl(param.bno)}"><button
+									class="label label-default">comment</button></a>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<!--VIEW END-->
-					<!--REPLY LIST-->
+					<!--comment LIST-->
 					<div class="response">
 						<h3>Responses</h3>
-						<!--REPLY OUTER-->
+						<!--comment OUTER-->
 						<div class="media response-info">
 							<div class="media-left response-text-left">
 								<a href="#"> <img class="media-object" src="images/t1.jpg"
 									alt="">
 								</a>
 								<h5>
-									reply
+									comment
 								</h5>
 							</div>
 							<div class="media-body response-text-right">
@@ -66,10 +68,10 @@
 											elit,There are many variations of passages of Lorem Ipsum
 											available, sed do eiusmod tempor incididunt ut labore et
 											dolore magna aliqua.</p>
-									<li><a href="single.html">Reply</a></li>
+									<li><a href="single.html">comment</a></li>
 								</ul>
-							<!--inner Reply START-->
-							<div class="innerReply">
+							<!--inner comment START-->
+							<div class="innercomment">
 							<div class="media response-info">
 									<div class="media-left response-text-left">
 										<a href="#"> <img class="media-object" src="images/t2.jpg"
@@ -86,7 +88,7 @@
 											dolore magna aliqua.</p>
 										<ul>
 											<li>June 21, 2016</li>
-											<li><a href="single.html">Reply</a></li>
+											<li><a href="single.html">comment</a></li>
 										</ul>
 									</div>
 									<div class="clearfix"></div>
@@ -95,16 +97,16 @@
 									<div class="clearfix"></div>
 								</div>
 								</div> 
-								<!--inner Reply END--> 
+								<!--inner comment END--> 
 							</div>
 							<div class="clearfix"></div>
 						</div>
-						<!--REPLY OUTER END-->
+						<!--comment OUTER END-->
 						
-						<!--REPLY LIST END-->
+						<!--comment LIST END-->
 					</div>
 
-					<!--REPLY REGISTER -->
+					<!--comment REGISTER -->
 					<div class="opinion">
 						<h3>Leave Your Comment</h3>
 						<form action="#" method="post">
@@ -115,7 +117,7 @@
 						</form>
 					</div>
 
-					<!--REPLY REGISTER END-->
+					<!--comment REGISTER END-->
 				</div>
 			</div>
 
@@ -140,9 +142,9 @@ $(document).ready(function () {
 
 function getAllList() {
 		
-	$.getJSON("/reply/"+bno+"/"+page, function(data){
+	$.getJSON("/comment/"+bno+"/"+page, function(data){
 		$(data.list).each(function () {
-			$(".media-left response-text-left h5").html(this.replyer);
+			$(".media-left response-text-left h5").html(this.commenter);
 		})
 		
 	});

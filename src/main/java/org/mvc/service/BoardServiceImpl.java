@@ -7,6 +7,7 @@ import org.mvc.mapper.BoardMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 
@@ -16,11 +17,17 @@ public class BoardServiceImpl implements BoardService {
 	@Setter(onMethod_= {@Autowired})
 	BoardMapper mapper;
 	
-
 	
 	@Override
-	public int insert(BoardVO vo) {
-		return mapper.insert(vo);
+	public int rootInsert(BoardVO vo) {
+		return mapper.rootInsert(vo);
+	}
+	
+	@Override
+	@Transactional
+	public int branchInsert(BoardVO vo, int bno) {
+		mapper.boardCount(bno);
+		return mapper.branchInsert(vo);
 	}
 
 	@Override
@@ -58,6 +65,12 @@ public class BoardServiceImpl implements BoardService {
 	public int searchTotal(Criteria cri) {
 		return mapper.searchTotal(cri);
 	}
+
+	@Override
+	public List<BoardVO> replyList(int bno) {
+		return mapper.replyList(bno);
+	}
+
 	
 	
 

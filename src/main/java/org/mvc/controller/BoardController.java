@@ -25,7 +25,7 @@ public class BoardController {
 	@Setter(onMethod_={@Autowired})	
 	private BoardService service;
 	
-	
+	//CRUD
 	@GetMapping("/register")
 	public void insert() {
 		log.info("get insert");
@@ -78,7 +78,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-
+	//LIST, SEARCH
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
 		List<BoardVO> list = null;
@@ -95,5 +95,4 @@ public class BoardController {
 		model.addAttribute("pm", pm);
 		model.addAttribute("list", list);
 	}
-	
 }

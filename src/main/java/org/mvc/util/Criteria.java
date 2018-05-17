@@ -6,25 +6,24 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
-
 
 
 @Getter
 @Setter
-@Log4j
 public class Criteria {
 	
 	private int page = 1;
 	private String keyword;
 	private String type;
-	private String parameter;
 	
 	public String[] getArr() {
 		
+		if(this.type == null) {
+			return null;
+		}
+		
 		String[] types =  this.type.split("");
 		return types;
-		
 	}
 	
 	public Criteria() {
@@ -47,10 +46,7 @@ public class Criteria {
 		}else {
 			uri = UriComponentsBuilder.newInstance()
 					.path("").queryParam("bno", bno).queryParam("page", this.page).build();
-			
 		}
-		
-		log.info(uri);
 		return uri.toUriString();	
 	}
 

@@ -18,7 +18,6 @@ public class BoardServiceImpl implements BoardService {
 	
 
 	
-
 	@Override
 	public int insert(BoardVO vo) {
 		return mapper.insert(vo);
@@ -39,14 +38,15 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.update(vo);
 	}
 
-	@Override
-	public int total() {
-		return mapper.total();
-	}
 	
 	@Override
 	public List<BoardVO> list(Criteria cri) {
 		return mapper.list(cri);
+	}
+	
+	@Override
+	public int total() {
+		return mapper.total();
 	}
 
 	@Override

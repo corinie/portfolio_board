@@ -23,16 +23,32 @@ public class BoardMapperTests {
 	@Setter(onMethod_={@Autowired})	
 	private BoardMapper mapper;
 	
-	@Test
-	public void insert() {
-		for(int i = 0 ; i <10 ; i++) {
+	/*@Test
+	public void rootinsert() {
+		for(int i = 0 ; i < 100000 ; i++) {
 			BoardVO vo = new BoardVO();
-			vo.setContent("content"+i);
 			vo.setTitle("title"+i);
 			vo.setWriter("writer"+i);
-			mapper.insert(vo);
-		}
+			vo.setContent("content"+i);
+			
+			mapper.rootInsert(vo);
+		}	
 	}
+	@Test
+	public void branchInsert() {
+		for(int i = 0 ; i < 10 ; i++) {
+			BoardVO vo = new BoardVO();
+			vo.setRbno(90000);
+			vo.setBno(90000);
+			vo.setDepth(0);
+			
+			vo.setTitle("title"+i);
+			vo.setWriter("writer"+i);
+			vo.setContent("content"+i);
+			
+			mapper.branchInsert(vo);
+		}	
+	}*/
 	
 	@Test
 	public void read() {
@@ -52,7 +68,7 @@ public class BoardMapperTests {
 	
 	@Test
 	public void delete() {	
-		int bno = 1515555;
+		int bno = 999;
 		mapper.delete(bno);
 	}
 	
@@ -60,7 +76,7 @@ public class BoardMapperTests {
 	public void list() {
 		List<BoardVO> list = new ArrayList<BoardVO>();
 		Criteria cri = new Criteria();
-		cri.setPage(10);
+		cri.setPage(1);
 		
 		mapper.list(cri);
 	}
@@ -76,13 +92,21 @@ public class BoardMapperTests {
 		
 		Criteria cri = new Criteria();
 		cri.setPage(1);
-		cri.setKeyword("up");
+		cri.setKeyword("9999");
 		cri.setType("t");
-		log.info("================================================================================");
-		log.info(cri.getKeyword());
-		log.info(cri.getType());
+		
 		mapper.searchList(cri);
 	}
+	
+	@Test
+	public void searchTotal() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("99999");
+		cri.setType("t");
+		int count = mapper.searchTotal(cri);
+		log.info(count);
+	}
+	
 	
 	
 	

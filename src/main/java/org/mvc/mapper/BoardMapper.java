@@ -8,7 +8,8 @@ import org.mvc.util.Criteria;
 public interface BoardMapper {
 
 	
-	public int insert(BoardVO vo);	
+	public int rootInsert(BoardVO vo);	
+	public int branchInsert(BoardVO vo);	
 	public BoardVO read(int bno);
 	public int update(BoardVO vo);
 	public int delete(int bno);

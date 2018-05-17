@@ -7,8 +7,6 @@ import org.mvc.util.Criteria;
 
 public interface BoardService {
 	
-	
-	
 	public int insert(BoardVO vo);
 	public BoardVO read(int bno);
 	public int delete(int bno);

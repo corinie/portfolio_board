@@ -128,20 +128,67 @@ var replyList = "";
 var urlbuilder = "";
 var display = "";
 
+
+
+
+
+/* FUNCTION */
+$(document).ready(function () {
+	
+	if(type) {
+		bno = $(".view").data("bno");
+		param = "/board/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
+		$(".view").attr("href", param);
+	}
+	paging();
+	
+});
+
 $(".container").on("click", "span a", function (e) {
+	getAlllist(e);
+	
+});
+
+function getAllOpen(){
+	$(".container span a").attr("data-display", "show");
+};
+
+function paging() {
+	if(type){
+		url += "type="+type+"&keyword="+keyword+"&"; 
+	}
+	if(${pm.prev}){
+		str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+	}
+	for(var i = ${pm.start}; i<= ${pm.end}; i++){
+		str += url+"page="+i+"'>"+i+"</a></li>";
+	}
+	if(${pm.next}){
+		str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+	}
+	pagination.html(str);
+}
+
+
+/* LISTING*/
+function getAlllist(e){
 	num = e.target.attributes.href.nodeValue;
 	replyList = $("#"+num);
-	display = $(this);
+	display = $(e.target);
+	display.attr("data-display");
 	
 	e.stopPropagation();
 	e.preventDefault();
+	getJson(num);
 	
-	display.attr("data-display");
-	console.log(display.attr("data-display"));
+	
+};
+
+function getJson(bno){
 	
 	if(display.attr("data-display") == "show"){
 	
-	$.getJSON("/reply/"+num, function (data) {
+	$.getJSON("/reply/"+bno, function (data) {
 		$(data).each(function () {
 			if(this.depth != 0){
 				urlbuilder =  makeURI(this.bno);
@@ -183,37 +230,7 @@ $(".container").on("click", "span a", function (e) {
 		replyList.html(replystr);
 		display.attr("data-display", "show");
 	}
-	
-});
-
-
-
-/* FUNCTION */
-$(document).ready(function () {
-	
-	if(type) {
-		bno = $(".view").data("bno");
-		param = "/board/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
-		$(".view").attr("href", param);
-	}
-	paging();
-});
-
-function paging() {
-	if(type){
-		url += "type="+type+"&keyword="+keyword+"&"; 
-	}
-	if(${pm.prev}){
-		str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
-	}
-	for(var i = ${pm.start}; i<= ${pm.end}; i++){
-		str += url+"page="+i+"'>"+i+"</a></li>";
-	}
-	if(${pm.next}){
-		str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
-	}
-	pagination.html(str);
-}
+};
 
 /*JS URI MAKER*/
 function makeURI(bno){

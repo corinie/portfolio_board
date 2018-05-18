@@ -55,7 +55,7 @@ public class BoardController {
 		service.branchInsert(vo, vo.getBno());
 		rattr.addFlashAttribute("message", "brsuccess");
 		
-		return "redirect:/board/view?bno="+vo.getBno();
+		return "redirect:/board/list";
 	}
 	
 	@GetMapping("/view")

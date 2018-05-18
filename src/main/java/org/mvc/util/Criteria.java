@@ -42,10 +42,10 @@ public class Criteria {
 		UriComponents uri;
 		if(this.type != null) {
 			uri = UriComponentsBuilder.newInstance()
-					.path("").queryParam("bno", bno).queryParam("page", this.page).queryParam("type", this.type).queryParam("keyword", this.keyword).build();
+					.path("").queryParam("page", this.page).queryParam("type", this.type).queryParam("keyword", this.keyword).queryParam("bno", bno).build();
 		}else {
 			uri = UriComponentsBuilder.newInstance()
-					.path("").queryParam("bno", bno).queryParam("page", this.page).build();
+					.path("").queryParam("page", this.page).queryParam("bno", bno).build();
 		}
 		return uri.toUriString();	
 	}

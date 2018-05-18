@@ -42,8 +42,8 @@
 							<form method="post" action="/board/delete?bno=${vo.bno}">
 								<button class="label label-default">DELETE</button>
 							</form>
-							<a href="/board/commentregister${cri.getUrl(param.bno)}"><button
-									class="label label-default">comment</button></a>
+							<a href="/board/replyregister${cri.getUrl(param.bno)}"><button
+									class="label label-default">REPLY</button></a>
 						</div>
 						<div class="clearfix"></div>
 					</div>

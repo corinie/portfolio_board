@@ -1,5 +1,3 @@
-
-
 <%@ include file="../includes/header.jsp"%>
 
 <!-- //header -->
@@ -18,16 +16,17 @@
 				<c:forEach items="${list }" var="item">
 					<div class="agile-blog-grid">
 						<div class="blog-left-grids">
+
 							<div class="blog-left-left">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</div>
-							<div class="blog-left-right">
 
+							<div class="blog-left-right">
 								<div class="blog-left-right-top">
 									<h4>
-										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}">
-										<c:out value="${item.title}"></c:out></a>&nbsp;
-										<a href="${item.bno }" class="replyBtn">(${item.boardcount })</a>
+										<a href="/board/view${cri.getUrl(item.bno)}" class="view"
+											data-bno="${item.bno}"> <c:out value="${item.title}"></c:out></a>&nbsp;
+										<span><a href="${item.bno }" class="replyBtn">(${item.boardcount })</a></span>
 									</h4>
 									<p>
 										Writer &nbsp;&nbsp;
@@ -36,47 +35,47 @@
 										<c:out value="${item.regdate }"></c:out>
 									</p>
 								</div>
+
 								<div class="blog-left-right-bottom">
 									<p>
 										<c:out value="${item.bno}"></c:out>
 									</p>
 								</div>
+								<div class="replyList">
+									<div id="${item.bno}"></div>
+								</div>
+								<div class="clearfix"></div>
 							</div>
-							<div class="replyList">
-							<div id="${item.bno}">
-							
-							</div>
-							
-							</div>
-							<div class="clearfix"></div>
+
 						</div>
 					</div>
 				</c:forEach>
+				
 				<!--SEARCH VAR-->
 				<div>
-				<form action="/board/list">
-					<select name="type">
-						<option value="t">title</option>
-						<option value="c">content</option>
-						<option value="w">writer</option>
-						<option value="tc">title+content</option>
-						<option value="tw">title+writer</option>
-						<option value="cw">content+writer</option>
-						<option value="tcw">title+content+writer</option>
-					</select> 
-					<input type="text" name="keyword"> <button>search</button>
+					<form action="/board/list">
+						<select name="type">
+							<option value="t">title</option>
+							<option value="c">content</option>
+							<option value="w">writer</option>
+							<option value="tc">title+content</option>
+							<option value="tw">title+writer</option>
+							<option value="cw">content+writer</option>
+							<option value="tcw">title+content+writer</option>
+						</select> <input type="text" name="keyword">
+						<button>search</button>
 					</form>
-					
+
 					<h3 class="hdg" align="right">
 						<a href="/board/register"><button class="label label-success">REGISTER</button></a>
 					</h3>
 				</div>
 				<!--SEARCH VAR END-->
-				
+
 				<!--PAGINATION-->
 				<nav>
 					<ul class="pagination">
-						
+
 					</ul>
 				</nav>
 				<!--PAGINATION END-->
@@ -86,15 +85,14 @@
 		</div>
 	</div>
 </div>
-<!-- //blog -->
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+
+<!--SCRPIPT START-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
 
 <script>
-
 	if(${message eq "rsuccess"}){
 		alert("wow register success baby !");
 	}
@@ -104,42 +102,63 @@
 	if(${message eq "dsuccess"}){
 		alert("wow delete success baby !");
 	}
-	
-
 </script>
 
 <script>
-
 var pagination = $(".pagination");
-var str = "";
 var url = "<li><a href='/board/list?";
-var bno = "";
 var type = "${param.type}";
 var keyword = "${param.keyword}";
+
 var replyBtn = $(".replyBtn");
 var replystr = "";
+var str = "";
+var bno = "";
+var num = "";
+var replyList = "";
+var urlbuilder = "";
 
-replyBtn.on("click", function (e) {
-	
-	var num = e.target.attributes.href.nodeValue;
-	console.dir(e.target.attributes.href.nodeValue);
-	var replyList = $("#"+num);
+$(".container").on("click", "span a", function (e) {
+	num = e.target.attributes.href.nodeValue;
+	replyList = $("#"+num);
 	e.preventDefault();
 	
 	$.getJSON("/reply/"+num, function (data) {
 		$(data).each(function () {
 			if(this.depth != 0){
-				replystr += "&nbsp;&nbsp;<div class='agile-blog-grid'><div class='blog-left-grids'><div class='blog-left-left'><i class='fa fa-pencil' aria-hidden='true'></i></div><div class='blog-left-right'><div class='blog-left-right-top'><h5><div class='blog-left-right-top'><h5><a href='/board/view${cri.getUrl("+this.bno+")}' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>	<a href='"+this.bno+"' class='replyBtn'>("+this.boardcount+")</a></h5><p>Writer &nbsp;&nbsp;"+this.writer+"&nbsp;&nbsp;"+this.regdate+"</p></div></div><div class='blog-left-right-bottom'><p>"+this.bno+"</p></div></div><div class='replyList'><div id='"+this.bno+"'></div></div></div></div>";
-				
-				
+				urlbuilder =  makeURI(this.bno);
+	
+				replystr += "<div class='agile-blog-grid'>"
+				+				"<div class='blog-left-grids'><div class='blog-left-left'>"
+				+					"<i class='fa fa-pencil' aria-hidden='true'></i>"
+				+				"</div>"
+				+				"<div class='blog-left-right'><div class='blog-left-right-top'>"
+				+						"<div class='blog-left-right-top'>"
+				+							"<h4><a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
+				+								"<span><a href='"+this.bno+"' class='replyBtn'>("+this.boardcount+")</a></span>"
+				+							"</h4>"
+				+							"<p>Writer &nbsp;&nbsp;"+this.writer+"&nbsp;&nbsp;"+this.regdate+"</p>"
+				+						"</div>"
+				+				"</div>"
+				+				"<div class='blog-left-right-bottom'><p>"+this.bno+"</p></div>"
+				+					"<div class='replyList'>"
+				+						"<div id='"+this.bno+"'></div>"
+				+					"</div>"
+				+				"</div>"
+				+			"</div>";
 			}
 			replyList.html(replystr);
+		
 		})
+			
 		replystr = "";
 	})
 	
 });
 
+
+
+/* FUNCTION */
 $(document).ready(function () {
 	
 	if(type) {
@@ -151,21 +170,29 @@ $(document).ready(function () {
 });
 
 function paging() {
-	
 	if(type){
 		url += "type="+type+"&keyword="+keyword+"&"; 
-		}
-		if(${pm.prev}){
-			str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
-		}
-		for(var i = ${pm.start}; i<= ${pm.end}; i++){
-			str += url+"page="+i+"'>"+i+"</a></li>";
-		}
-		if(${pm.next}){
-			str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
-		}
-		pagination.html(str);
+	}
+	if(${pm.prev}){
+		str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+	}
+	for(var i = ${pm.start}; i<= ${pm.end}; i++){
+		str += url+"page="+i+"'>"+i+"</a></li>";
+	}
+	if(${pm.next}){
+		str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+	}
+	pagination.html(str);
 }
+
+/*JS URI MAKER*/
+function makeURI(bno){
+	var getUrl = "${cri.getUrl("")}";
+	var urlString = getUrl + bno;
+	
+	return urlString;	
+}
+
 </script>
 
 <%@ include file="../includes/footer.jsp"%>

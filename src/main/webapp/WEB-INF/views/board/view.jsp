@@ -39,7 +39,7 @@
 						<div align="right">
 							<a href="/board/update${cri.getUrl(param.bno)}"><button
 									class="label label-default">UPDATE</button></a>
-							<form method="post" action="/board/delete?bno=${vo.bno}">
+							<form method="post" action="/board/delete?bno=${vo.bno}&pbno=${vo.pbno}">
 								<button class="label label-default">DELETE</button>
 							</form>
 							<a href="/board/replyregister${cri.getUrl(param.bno)}"><button

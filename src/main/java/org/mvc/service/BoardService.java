@@ -10,7 +10,7 @@ public interface BoardService {
 	public int rootInsert(BoardVO vo);
 	public int branchInsert(BoardVO vo, int bno);
 	public BoardVO read(int bno);
-	public int delete(int bno);
+	public int delete(int bno, int pbno);
 	public int update(BoardVO vo);
 	
 	public List<BoardVO> list(Criteria cri);

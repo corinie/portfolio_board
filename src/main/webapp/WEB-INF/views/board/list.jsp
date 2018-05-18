@@ -1,4 +1,6 @@
 <%@ include file="../includes/header.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
 <!-- //header -->
 <!-- about-heading -->
@@ -23,11 +25,19 @@
 
 							<div class="blog-left-right">
 								<div class="blog-left-right-top">
+								<c:if test="${item.deleteyn eq 'n' }">
 									<h4>
 										<a href="/board/view${cri.getUrl(item.bno)}" class="view"
 											data-bno="${item.bno}"> <c:out value="${item.title}"></c:out></a>&nbsp;
-										<span><a href="${item.bno }" class="replyBtn">(${item.boardcount })</a></span>
+										<span><a href="${item.bno }" class="replyBtn"  data-display="show" >(${item.boardcount })</a></span>
 									</h4>
+									</c:if>
+									<c:if test="${item.deleteyn eq 'm' }">
+									<h4>
+										<c:out value="이 글은 삭제된 글입니다."></c:out>&nbsp;
+										<span><a href="${item.bno }" class="replyBtn"  data-display="show">(${item.boardcount })</a></span>
+									</h4>
+									</c:if>
 									<p>
 										Writer &nbsp;&nbsp;
 										<c:out value="${item.writer }"></c:out>
@@ -35,7 +45,6 @@
 										<c:out value="${item.regdate }"></c:out>
 									</p>
 								</div>
-
 								<div class="blog-left-right-bottom">
 									<p>
 										<c:out value="${item.bno}"></c:out>
@@ -117,11 +126,20 @@ var bno = "";
 var num = "";
 var replyList = "";
 var urlbuilder = "";
+var display = "";
 
 $(".container").on("click", "span a", function (e) {
 	num = e.target.attributes.href.nodeValue;
 	replyList = $("#"+num);
+	display = $(this);
+	
+	e.stopPropagation();
 	e.preventDefault();
+	
+	display.attr("data-display");
+	console.log(display.attr("data-display"));
+	
+	if(display.attr("data-display") == "show"){
 	
 	$.getJSON("/reply/"+num, function (data) {
 		$(data).each(function () {
@@ -133,11 +151,19 @@ $(".container").on("click", "span a", function (e) {
 				+					"<i class='fa fa-pencil' aria-hidden='true'></i>"
 				+				"</div>"
 				+				"<div class='blog-left-right'><div class='blog-left-right-top'>"
-				+						"<div class='blog-left-right-top'>"
-				+							"<h4><a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
-				+								"<span><a href='"+this.bno+"' class='replyBtn'>("+this.boardcount+")</a></span>"
-				+							"</h4>"
-				+							"<p>Writer &nbsp;&nbsp;"+this.writer+"&nbsp;&nbsp;"+this.regdate+"</p>"
+				+						"<div class='blog-left-right-top'>";
+				
+				if(this.deleteyn == 'n'){
+					replystr += "<h4><a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
+					+								"<span><a href='"+this.bno+"' class='replyBtn' data-display='show'>("+this.boardcount+")</a></span>"
+					+							"</h4>";
+				}else if(this.deleteyn == 'm'){
+					replystr += "<h4>이 글은 삭제된 글입니다. "
+					+								"<span><a href='"+this.bno+"' class='replyBtn' data-display='show'>("+this.boardcount+")</a></span>"
+					+							"</h4>";
+				}
+					
+				replystr+=	 "<p>Writer &nbsp;&nbsp;"+this.writer+"&nbsp;&nbsp;"+this.regdate+"</p>"
 				+						"</div>"
 				+				"</div>"
 				+				"<div class='blog-left-right-bottom'><p>"+this.bno+"</p></div>"
@@ -148,11 +174,15 @@ $(".container").on("click", "span a", function (e) {
 				+			"</div>";
 			}
 			replyList.html(replystr);
-		
-		})
 			
+		});
 		replystr = "";
-	})
+		display.attr("data-display", "hide");
+	});
+	}else if(display.attr("data-display") == "hide"){
+		replyList.html(replystr);
+		display.attr("data-display", "show");
+	}
 	
 });
 
@@ -192,7 +222,7 @@ function makeURI(bno){
 	
 	return urlString;	
 }
-
 </script>
+
 
 <%@ include file="../includes/footer.jsp"%>

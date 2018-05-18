@@ -26,7 +26,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	@Transactional
 	public int branchInsert(BoardVO vo, int bno) {
-		mapper.boardCount(bno);
+		mapper.boardInsertCount(bno);
 		return mapper.branchInsert(vo);
 	}
 
@@ -34,9 +34,11 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO read(int bno) {
 		return mapper.read(bno);
 	}
-
+	
 	@Override
-	public int delete(int bno) {
+	@Transactional
+	public int delete(int bno, int pbno) {
+		mapper.boardDeleteCount(bno);
 		return mapper.delete(bno);
 	}
 

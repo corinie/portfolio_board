@@ -25,6 +25,7 @@
 
 	<update id="delete">
 		update tbl_board set deleteyn = decode(boardcount, 0, 'y', 'm') where bno = #{bno}
+
 	</update>
 	
 	
@@ -78,12 +79,24 @@
 	</select>
 
 	<!--REPLY SQL -->
-	<update id="boardCount">
-		update tbl_board set boardcount = boardcount + 1 where bno = #{bno}
+	<update id="boardInsertCount">
+		update tbl_board set boardcount = boardcount + 1 where bno in (select * from 
+		(select bno from tbl_board start with bno = #{bno} connect by NOCYCLE prior pbno = bno
+		union
+		select bno from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})))
+	</update>
+	
+	<update id="boardDeleteCount">
+		
+update tbl_board set boardcount = boardcount - 1 where bno in (select * from 
+		<![CDATA[(select bno from tbl_board where depth < ]]>(select depth from tbl_board where bno = #{bno}) start with bno = #{bno} connect by NOCYCLE prior pbno = bno
+		union
+		select bno from tbl_board where bno = (select rbno from tbl_board where bno = #{bno}))) and (select boardcount from tbl_board where bno = #{bno}) = 0
+		
 	</update>
 	
 	<select id="replyList" resultType="org.mvc.domain.BoardVO">
-		select * from tbl_board where pbno = #{bno} 
+		select * from tbl_board where pbno = #{bno} and (deleteyn = 'n' or deleteyn = 'm')
 			start with depth = 0 connect by NOCYCLE prior bno = pbno order siblings by rbno desc, bno asc
 	</select>
 

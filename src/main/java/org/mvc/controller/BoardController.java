@@ -88,9 +88,9 @@ public class BoardController {
 	
 	
 	@PostMapping("/delete")
-	public String delete(int bno, RedirectAttributes rattr) {
+	public String delete(int bno, int pbno, RedirectAttributes rattr) {
 		log.info("post delete");
-		service.delete(bno);
+		service.delete(bno, pbno);
 		rattr.addFlashAttribute("message", "dsuccess");
 		return "redirect:/board/list";
 	}

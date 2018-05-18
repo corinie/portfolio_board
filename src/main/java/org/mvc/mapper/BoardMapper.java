@@ -20,7 +20,8 @@ public interface BoardMapper {
 	public List<BoardVO> searchList(Criteria cri);
 	public int searchTotal(Criteria cri);
 	
-	public int boardCount(int bno);
+	public int boardInsertCount(int bno);
+	public int boardDeleteCount(int bno);
 	
 	public List<BoardVO> replyList(int bno);
 	

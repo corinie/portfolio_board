@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mvc.mapper.CommentMapper">
+
+	<!--CRUD -->
+	<insert id="rootInsert">
+		insert into tbl_comment (cno, bno, gno, commenter, comments)
+		values (seq_comment.nextval, #{bno}, seq_comment.currval, #{commenter},
+		#{comments})
+	</insert>
+
+	<insert id="branchInsert">
+		insert into tbl_comment(cno, bno, gno, commenter, comments, depth)
+		values(seq_comment.nextval, #{bno}, #{gno}, #{commenter}, #{comments},
+		1)
+	</insert>
+
+	<select id="read" resultType="org.mvc.domain.CommentVO">
+		select * from tbl_comment where cno = #{cno}
+	</select>
+
+	<update id="update">
+		update tbl_comment set comments = #{comments}, updatedate = sysdate where
+		cno = #{cno}
+	</update>
+
+	<update id="delete">
+		update tbl_comment set deleteyn = 'y' where cno = #{cno}
+	</update>
+
+	<!--LIST -->
+	<select id="list" resultType="org.mvc.domain.CommentVO">
+		select * from (
+		select * from (
+		select rownum rn, rank() over(partition by gno order by depth asc, cno
+		asc)rank, gno, cno, bno, COMMENTER, COMMENTS, regdate, updatedate
+		from tbl_comment where bno = #{bno} order by gno desc
+		) where rn <![CDATA[ <= ]]> #{cri.page} * 10
+		) where rn <![CDATA[ > ]]> (#{cri.page} - 1) * 10
+	</select>
+
+
+
+
+	<select id="total" resultType="int">
+		select count(cno) from tbl_comment where deleteyn = 'n' and bno = #{bno}
+	</select>
+</mapper>

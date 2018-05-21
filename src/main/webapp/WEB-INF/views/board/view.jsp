@@ -1,4 +1,7 @@
 <%@ include file="../includes/header.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
 <div class="about-heading">
 	<h2>
 		Single <span>page</span>
@@ -9,155 +12,238 @@
 <div class="blog">
 	<div class="container">
 		<div class="agile-blog-grids">
-			<div class="col-md-8 agile-blog-grid-left">
-				<div class="agile-blog-grid">
-					<div class="agile-blog-grid-left-img">
-						<a href="/board/list${cri.getUrl(param.bno)}"><button
-								class="label label-danger">back</button></a> <a href="single.html"><img
-							src="images/2a.jpg" alt="" /></a>
+			<div class="agile-blog-grid">
+				<div class="agile-blog-grid-left-img">
+					<a href="/board/list${cri.getUrl(param.bno)}"><button
+							class="label label-danger">back</button></a> <a href="single.html"><img
+						src="images/2a.jpg" alt="" /></a>
+				</div>
+				<div class="blog-left-grids">
+					<div class="blog-left-left">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
 					</div>
-					<div class="blog-left-grids">
-						<div class="blog-left-left">
-							<i class="fa fa-pencil" aria-hidden="true"></i>
+					<div class="blog-left-right">
+						<div class="blog-left-right-top">
+							<h2>
+								<c:out value="${vo.title }"></c:out>
+							</h2>
+							<p>
+								writer &nbsp;&nbsp;
+								<c:out value="${vo.writer }"></c:out>
+								&nbsp;&nbsp;
+								<c:out value=" ${vo.regdate }"></c:out>
+							</p>
 						</div>
-						<div class="blog-left-right">
-							<div class="blog-left-right-top">
-								<h2>
-									<c:out value="${vo.title }"></c:out>
-								</h2>
-								<p>
-									writer &nbsp;&nbsp;
-									<c:out value="${vo.writer }"></c:out>
-									&nbsp;&nbsp;
-									<c:out value=" ${vo.regdate }"></c:out>
-								</p>
-							</div>
-							<div class="blog-left-right-bottom">
-								<p>${vo.content}</p>
-							</div>
+						<div class="blog-left-right-bottom">
+							<p>${vo.content}</p>
 						</div>
-						<div align="right">
-							<a href="/board/update${cri.getUrl(param.bno)}"><button
-									class="label label-default">UPDATE</button></a>
-							<form method="post" action="/board/delete?bno=${vo.bno}&pbno=${vo.pbno}">
-								<button class="label label-default">DELETE</button>
-							</form>
-							<a href="/board/replyregister${cri.getUrl(param.bno)}"><button
-									class="label label-default">REPLY</button></a>
-						</div>
-						<div class="clearfix"></div>
 					</div>
-					<!--VIEW END-->
-					<!--comment LIST-->
-					<div class="response">
-						<h3>Responses</h3>
-						<!--comment OUTER-->
+					<div align="right">
+						<a href="/board/update${cri.getUrl(param.bno)}"><button
+								class="label label-default">UPDATE</button></a>
+						<form method="post"
+							action="/board/delete?bno=${vo.bno}&pbno=${vo.pbno}">
+							<button class="label label-default">DELETE</button>
+						</form>
+						<a href="/board/replyregister${cri.getUrl(param.bno)}">
+						<button class="label label-default">REPLY</button></a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<!--VIEW END-->
+				
+			<!--comment REGISTER -->
+			<div class="opinion">
+				<h3>Leave Your Comment</h3>
+					<form>
+					<input type="text" name="commenter" placeholder="Name" required="" id="commenter">
+					<textarea name="comment" placeholder="Message" required="" id="comments"></textarea>
+					</form>
+					<h4 align="right"><button class="label label-default" id="sendBtn">SEND</button></h4>
+			</div>
+			<!--comment REGISTER END-->
+			
+				<!--comment LIST-->
+				<div class="response">
+					<h3>Responses</h3>
+					<!--comment OUTER-->
+					<div class="outer">
 						<div class="media response-info">
 							<div class="media-left response-text-left">
 								<a href="#"> <img class="media-object" src="images/t1.jpg"
 									alt="">
 								</a>
-								<h5>
-									comment
-								</h5>
+								<h5>comment</h5>
 							</div>
+
+
 							<div class="media-body response-text-right">
-								
+								<p>comments</p>
 								<ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit,There are many variations of passages of Lorem Ipsum
-											available, sed do eiusmod tempor incididunt ut labore et
-											dolore magna aliqua.</p>
+									<li>June 21, 2016</li>
 									<li><a href="single.html">comment</a></li>
 								</ul>
-							<!--inner comment START-->
-							<div class="innercomment">
-							<div class="media response-info">
-									<div class="media-left response-text-left">
-										<a href="#"> <img class="media-object" src="images/t2.jpg"
-											alt="">
-										</a>
-										<h5>
-											<a href="#">Admin</a>
-										</h5>
-									</div>
-									<div class="media-body response-text-right">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit,There are many variations of passages of Lorem Ipsum
-											available, sed do eiusmod tempor incididunt ut labore et
-											dolore magna aliqua.</p>
-										<ul>
-											<li>June 21, 2016</li>
-											<li><a href="single.html">comment</a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-								</div> 
-								<!--inner comment END--> 
 							</div>
-							<div class="clearfix"></div>
 						</div>
-						<!--comment OUTER END-->
-						
-						<!--comment LIST END-->
 					</div>
+					<div class="clearfix"></div>
+					<!--comment OUTER END-->
 
-					<!--comment REGISTER -->
-					<div class="opinion">
-						<h3>Leave Your Comment</h3>
-						<form action="#" method="post">
-							<input type="text" name="Name" placeholder="Name" required="">
-							<input type="email" name="Email" placeholder="Email" required="">
-							<textarea name="Message" placeholder="Message" required=""></textarea>
-							<input type="submit" value="SEND">
-						</form>
-					</div>
-
-					<!--comment REGISTER END-->
+					
+					<div class="clearfix"></div>
+					<!--inner comment END-->
 				</div>
+				<!--comment LIST END-->
 			</div>
 
-			<div class="clearfix"></div>
 		</div>
 	</div>
+
+	<div class="clearfix"></div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
-	
+
+
+<!--REPLY SCRIPT-->
+
 <script>
-
-var page = 1;
-var bno = ${param.bno};
-var str ="";
-
-$(document).ready(function () {
-	getAllList(page);
+/*REPLY LIST*/
+	var page = 1;
+	var bno = ${param.bno};
+	var str = "";
+	var cstr = "";
+	var comments = "";
+	var commenter = "";
+	var target = "";
+	var branch = "";
+	var branchComments = "";
+	var branchCommenter = "";
 	
-});
-
-function getAllList() {
-		
-	$.getJSON("/comment/"+bno+"/"+page, function(data){
-		$(data.list).each(function () {
-			$(".media-left response-text-left h5").html(this.commenter);
-		})
-		
+	$(document).ready(function() {
+		getAllList(page);
 	});
 	
-};
+	/*REPLY CREATE*/
+	$("#sendBtn").on("click", function (e) {
+		comments = $("#comments").val();
+		commenter = $("#commenter").val();
+		
+		$.ajax({
+			url : "/comment/root",
+			type : "POST",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				bno : bno,
+				comments : comments,
+				commenter : commenter
+			}),
+			success : function (result) {
+				if(result == 'rsuccess'){
+					alert("댓글 등록 성공");
+					getAllList(page);
+				}
+			}
+		});
+	});
+	
+	/*re-comment view*/
+	$(".response").on("click", "span button", function (e) {
+		
+		console.log($(this).attr("data-cno"));
+		target = $(this).attr("data-cno"); 
+		 
+		
+		if(($(this).attr("data-display") == "hide")){
+		$("."+target).show();
+		$(this).html("x");
+		$(this).attr("data-display","show");
+		}else{
+			$("."+target).hide();
+			$(this).html("comment");
+			$(this).attr("data-display", "hide");
+		};
+		
+	});
+	/*re-commnet register*/
+	$(".response").on("click", "span a", function (e) {
+		e.preventDefault();
+		
+		branch = $("."+target);
+		
+		branchComments = branch.children()[1].value
+		branchCommenter = branch.children()[0].value
+		
+		
+		$.ajax({
+			url : "/comment/branch",
+			type : "POST",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				bno : bno,
+				gno : target,
+				comments : branchComments,
+				commenter : branchCommenter
+			}),
+			success : function (result) {
+				if(result == 'bsuccess'){
+					alert("댓글 등록 성공");
+					getAllList(page);
+				}
+			}
+		});
+		
+	})
+
+	
+	function getAllList() {
+		$.getJSON("/comment/" + bno + "/" + page, function(data) {
+			console.log(data.list);
+			$(data.list).each(function() {
+				var innercstr = "<div class='media response-info'>"
+				 	+	"<div class='media-left response-text-left'>"
+				 	+		"<h5>"+this.commenter+"</h5>"
+				 	+"</div>"
+				 	+"<div class='media-body response-text-right'>"
+				 	+"<p>"+this.comments+"</p>"
+				 	+"<ul><li>"+this.regdate+"</li>";
+				 	
+				if(this.cno == this.gno){
+					cstr 	 += innercstr
+							 +"<li><span><button data-cno='"+this.cno+"' data-display='hide' class='label label-default'>comment</button></span></li></ul>"
+						 	 +"</div>"
+							 +"<div class='"+this.cno+"' style='display : none;'>"
+							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter'>"
+							 +"&nbsp; <input name='comment' size='105' placeholder='Message' required='' class='branchcomments'>"
+							 +"&nbsp; <span><a href='#' class='label label-default' id='sendBtn' >SEND</a></span></div>"
+							 +"</div>";
+				}else{
+					cstr += "<div class='media response-info'>"
+						 	+"<div class='media-left response-text-left'>"
+							+"<h5>     </h5>"
+						 	+"</div>"
+						 	+"<div class='media-body response-text-right'>"
+						 	+"<div class='innercomment'>"
+						 	+innercstr
+						 	+"<div class='clearfix'></div>"
+						 	+"</div></div></div></div>";
+				}
+			});
+			$(".outer").html(cstr);
+			cstr = "";
+		});
+	};
 
 
-	
-	
-	
 </script>
-
-
 
 
 <%@ include file="../includes/footer.jsp"%>

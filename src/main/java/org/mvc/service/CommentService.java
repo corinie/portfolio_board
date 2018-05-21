@@ -6,9 +6,10 @@ import org.apache.ibatis.annotations.Param;
 import org.mvc.domain.CommentVO;
 import org.mvc.util.Criteria;
 
-public interface ReplyService {
+public interface CommentService {
 
-	public void insert(CommentVO vo);
+	public void rootInsert(CommentVO vo);
+	public void branchInsert(CommentVO vo);
 	public CommentVO read(int rno);
 	public void update(CommentVO vo);
 	public void delete(int rno);

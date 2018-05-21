@@ -146,12 +146,9 @@ $(document).ready(function () {
 
 $(".container").on("click", "span a", function (e) {
 	getAlllist(e);
-	
 });
 
-function getAllOpen(){
-	$(".container span a").attr("data-display", "show");
-};
+
 
 function paging() {
 	if(type){

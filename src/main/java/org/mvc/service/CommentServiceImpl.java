@@ -11,14 +11,19 @@ import org.springframework.stereotype.Service;
 import lombok.Setter;
 
 @Service
-public class ReplyServiceImpl implements ReplyService{
+public class CommentServiceImpl implements CommentService{
 
 	@Setter(onMethod_={@Autowired})
 	private CommentMapper mapper;
 	
 	@Override
-	public void insert(CommentVO vo) {
-		mapper.insert(vo);
+	public void rootInsert(CommentVO vo) {
+		mapper.rootInsert(vo);
+	}
+	
+	@Override
+	public void branchInsert(CommentVO vo) {
+		mapper.branchInsert(vo);
 	}
 
 	@Override

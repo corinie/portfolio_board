@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.mvc.domain.CommentVO;
-import org.mvc.service.ReplyService;
+import org.mvc.service.CommentService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import lombok.extern.log4j.Log4j;
 public class CommentController {
 	
 	@Setter(onMethod_= {@Autowired})
-	private ReplyService service;
+	private CommentService service;
 	
 	@GetMapping("/{bno}/{page}")
 	public ResponseEntity<Map<String, Object>> list(@PathVariable("bno") int bno, Criteria cri){
@@ -48,12 +48,24 @@ public class CommentController {
 		return entity;
 	}
 	
-	@PostMapping("")
-	public ResponseEntity<String> insert(@RequestBody CommentVO vo){
+	@PostMapping("/root")
+	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
 		ResponseEntity<String> entity = null;
 		try {
-			service.insert(vo);
-			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			service.rootInsert(vo);
+			entity = new ResponseEntity<String>("rsuccess", HttpStatus.OK);
+		}catch(Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		}
+		return entity;
+	}
+	
+	@PostMapping("/branch")
+	public ResponseEntity<String> branchInsert(@RequestBody CommentVO vo){
+		ResponseEntity<String> entity = null;
+		try {
+			service.branchInsert(vo);
+			entity = new ResponseEntity<String>("bsuccess", HttpStatus.OK);
 		}catch(Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
@@ -65,7 +77,7 @@ public class CommentController {
 		ResponseEntity<String> entity = null;
 		try {
 			service.delete(cno);
-			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			entity = new ResponseEntity<String>("dsuccess", HttpStatus.OK);
 		}catch(Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
@@ -78,7 +90,7 @@ public class CommentController {
 		try {
 			vo.setCno(cno);
 			service.update(vo);
-			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			entity = new ResponseEntity<String>("usuccess", HttpStatus.OK);
 		}catch(Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}

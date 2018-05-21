@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-@Log4j
+
 public class CommentMapperTests {
 	
 	
@@ -23,14 +23,30 @@ public class CommentMapperTests {
 	
 	@Test
 	public void testInsert() {
-		for(int i=0; i < 100; i++) {
+		for(int i = 1; i < 5000; i++) {
 			CommentVO vo = new CommentVO();
-			vo.setBno(1500000+i);
-			vo.setComment("comment"+i);
+			vo.setBno(120352);
+			vo.setComments("comment"+i);
 			vo.setCommenter("user"+i);
 			
-			mapper.insert(vo);	
+			mapper.rootInsert(vo);	
 		}
+	}
+//	
+//	<insert id="branchInsert">
+//	insert into tbl_comment(cno, bno, gno, commenter, comments) values(seq_comment.nextval, #{bno}, #{gno}, #{commenter}, #{comments})
+//	</insert>
+	
+	@Test
+	public void testBranchInsert() {
+		
+		CommentVO vo = new CommentVO();
+		vo.setBno(120352);
+		vo.setGno(21);
+		vo.setCommenter("gd01");
+		vo.setComments("zzzz");
+		
+		mapper.branchInsert(vo);
 	}
 	
 	@Test
@@ -42,7 +58,7 @@ public class CommentMapperTests {
 	public void testUpdate() {
 		CommentVO vo = new CommentVO();
 		vo.setCno(1);
-		vo.setComment("commentupdate");
+		vo.setComments("commentupdate");
 		
 		mapper.update(vo);
 		mapper.read(1);

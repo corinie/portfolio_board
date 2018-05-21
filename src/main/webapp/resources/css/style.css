@@ -389,6 +389,11 @@ ul.dropdown-menu {
 	margin:1em 0 0 0;
 	color:#FFFFFF;
 }
+
+.commentchart{
+	display: none;
+}
+
 .image img{
 	width:100%;
 }
@@ -3336,4 +3341,6 @@ i.fa.fa-pencil{
 		min-height: 250px;
 	}
 }
+
+
 /*-- //response --*/

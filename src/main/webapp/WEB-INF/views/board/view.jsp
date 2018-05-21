@@ -201,7 +201,35 @@
 			}
 		});
 		
-	})
+	});
+	
+	$(".response").on("click", "p button", function (e) {
+		
+		console.log($(e.target).attr("data-cno"));
+		
+		var dcno = $(e.target).attr("data-cno");
+ 		
+		$.ajax({
+			url : "/comment/delete/"+dcno,
+			type : "PUT",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				deleteyn : "y"
+			}),
+			success : function (result) {
+				if(result == 'dsuccess'){
+					alert("댓글 삭제 성공");
+					getAllList(page);
+				}
+			}
+		});
+		
+	});
+		
+
 
 	
 	function getAllList() {
@@ -218,13 +246,14 @@
 				 	
 				if(this.cno == this.gno){
 					cstr 	 += innercstr
-							 +"<li><span><button data-cno='"+this.cno+"' data-display='hide' class='label label-default'>comment</button></span></li></ul>"
+							 +"<li><span><button data-cno='"+this.cno+"' data-display='hide' class='label label-default'>comment</button></span><p style='display : inline'><button data-cno='"+this.cno+"' class='label label-default'>delete</button></p></li></ul>"
 						 	 +"</div>"
 							 +"<div class='"+this.cno+"' style='display : none;'>"
 							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter'>"
 							 +"&nbsp; <input name='comment' size='105' placeholder='Message' required='' class='branchcomments'>"
 							 +"&nbsp; <span><a href='#' class='label label-default' id='sendBtn' >SEND</a></span></div>"
-							 +"</div>";
+							 +"</div>"
+							 +"<hr>";
 				}else{
 					cstr += "<div class='media response-info'>"
 						 	+"<div class='media-left response-text-left'>"
@@ -233,8 +262,10 @@
 						 	+"<div class='media-body response-text-right'>"
 						 	+"<div class='innercomment'>"
 						 	+innercstr
+						 	+"<li><p style='display : inline'><button data-cno='"+this.cno+"' class='label label-default'>delete</button></p></li>"
 						 	+"<div class='clearfix'></div>"
-						 	+"</div></div></div></div>";
+						 	+"</div></div></div></div>"
+						 	+"<hr>";
 				}
 			});
 			$(".outer").html(cstr);

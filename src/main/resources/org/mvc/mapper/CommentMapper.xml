@@ -36,7 +36,7 @@
 		select * from (
 		select rownum rn, rank() over(partition by gno order by depth asc, cno
 		asc)rank, gno, cno, bno, COMMENTER, COMMENTS, regdate, updatedate
-		from tbl_comment where bno = #{bno} order by gno desc
+		from tbl_comment where bno = #{bno} and deleteyn = 'n' order by gno desc
 		) where rn <![CDATA[ <= ]]> #{cri.page} * 10
 		) where rn <![CDATA[ > ]]> (#{cri.page} - 1) * 10
 	</select>

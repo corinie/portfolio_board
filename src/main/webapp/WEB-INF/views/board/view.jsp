@@ -89,7 +89,6 @@
 					<div class="clearfix"></div>
 					<!--comment OUTER END-->
 
-					
 					<div class="clearfix"></div>
 					<!--inner comment END-->
 				</div>
@@ -121,6 +120,9 @@
 	var branch = "";
 	var branchComments = "";
 	var branchCommenter = "";
+	var cno ="";
+	var innercstr="";
+	var bodytarget="";
 	
 	$(document).ready(function() {
 		getAllList(page);
@@ -156,10 +158,8 @@
 	/*re-comment view*/
 	$(".response").on("click", ".resendopen", function (e) {
 		
-		console.log($(this).attr("data-cno"));
 		target = $(this).attr("data-cno"); 
 		 
-		
 		if(($(this).attr("data-display") == "hide")){
 		$("."+target).show();
 		$(this).html("x");
@@ -176,10 +176,11 @@
 		e.preventDefault();
 		
 		branch = $("."+target);
+		branchComments = branch[1].children[1].value;
+		branchCommenter = branch[1].children[0].value;
 		
-		branchComments = branch.children()[1].value
-		branchCommenter = branch.children()[0].value
-		
+		console.log(branchComments);
+		console.log(branchCommenter);
 		
 		$.ajax({
 			url : "/comment/branch",
@@ -201,20 +202,15 @@
 				}
 			}
 		});
-		
 	});
 	
 	/*ROOT COMMENT DELETE*/
 	$(".response").on("click", ".rdelete", function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-		
-		console.log($(e.target).attr("data-cno"));
-		
-		var dcno = $(e.target).attr("data-cno");
+	
+		cno = $(e.target).attr("data-cno");
 		
 		$.ajax({
-			url : "/comment/rdelete/"+dcno,
+			url : "/comment/rdelete/"+cno,
 			type : "PUT",
 			dataType : "text",
 			
@@ -225,19 +221,15 @@
 				}
 			}
 		});
-		
 	});
 	
 	/*BRANCH COMMENT DELETE*/
 	$(".response").on("click", ".innercomment .bdelete", function (e) {
 		
-		
-		console.log($(e.target).attr("data-cno"));
-		
-		var dcno = $(e.target).attr("data-cno");
+		cno = $(e.target).attr("data-cno");
  		
 		$.ajax({
-			url : "/comment/bdelete/"+dcno,
+			url : "/comment/bdelete/"+acno,
 			type : "PUT",
 			dataType : "text",
 			headers : {
@@ -250,38 +242,75 @@
 				}
 			}
 		});
-		
 	});
 		
+	/*COMMENT UPDATE*/
+	$(".response").on("click", ".rupdate", function (e) {
+		console.log("update click");
+		bodytarget = $(e.target).attr("data-cno");
+		$.getJSON("/comment/"+bodytarget, function (data) {
+			
+			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='5' >"+data.comments+"</textarea>"
+					  +"<button class='label label-default upsend'>update</button>";
 
-
+			$("."+bodytarget).html(innercstr);
+		});
+	});
+	
+	$(".response").on("click", ".upsend", function (e){
+		var ucomment = $("#ucomment").val();
+		var ucno = $("#ucomment").attr("data-cno");
+		
+		console.log(ucomment);
+		console.log(ucno);
+		
+		$.ajax({
+			url : "/comment/"+ucno,
+			type : "PUT",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				cno : ucno,
+				comments : ucomment
+			}),
+			success : function (result) {
+				if(result == 'usuccess'){
+					alert("댓글 등록 성공");
+					getAllList(page);
+				}
+			}
+		});
+		
+	});
 	
 	function getAllList() {
 		$.getJSON("/comment/" + bno + "/" + page, function(data) {
 			console.log(data.list);
 			$(data.list).each(function() {
-				var innercstr = "<div class='media response-info'>"
-				 	+	"<div class='media-left response-text-left'>"
-				    +"<h5>"+this.commenter+"</h5>"
-				 	+"</div>"
-				 	+"<div class='media-body response-text-right'>";
-				 	console.log(this.deleteyn);
+			 		innercstr = "<div class='media response-info'>"
+				 		 	  +	"<div class='media-left response-text-left'>"
+				   		      +"<h5>"+this.commenter+"</h5>"
+				 		  	  +"</div>"
+				 		  	  +"<div class='media-body response-text-right'>";
+				 
 				 	if(this.deleteyn == 'm'){
-				 		innercstr += "<p>이 댓글은 삭제된 댓글입니다.</p>"
+				 		innercstr += "<p>이 댓글은 삭제된 댓글입니다. </p>"
 				 	}else{
-				 		innercstr += "<p>"+this.comments+"</p>"
-				 	};
-				 	
+				 		innercstr += "<div class="+this.cno+"><p>"+this.comments+"</p></div>"
+				 	}
 				 	innercstr +="<ul><li>"+this.regdate+"</li>";
 				 	
 				if(this.cno == this.gno){
 					cstr 	 += innercstr
 							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>"
-							 +"<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button></li></ul>"
+							 +"<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button>"
+							 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li></ul>"
 						 	 +"</div>"
 							 +"<div class='"+this.cno+"' style='display : none;'>"
 							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter'>"
-							 +"&nbsp; <input name='comment' size='105' placeholder='Message' required='' class='branchcomments'>"
+							 +"&nbsp; <input name='comment' size='125' placeholder='Message' required='' class='branchcomments'>"
 							 +"&nbsp; <a href='#' class='label label-default resend' id='sendBtn' >SEND</a></div>"
 							 +"</div>"
 							 +"<hr>";
@@ -293,8 +322,8 @@
 						 	+"<div class='media-body response-text-right'>"
 						 	+"<div class='innercomment'>"
 						 	+innercstr
-						 	/* +"<li><p style='display : inline'><button data-cno='"+this.cno+"' class='label label-default'>delete</button></p></li>" */
-						 	+"<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button></li>"
+						 	+"<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button>"
+						 	+"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li></ul>"
 						 	+"<div class='clearfix'></div>"
 						 	+"</div></div></div></div>"
 						 	+"<hr>";

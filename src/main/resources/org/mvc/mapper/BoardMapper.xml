@@ -28,6 +28,10 @@
 
 	</update>
 	
+	<update id="checkDeleteYN">
+	update tbl_board set deleteyn = 'y' where bno in (select bno from tbl_board where bno = (select pbno bno from tbl_board where bno = #{bno}) and boardcount = 0 and (deleteyn = 'y' or deleteyn = 'm') union
+	select bno from tbl_board where bno = (select rbno bno from tbl_board where bno = #{bno}) and boardcount = 0 and (deleteyn = 'y' or deleteyn = 'm'))
+	</update>
 	
 
 
@@ -88,10 +92,11 @@
 	
 	<update id="boardDeleteCount">
 		
-update tbl_board set boardcount = boardcount - 1 where bno in (select * from 
-		<![CDATA[(select bno from tbl_board where depth < ]]>(select depth from tbl_board where bno = #{bno}) start with bno = #{bno} connect by NOCYCLE prior pbno = bno
-		union
-		select bno from tbl_board where bno = (select rbno from tbl_board where bno = #{bno}))) and (select boardcount from tbl_board where bno = #{bno}) = 0
+		update tbl_board set boardcount = boardcount - 1 where bno in (select bno from (
+		select * from tbl_board where bno != #{bno} start with bno = #{bno} connect by nocycle prior pbno = bno 
+		union 
+		select * from tbl_board where bno = (select rbno from tbl_board where bno = #{bno}  and bno != rbno))
+		where deleteyn = 'n' or deleteyn = 'm')
 		
 	</update>
 	

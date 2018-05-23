@@ -39,7 +39,8 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	public int delete(int bno, int pbno) {
 		mapper.boardDeleteCount(bno);
-		return mapper.delete(bno);
+		mapper.delete(bno);
+		return mapper.checkDeleteYN(bno);
 	}
 
 	@Override

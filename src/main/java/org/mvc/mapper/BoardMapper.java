@@ -12,7 +12,11 @@ public interface BoardMapper {
 	public int branchInsert(BoardVO vo);	
 	public BoardVO read(int bno);
 	public int update(BoardVO vo);
+	public int checkDeleteYN(int bno);
 	public int delete(int bno);
+	
+	public int boardDeleteCount(int bno);
+	public int boardInsertCount(int bno);
 	
 	public List<BoardVO> list(Criteria cri);
 	public int total();
@@ -20,8 +24,6 @@ public interface BoardMapper {
 	public List<BoardVO> searchList(Criteria cri);
 	public int searchTotal(Criteria cri);
 	
-	public int boardInsertCount(int bno);
-	public int boardDeleteCount(int bno);
 	
 	public List<BoardVO> replyList(int bno);
 	

@@ -26,17 +26,34 @@
 		cno = #{cno}
 	</update>
 
-	<update id="delete">
-		update tbl_comment set deleteyn = 'y' where cno = #{cno}
+	
+	<update id="rootDelete">
+		update tbl_comment set deleteyn = case 
+			<![CDATA[
+			when (select count(cno) from tbl_comment where gno = #{cno} and (deleteyn = 'n' or deleteyn = 'm')) > 1 then 'm' 
+			when (select count(cno) from tbl_comment where gno = #{cno} and (deleteyn = 'n' or deleteyn = 'm')) = 1 then 'y' 
+			]]>
+			end
+		where cno = (select gno from tbl_comment where cno = #{cno})
 	</update>
-
+	
+	<update id="branchDelete">
+		update tbl_comment set deleteyn = 'y' where cno in 
+		(
+		select cno from tbl_comment where cno = #{cno} 
+		union 
+		select gno as cno from tbl_comment where cno = #{cno} and (select count(*) from tbl_comment 
+		where gno = (select gno as cno from tbl_comment where cno = #{cno}) and deleteyn = 'n') = 1
+		)
+	</update>
+	
 	<!--LIST -->
 	<select id="list" resultType="org.mvc.domain.CommentVO">
 		select * from (
 		select * from (
 		select rownum rn, rank() over(partition by gno order by depth asc, cno
-		asc)rank, gno, cno, bno, COMMENTER, COMMENTS, regdate, updatedate
-		from tbl_comment where bno = #{bno} and deleteyn = 'n' order by gno desc
+		asc)rank, gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate
+		from tbl_comment where bno = #{bno} and deleteyn = 'n' or deleteyn = 'm' order by gno desc
 		) where rn <![CDATA[ <= ]]> #{cri.page} * 10
 		) where rn <![CDATA[ > ]]> (#{cri.page} - 1) * 10
 	</select>

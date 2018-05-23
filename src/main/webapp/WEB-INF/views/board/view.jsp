@@ -124,6 +124,7 @@
 	
 	$(document).ready(function() {
 		getAllList(page);
+		
 	});
 	
 	/*REPLY CREATE*/
@@ -153,7 +154,7 @@
 	});
 	
 	/*re-comment view*/
-	$(".response").on("click", "span button", function (e) {
+	$(".response").on("click", ".resendopen", function (e) {
 		
 		console.log($(this).attr("data-cno"));
 		target = $(this).attr("data-cno"); 
@@ -171,7 +172,7 @@
 		
 	});
 	/*re-commnet register*/
-	$(".response").on("click", "span a", function (e) {
+	$(".response").on("click", ".resend", function (e) {
 		e.preventDefault();
 		
 		branch = $("."+target);
@@ -203,24 +204,47 @@
 		
 	});
 	
-	$(".response").on("click", "p button", function (e) {
+	/*ROOT COMMENT DELETE*/
+	$(".response").on("click", ".rdelete", function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		console.log($(e.target).attr("data-cno"));
+		
+		var dcno = $(e.target).attr("data-cno");
+		
+		$.ajax({
+			url : "/comment/rdelete/"+dcno,
+			type : "PUT",
+			dataType : "text",
+			
+			success : function (result) {
+				if(result == 'rcdsuccess'){
+					alert("댓글 삭제 성공");
+					getAllList(page);
+				}
+			}
+		});
+		
+	});
+	
+	/*BRANCH COMMENT DELETE*/
+	$(".response").on("click", ".innercomment .bdelete", function (e) {
+		
 		
 		console.log($(e.target).attr("data-cno"));
 		
 		var dcno = $(e.target).attr("data-cno");
  		
 		$.ajax({
-			url : "/comment/delete/"+dcno,
+			url : "/comment/bdelete/"+dcno,
 			type : "PUT",
 			dataType : "text",
 			headers : {
 				"Content-Type" : "application/json"
 			},
-			data : JSON.stringify({
-				deleteyn : "y"
-			}),
 			success : function (result) {
-				if(result == 'dsuccess'){
+				if(result == 'bcdsuccess'){
 					alert("댓글 삭제 성공");
 					getAllList(page);
 				}
@@ -238,20 +262,27 @@
 			$(data.list).each(function() {
 				var innercstr = "<div class='media response-info'>"
 				 	+	"<div class='media-left response-text-left'>"
-				 	+		"<h5>"+this.commenter+"</h5>"
+				    +"<h5>"+this.commenter+"</h5>"
 				 	+"</div>"
-				 	+"<div class='media-body response-text-right'>"
-				 	+"<p>"+this.comments+"</p>"
-				 	+"<ul><li>"+this.regdate+"</li>";
+				 	+"<div class='media-body response-text-right'>";
+				 	console.log(this.deleteyn);
+				 	if(this.deleteyn == 'm'){
+				 		innercstr += "<p>이 댓글은 삭제된 댓글입니다.</p>"
+				 	}else{
+				 		innercstr += "<p>"+this.comments+"</p>"
+				 	};
+				 	
+				 	innercstr +="<ul><li>"+this.regdate+"</li>";
 				 	
 				if(this.cno == this.gno){
 					cstr 	 += innercstr
-							 +"<li><span><button data-cno='"+this.cno+"' data-display='hide' class='label label-default'>comment</button></span><p style='display : inline'><button data-cno='"+this.cno+"' class='label label-default'>delete</button></p></li></ul>"
+							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>"
+							 +"<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button></li></ul>"
 						 	 +"</div>"
 							 +"<div class='"+this.cno+"' style='display : none;'>"
 							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter'>"
 							 +"&nbsp; <input name='comment' size='105' placeholder='Message' required='' class='branchcomments'>"
-							 +"&nbsp; <span><a href='#' class='label label-default' id='sendBtn' >SEND</a></span></div>"
+							 +"&nbsp; <a href='#' class='label label-default resend' id='sendBtn' >SEND</a></div>"
 							 +"</div>"
 							 +"<hr>";
 				}else{
@@ -262,7 +293,8 @@
 						 	+"<div class='media-body response-text-right'>"
 						 	+"<div class='innercomment'>"
 						 	+innercstr
-						 	+"<li><p style='display : inline'><button data-cno='"+this.cno+"' class='label label-default'>delete</button></p></li>"
+						 	/* +"<li><p style='display : inline'><button data-cno='"+this.cno+"' class='label label-default'>delete</button></p></li>" */
+						 	+"<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button></li>"
 						 	+"<div class='clearfix'></div>"
 						 	+"</div></div></div></div>"
 						 	+"<hr>";

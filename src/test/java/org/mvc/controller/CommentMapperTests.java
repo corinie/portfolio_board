@@ -66,7 +66,7 @@ public class CommentMapperTests {
 	
 	@Test
 	public void testDelete() {
-		mapper.delete(1);
+		mapper.rootDelete(1);
 		mapper.read(1);
 	}
 	

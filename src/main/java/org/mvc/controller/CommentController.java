@@ -30,24 +30,7 @@ public class CommentController {
 	@Setter(onMethod_= {@Autowired})
 	private CommentService service;
 	
-	@GetMapping("/{bno}/{page}")
-	public ResponseEntity<Map<String, Object>> list(@PathVariable("bno") int bno, Criteria cri){
-		ResponseEntity<Map<String, Object>> entity = null;
 		
-		Map<String, Object> map = new HashMap<>();
-		
-		try {
-			PageMaker pm = new PageMaker(cri, service.total(bno));
-			map.put("list", service.list(cri, bno));
-			map.put("pm", pm);
-				
-			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
-		}catch(Exception e) {
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
-		}
-		return entity;
-	}
-	
 	@PostMapping("/root")
 	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
 		ResponseEntity<String> entity = null;
@@ -71,13 +54,36 @@ public class CommentController {
 		}
 		return entity;
 	}
+
+	@GetMapping("/{cno}")
+	public ResponseEntity<CommentVO> read(@PathVariable("cno") int cno){
+		ResponseEntity<CommentVO> entity = null;
+		try {
+			entity = new ResponseEntity<CommentVO>(service.read(cno), HttpStatus.OK);
+		}catch(Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		}
+		return entity;
+	}
 	
-	@PutMapping("/delete/{cno}")
-	public ResponseEntity<String> delete(@PathVariable("cno") int cno){
+	@PutMapping("/rdelete/{cno}")
+	public ResponseEntity<String> rootDelete(@PathVariable("cno") int cno){
 		ResponseEntity<String> entity = null;
 		try {
-			service.delete(cno);
-			entity = new ResponseEntity<String>("dsuccess", HttpStatus.OK);
+			service.rootDelete(cno);
+			entity = new ResponseEntity<String>("rcdsuccess", HttpStatus.OK);
+		}catch(Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+		}
+		return entity;
+	}
+	
+	@PutMapping("/bdelete/{cno}")
+	public ResponseEntity<String> branchDelete(@PathVariable("cno") int cno){
+		ResponseEntity<String> entity = null;
+		try {
+			service.branchDelete(cno);
+			entity = new ResponseEntity<String>("bcdsuccess", HttpStatus.OK);
 		}catch(Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
@@ -97,15 +103,22 @@ public class CommentController {
 		return entity;
 	}
 	
-	@GetMapping("/{cno}")
-	public ResponseEntity<CommentVO> read(@PathVariable("cno") int cno){
-		ResponseEntity<CommentVO> entity = null;
+
+	@GetMapping("/{bno}/{page}")
+	public ResponseEntity<Map<String, Object>> list(@PathVariable("bno") int bno, Criteria cri){
+		ResponseEntity<Map<String, Object>> entity = null;
+		
+		Map<String, Object> map = new HashMap<>();
+		
 		try {
-			entity = new ResponseEntity<CommentVO>(service.read(cno), HttpStatus.OK);
+			PageMaker pm = new PageMaker(cri, service.total(bno));
+			map.put("list", service.list(cri, bno));
+			map.put("pm", pm);
+				
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		}catch(Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
 		return entity;
 	}
-
 }

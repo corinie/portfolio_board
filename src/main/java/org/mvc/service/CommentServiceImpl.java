@@ -27,8 +27,8 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public CommentVO read(int rno) {
-		return mapper.read(rno);
+	public CommentVO read(int cno) {
+		return mapper.read(cno);
 	}
 
 	@Override
@@ -37,8 +37,13 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public void delete(int rno) {
-		mapper.delete(rno);
+	public void rootDelete(int cno) {
+		mapper.rootDelete(cno);
+	}
+	
+	@Override
+	public void branchDelete(int cno) {
+		mapper.branchDelete(cno);
 	}
 
 	@Override

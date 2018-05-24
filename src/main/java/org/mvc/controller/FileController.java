@@ -1,12 +1,14 @@
 package org.mvc.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.mvc.domain.FileVO;
 import org.mvc.util.UploadFileUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @Log4j
@@ -47,17 +50,22 @@ public class FileController {
 				File saveFile = new File(uploadPath, uploadFileName);
 				multipartFile.transferTo(saveFile);
 				
+				fileVO.setAddress(saveFile.toString());
+				
 				if(UploadFileUtils.checkImageType(saveFile)) {
-					//fileVO.
+					fileVO.setImage("y");
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+uploadFileName));
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100,100);
+					thumbnail.close();
 				}
-				
+				list.add(fileVO);
 			}catch(Exception e) {
-				
+				e.printStackTrace();
 			}
 			
 		}
 		
-		return null;
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
 }

@@ -21,8 +21,6 @@ public class UploadFileUtils {
 	public static boolean checkImageType(File file) {
 		try {
 			String contentType = Files.probeContentType(file.toPath());
-			log.info("contentType ? : "+contentType);
-			
 			return contentType.startsWith("image");
 		}catch(Exception e) {
 			e.printStackTrace();

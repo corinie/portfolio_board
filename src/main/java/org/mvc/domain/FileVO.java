@@ -8,7 +8,7 @@ import lombok.Data;
 public class FileVO {
 
 	private int fno, bno;
-	private String fname, address, deleteyn;
+	private String fname, address, deleteyn, image;
 	private Date regdate, updatedate;
 	
 }

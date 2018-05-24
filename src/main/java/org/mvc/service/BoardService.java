@@ -7,7 +7,7 @@ import org.mvc.util.Criteria;
 
 public interface BoardService {
 	
-	public int rootInsert(BoardVO vo);
+	public void rootInsert(BoardVO vo, String[] uuid);
 	public int branchInsert(BoardVO vo, int bno);
 	public BoardVO read(int bno);
 	public int delete(int bno, int pbno);

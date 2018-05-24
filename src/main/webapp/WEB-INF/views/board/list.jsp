@@ -235,7 +235,7 @@ function makeURI(bno){
 	var urlString = getUrl + bno;
 	
 	return urlString;	
-}
+};
 </script>
 
 

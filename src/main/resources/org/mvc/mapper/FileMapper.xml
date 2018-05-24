@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mvc.mapper.FileMapper">
+
+<insert id="fileInsert">
+insert into tbl_file(fno, fname, uuid, image, datefolder)
+values(seq_file.nextval, #{fname}, #{uuid}, #{image}, #{datefolder})
+</insert>
+
+<update id="fileSumbit">
+update tbl_file set bno = seq_board.currval where uuid = #{uuid} 
+</update>
+
+</mapper>

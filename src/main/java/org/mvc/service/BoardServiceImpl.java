@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mvc.domain.BoardVO;
 import org.mvc.mapper.BoardMapper;
+import org.mvc.mapper.FileMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,17 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Setter(onMethod_= {@Autowired})
 	BoardMapper mapper;
+	@Setter(onMethod_= {@Autowired})
+	FileMapper fmapper;
 	
 	
 	@Override
-	public int rootInsert(BoardVO vo) {
-		return mapper.rootInsert(vo);
+	@Transactional
+	public void rootInsert(BoardVO vo, String[] uuid) {
+		mapper.rootInsert(vo);
+		for(int i=0; i<uuid.length; i++) {
+			fmapper.fileSumbit(uuid[i]);
+		}
 	}
 	
 	@Override

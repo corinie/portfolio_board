@@ -4,11 +4,31 @@ import java.io.File;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.MediaType;
 
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class UploadFileUtils {
+	
+private static Map<String, MediaType> mediaMap;
+	
+	static {
+		
+		mediaMap = new HashMap<String, MediaType>();
+		mediaMap.put("JPG", MediaType.IMAGE_JPEG);
+		mediaMap.put("GIF", MediaType.IMAGE_GIF);
+		mediaMap.put("PNG", MediaType.IMAGE_PNG);
+		
+	}
+	
+	public static MediaType getMediaType(String type) {
+		
+		return mediaMap.get(type.toUpperCase());
+	}
 
 	public static String getFolder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

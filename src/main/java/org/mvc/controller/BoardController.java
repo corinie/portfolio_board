@@ -1,5 +1,6 @@
 package org.mvc.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.mvc.domain.BoardVO;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.mysql.fabric.xmlrpc.base.Array;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -33,9 +36,9 @@ public class BoardController {
 	}
 	
 	@PostMapping("/register")
-	public String insertPost(BoardVO vo, RedirectAttributes rattr) {
+	public String insertPost(BoardVO vo, String[] uuid, RedirectAttributes rattr) {
 		log.info("post insert");
-		service.rootInsert(vo);
+		service.rootInsert(vo, uuid);
 		rattr.addFlashAttribute("message", "rsuccess");
 		
 		return "redirect:/board/list";

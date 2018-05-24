@@ -18,6 +18,7 @@
 							class="label label-danger">back</button></a> <a href="single.html"><img
 						src="images/2a.jpg" alt="" /></a>
 				</div>
+			
 				<div class="blog-left-grids">
 					<div class="blog-left-left">
 						<i class="fa fa-pencil" aria-hidden="true"></i>
@@ -34,8 +35,10 @@
 								<c:out value=" ${vo.regdate }"></c:out>
 							</p>
 						</div>
+						<div class="clearfix">
 						<div class="blog-left-right-bottom">
 							<p>${vo.content}</p>
+						</div>
 						</div>
 					</div>
 					<div align="right">
@@ -49,7 +52,9 @@
 						<button class="label label-default">REPLY</button></a>
 					</div>
 					<div class="clearfix"></div>
+					
 				</div>
+			
 				<!--VIEW END-->
 				
 			<!--comment REGISTER -->
@@ -88,6 +93,11 @@
 					</div>
 					<div class="clearfix"></div>
 					<!--comment OUTER END-->
+					
+					<!--Pagination-->
+					<div>
+					<ul class="pagination"></ul>
+					</div>
 
 					<div class="clearfix"></div>
 					<!--inner comment END-->
@@ -254,15 +264,13 @@
 					  +"<button class='label label-default upsend'>update</button>";
 
 			$("."+bodytarget).html(innercstr);
+			innercstr = "";
 		});
 	});
 	
 	$(".response").on("click", ".upsend", function (e){
 		var ucomment = $("#ucomment").val();
 		var ucno = $("#ucomment").attr("data-cno");
-		
-		console.log(ucomment);
-		console.log(ucno);
 		
 		$.ajax({
 			url : "/comment/"+ucno,
@@ -285,8 +293,15 @@
 		
 	});
 	
-	function getAllList() {
-		$.getJSON("/comment/" + bno + "/" + page, function(data) {
+	$(".response").on("click", ".pageNum", function (e) {
+		e.preventDefault();
+		var pageNum = $(e.target).attr("href");
+		
+		getAllList(pageNum);
+	});
+	
+	function getAllList(pageNum) {
+		$.getJSON("/comment/" + bno + "/" + pageNum, function(data) {
 			console.log(data.list);
 			$(data.list).each(function() {
 			 		innercstr = "<div class='media response-info'>"
@@ -331,7 +346,24 @@
 			});
 			$(".outer").html(cstr);
 			cstr = "";
+			
+			pagination(data.pm);
 		});
+	};
+	
+	function pagination(page) {
+		var pstr = "";
+		if(page.prev){
+			pstr += "<li><a href='"+(page.start-1)+"' class='pageNum'>이전</a>";
+		}
+		for(var i = page.start; i <= page.end; i++){
+			pstr += "<li><a href='"+i+"' class='pageNum'>"+i+"</a>";
+		}
+		if(page.next){
+			pstr += "<li><a href='"+(page.end+1)+"' class='pageNum'>다음</a>";
+		}
+		
+		$(".pagination").html(pstr);
 	};
 
 

@@ -55,14 +55,16 @@
 	<!--LIST -->
 	<select id="list" resultType="org.mvc.domain.CommentVO">
 		select * from 
-			(
-			select * from 
-				(
-				select rownum rn, rank() over(partition by gno order by depth asc, cno asc)rank, 
-				gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate
-				from tbl_comment where bno = #{bno} and deleteyn = 'n' or deleteyn = 'm' order by gno desc
-				) where rn <![CDATA[ <= ]]> #{cri.page} * 10
-			) where rn <![CDATA[ > ]]> (#{cri.page} - 1) * 10
+    		(
+    		select * from 
+        		(
+        		select rownum rn , ranking, gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate from 
+            		(
+            		select rank() over(partition by gno order by depth asc, cno asc) as ranking, gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate 
+            		from tbl_comment where bno = #{bno} and deleteyn = 'n' or deleteyn = 'm' order by gno desc
+           	 	<![CDATA[
+           	 	)) where rn <=  #{cri.page} * 10
+        	) where rn > (#{cri.page}-1) * 10]]>
 	</select>
 
 	<select id="total" resultType="int">

@@ -161,7 +161,7 @@ function paging() {
 		str += url+"page="+i+"'>"+i+"</a></li>";
 	}
 	if(${pm.next}){
-		str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+		str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>▷</span></a></li>";
 	}
 	pagination.html(str);
 }

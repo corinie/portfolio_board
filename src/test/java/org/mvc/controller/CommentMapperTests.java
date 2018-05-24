@@ -23,9 +23,9 @@ public class CommentMapperTests {
 	
 	@Test
 	public void testInsert() {
-		for(int i = 1; i < 5000; i++) {
+		for(int i = 1; i < 105; i++) {
 			CommentVO vo = new CommentVO();
-			vo.setBno(120352);
+			vo.setBno(120556);
 			vo.setComments("comment"+i);
 			vo.setCommenter("user"+i);
 			

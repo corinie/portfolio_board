@@ -76,13 +76,13 @@ public class BoardController {
 		log.info("get update");
 		
 		model.addAttribute("vo", service.read(bno));
-		
+		model.addAttribute("fileList", fservice.fileList(bno));
 	}
 	
 	@PostMapping("/update")
-	public String updatePost(BoardVO vo, String type, String keyword, int page, RedirectAttributes rattr) {
+	public String updatePost(BoardVO vo, String type, String keyword, int page, String[] uuid, RedirectAttributes rattr) {
 		log.info("post update");
-		service.update(vo);	
+		service.update(vo, uuid);	
 		rattr.addFlashAttribute("message", "usuccess");
 		if(type == null) {
 			return "redirect:/board/list?page="+page;

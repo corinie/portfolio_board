@@ -13,6 +13,13 @@ values(seq_file.nextval, #{fname}, #{uuid}, #{image}, #{datefolder})
 update tbl_file set bno = seq_board.currval where uuid = #{uuid} 
 </update>
 
+<update id="fileUpdateSumbit">
+update tbl_file set bno = #{bno} where uuid = #{uuid} 
+</update>
+
+<update id = "updateNull">
+update tbl_file set bno = null where bno = #{bno}
+</update>
 
 <select id="fileList" resultType="org.mvc.domain.FileVO">
 

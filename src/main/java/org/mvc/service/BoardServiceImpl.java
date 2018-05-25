@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Service
+@Log4j
 public class BoardServiceImpl implements BoardService {
 	
 	@Setter(onMethod_= {@Autowired})
@@ -47,11 +49,19 @@ public class BoardServiceImpl implements BoardService {
 	public int delete(int bno, int pbno) {
 		mapper.boardDeleteCount(bno);
 		mapper.delete(bno);
+		fmapper.updateNull(bno);
 		return mapper.checkDeleteYN(bno);
 	}
 
 	@Override
-	public int update(BoardVO vo) {
+	@Transactional
+	public int update(BoardVO vo, String[] uuid) {
+		fmapper.updateNull(vo.getBno());
+		if(uuid != null) {
+			for(int i=0; i<uuid.length; i++) {
+				fmapper.fileUpdateSumbit(uuid[i], vo.getBno());
+			}
+		}
 		return mapper.update(vo);
 	}
 

@@ -11,7 +11,7 @@ public interface BoardService {
 	public int branchInsert(BoardVO vo, int bno);
 	public BoardVO read(int bno);
 	public int delete(int bno, int pbno);
-	public int update(BoardVO vo);
+	public int update(BoardVO vo, String[] uuid);
 	
 	public List<BoardVO> list(Criteria cri);
 	public int total();

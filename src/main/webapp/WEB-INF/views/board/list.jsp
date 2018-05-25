@@ -22,7 +22,6 @@
 							<div class="blog-left-left">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</div>
-
 							<div class="blog-left-right">
 								<div class="blog-left-right-top">
 								<c:if test="${item.deleteyn eq 'n' }">
@@ -46,7 +45,7 @@
 									</p>
 								</div>
 								<div class="blog-left-right-bottom">
-									<p>
+									<p>	
 										<c:out value="${item.bno}"></c:out>
 									</p>
 								</div>
@@ -55,7 +54,6 @@
 								</div>
 								<div class="clearfix"></div>
 							</div>
-
 						</div>
 					</div>
 				</c:forEach>
@@ -63,7 +61,8 @@
 				<!--SEARCH VAR-->
 				<div>
 					<form action="/board/list">
-						<select name="type">
+						<select name="type" id="searchType">
+							<option>----</option>
 							<option value="t">title</option>
 							<option value="c">content</option>
 							<option value="w">writer</option>
@@ -71,7 +70,7 @@
 							<option value="tw">title+writer</option>
 							<option value="cw">content+writer</option>
 							<option value="tcw">title+content+writer</option>
-						</select> <input type="text" name="keyword">
+						</select> <input type="text" name="keyword" id="searchKeyword">
 						<button>search</button>
 					</form>
 
@@ -129,12 +128,9 @@ var urlbuilder = "";
 var display = "";
 
 
-
-
-
 /* FUNCTION */
 $(document).ready(function () {
-	
+
 	if(type) {
 		bno = $(".view").data("bno");
 		param = "/board/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
@@ -236,6 +232,13 @@ function makeURI(bno){
 	
 	return urlString;	
 };
+
+if(keyword!=""){
+$("#searchType").val(type);
+$("#searchKeyword").val(keyword);
+console.log($("#searchType").val(type));
+}
+
 </script>
 
 

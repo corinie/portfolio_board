@@ -3346,4 +3346,37 @@ i.fa.fa-pencil{
 }
 
 
+
+
 /*-- //response --*/
+
+
+
+.file-area {
+	border: 4px dotted gray;
+	min-height: 100px;
+	margin-bottom: 10px;
+	width: 100%;
+	
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+}
+
+.uploadList{
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.uploadList imgcontent{
+	display: inline-table;
+}
+
+#upload img {
+	padding-left: 30px;
+	padding-right: 30px;
+	cursor: pointer;
+}

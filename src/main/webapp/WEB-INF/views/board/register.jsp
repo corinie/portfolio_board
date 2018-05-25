@@ -1,40 +1,9 @@
 <%@ include file="../includes/header.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<style>
-.file-area {
-	border: 4px dotted gray;
-	min-height: 100px;
-	margin-bottom: 10px;
-	width: 100%;
-	
-	justify-content: center;
-	text-align: center;
-	align-items: center;
-}
-
-.uploadList{
-	display: flex;
-	justify-content: center;
-	text-align: center;
-	align-items: center;
-	flex-wrap: wrap;
-}
-
-.uploadList div{
-	display: inline-table;
-}
-ul {
-	list-style: none;
-}
 
 
-#upload img {
-	padding-left: 30px;
-	padding-right: 30px;
-	cursor: pointer;
-}
-</style>
+
 
 <div class="about-heading">
 	<h2>
@@ -66,11 +35,6 @@ ul {
 								<div class="uploadList"></div>
 							</div>
 						</div>
-						
-						
-
-
-
 						<button class="btn1">Submit</button>
 					</form>
 				</div>

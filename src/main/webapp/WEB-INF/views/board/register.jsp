@@ -167,8 +167,9 @@ ul {
 								upstr += "<div><a href='/download?fileName="
 										+ fileCallPath
 										+ "'>"
-										+ "<img src='/resources/images/attach.jpg'>"
-										+ "</a><a href='/download?fileName='"+fileCallPath+"'>"+ obj.fname
+										+ "<img src='/resources/images/attach.png'>"
+										+ "</a><a href='/download?fileName='"+fileCallPath+"'>"
+										+ "<br>"+obj.fname
 										+ "</a>"
 										+ "<span data-file=\'"+fileCallPath+"\' data-type='file' data-uuid="+obj.uuid+"> x </span>"
 										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"

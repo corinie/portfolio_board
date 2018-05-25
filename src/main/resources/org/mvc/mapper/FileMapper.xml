@@ -13,4 +13,11 @@ values(seq_file.nextval, #{fname}, #{uuid}, #{image}, #{datefolder})
 update tbl_file set bno = seq_board.currval where uuid = #{uuid} 
 </update>
 
+
+<select id="fileList" resultType="org.mvc.domain.FileVO">
+
+select * from tbl_file where bno = #{bno} and deleteyn = 'n'
+
+</select>
+
 </mapper>

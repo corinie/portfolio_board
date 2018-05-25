@@ -1,10 +1,10 @@
 package org.mvc.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.mvc.domain.BoardVO;
 import org.mvc.service.BoardService;
+import org.mvc.service.FileService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -27,6 +25,8 @@ public class BoardController {
 	
 	@Setter(onMethod_={@Autowired})	
 	private BoardService service;
+	@Setter(onMethod_={@Autowired})	
+	private FileService fservice;
 	
 	//CRUD
 	@GetMapping("/register")
@@ -66,6 +66,7 @@ public class BoardController {
 		log.info("get view");
 		
 		model.addAttribute("vo", service.read(bno));
+		model.addAttribute("fileList", fservice.fileList(bno));
 		model.addAttribute("cri", cri);
 	}
 	
@@ -75,6 +76,7 @@ public class BoardController {
 		log.info("get update");
 		
 		model.addAttribute("vo", service.read(bno));
+		
 	}
 	
 	@PostMapping("/update")

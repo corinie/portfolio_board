@@ -1,5 +1,7 @@
 package org.mvc.service;
 
+import java.util.List;
+
 import org.mvc.domain.FileVO;
 import org.mvc.mapper.FileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +19,13 @@ public class FileServiceImpl implements FileService {
 	public void fileInsert(FileVO vo) {
 		mapper.fileInsert(vo);
 	}
+
+	@Override
+	public List<FileVO> fileList(int bno) {
+		
+		return mapper.fileList(bno);
+	}
+	
+	
 
 }

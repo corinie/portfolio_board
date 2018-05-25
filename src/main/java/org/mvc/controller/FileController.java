@@ -102,16 +102,16 @@ public class FileController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		String resourceName = resource.getFilename();
-		
 		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
 		
 		HttpHeaders headers = new HttpHeaders();
+		
 		try {
 			boolean checkIE = (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1);
 			String downloadName = null;
 			
 			if(checkIE) {
-				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8").replaceAll("\\+", " ");
+				downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8").replaceAll("\\+", " ");				
 			}else {
 				downloadName = new String(resourceOriginalName.getBytes("UTF-8"), "ISO-8859-1");
 			}
@@ -120,7 +120,7 @@ public class FileController {
 			e.printStackTrace();
 		}
 		
-		return new ResponseEntity<>(resource, HttpStatus.OK);
+		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
 	
 	

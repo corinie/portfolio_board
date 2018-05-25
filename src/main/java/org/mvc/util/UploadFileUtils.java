@@ -35,7 +35,7 @@ private static Map<String, MediaType> mediaMap;
 		Date date = new Date();
 		String str = sdf.format(date);
 		
-		return str.replace("-", File.separator);
+		return str.replace("-", "/");
 	}
 	
 	public static boolean checkImageType(File file) {

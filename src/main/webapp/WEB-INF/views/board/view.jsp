@@ -56,6 +56,22 @@
 				</div>
 			
 				<!--VIEW END-->
+				<br><br>
+				           
+				<div class="fileList">
+				<c:forEach items="${fileList }" var="file">
+				<c:if test="${file.image eq 'n' }">
+				<img src='/resources/images/attach.png'><a href='/download?fileName=${file.datefolder }/${file.uuid}_${file.fname}' download>${file.fname }</a>&nbsp;
+				</c:if>
+				<c:if test="${file.image eq 'y' }">
+				<a href='/display?fileName=${file.datefolder }/${file.uuid}_${file.fname}' target="_blank">
+				<img src='/display?fileName=${file.datefolder }/s_${file.uuid}_${file.fname}'></a>
+				<a href='/display?fileName=${file.datefolder }/${file.uuid}_${file.fname}' download>${file.fname }</a>&nbsp;
+				</c:if>
+				</c:forEach>
+				</div>
+				
+				<br><br>
 				
 			<!--comment REGISTER -->
 			<div class="opinion">

@@ -6,8 +6,6 @@ import org.mvc.domain.BoardVO;
 import org.mvc.util.Criteria;
 
 public interface BoardMapper {
-
-	
 	public void rootInsert(BoardVO vo);	
 	public int branchInsert(BoardVO vo);	
 	public BoardVO read(int bno);
@@ -23,7 +21,6 @@ public interface BoardMapper {
 	
 	public List<BoardVO> searchList(Criteria cri);
 	public int searchTotal(Criteria cri);
-	
 	
 	public List<BoardVO> replyList(int bno);
 	

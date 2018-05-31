@@ -4,6 +4,8 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
+
+
 body a {
   transition: 0.5s all;
   -webkit-transition: 0.5s all;
@@ -3379,4 +3381,16 @@ i.fa.fa-pencil{
 	padding-left: 30px;
 	padding-right: 30px;
 	cursor: pointer;
+}
+
+.imagebox{
+	width : 100%;
+	position : absolute;
+	overflow : auto;
+	background-color: rgba(57, 57, 57, 0.5);
+	justify-content: center;
+	top: 0;
+	left: 0;
+	align-items: center;
+	display : flex;		
 }

@@ -2,7 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
+<!--imagebox-->
+<div class="imagebox" >
+</div>
+<!--imagebox end-->
 
 
 <div class="about-heading">
@@ -15,7 +18,8 @@
 <div class="contact">
 	<div class="container">
 		<div class="agile-contact-form">
-
+				
+				
 			
 				<div class="contact-form-top">
 					<h3>
@@ -53,10 +57,27 @@
 	crossorigin="anonymous"></script>
 
 <script>
+	var displayHeight = document.documentElement.clientHeight;
+	var imagebox = $(".imagebox");
+	
+	imagebox.attr("style", "height:"+displayHeight+"px;");
+	
+	$(document).ready(function () {
+		imagebox.hide();
+	});
+	
+	imagebox.on("click", function(e){
+		imagebox.hide();
+	});
+</script>
+
+<script>
 	var files = "";
 	var formData = "";
 	var str = "";
 	var upstr = "";
+	var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+	var maxSize = 5242880; //5MB	
 
 	/* uploadFile Delete */
 	$(".uploadList").on("click", "span", function(e){
@@ -95,11 +116,22 @@
 		files = e.target.files;
 		uploadAjax(files);
 	});
+	
+	$(".uploadList").on("click", ".file_image", function (e) {
+		
+		imagebox.show();
+		
+		imagebox.html("<img src='"+$(e.target).attr("data-fileLink")+"'>");
+		
+	});
 
 	function uploadAjax(files) {
 		formData = new FormData();
-
+		// file upload size, extension option
 		for (var i = 0; i < files.length; i++) {
+			if(!checkExtension(files[i].name, files[i].size)){
+				return false;
+			}
 			formData.append("uploadFile", files[i]);
 		}
 
@@ -132,9 +164,8 @@
 										+ fileCallPath
 										+ "'>"
 										+ "<img src='/resources/images/attach.png'>"
-										+ "</a><a href='/download?fileName='"+fileCallPath+"'>"
-										+ "<br>"+obj.fname
 										+ "</a>"
+										+ "<br>"+obj.fname
 										+ "<span data-file=\'"+fileCallPath+"\' data-type='file' data-uuid="+obj.uuid+"> x </span>"
 										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
 										+ "</div>";
@@ -147,14 +178,12 @@
 										+ obj.uuid + "_" + obj.fname;
 								originPath = fileCallPath.replace(new RegExp(
 										/\\/g), "/");
-								upstr += "<div><a href='/display?fileName="
-										+ originalFile
-										+ "' target='_blank'>"
-										+ "<img src='/display?fileName="
+								upstr += "<div>"
+										+ "<img class='file_image' src='/display?fileName="
 										+ fileCallPath
-										+ "'>"
+										+ "' data-fileLink='/display?fileName="
+										+ originalFile+"'>"
 										+ "<br>"+obj.fname
-										+ "</a>"
 										+ "<span data-file=\'"+fileCallPath+"\' data-type='image' data-uuid="+obj.uuid+"> x </span>"
 										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
 										+ "</div>";
@@ -163,7 +192,21 @@
 		$(".uploadList").append(upstr);
 	}
 	
+	function checkExtension(fileName, fileSize){
+		
+		if(fileSize >= maxSize){
+			alert("파일 사이즈 초과");
+			return false;
+		}
+		
+		if(regex.test(fileName)){
+			alert("해당 종류의 파일은 업로드할 수 없습니다.");
+			return false;
+		}
+		return true;
+	}	
 	
+
 </script>
 
 <%@ include file="../includes/footer.jsp"%>

@@ -2,11 +2,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<!--imagebox-->
+<div class="imagebox" >
+</div>
+<!--imagebox end-->
+
 <div class="about-heading">
 	<h2>
 		Single <span>page</span>
 	</h2>
 </div>
+
 <!-- //about-heading -->
 <!-- blog -->
 <div class="blog">
@@ -64,8 +70,7 @@
 				<img src='/resources/images/attach.png'><a href='/download?fileName=${file.datefolder }/${file.uuid}_${file.fname}' download>${file.fname }</a>&nbsp;
 				</c:if>
 				<c:if test="${file.image eq 'y' }">
-				<a href='/display?fileName=${file.datefolder }/${file.uuid}_${file.fname}' target="_blank">
-				<img src='/display?fileName=${file.datefolder }/s_${file.uuid}_${file.fname}'></a>
+				<img src='/display?fileName=${file.datefolder }/s_${file.uuid}_${file.fname}' class='file_image' data-fileLink='/display?fileName=${file.datefolder }/${file.uuid}_${file.fname}'></a>
 				<a href='/display?fileName=${file.datefolder }/${file.uuid}_${file.fname}' download>${file.fname }</a>&nbsp;
 				</c:if>
 				</c:forEach>
@@ -130,7 +135,20 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
-
+<script>
+	var displayHeight = document.documentElement.clientHeight;
+	var imagebox = $(".imagebox");
+	
+	imagebox.attr("style", "height:"+displayHeight+"px;");
+	
+	$(document).ready(function () {
+		imagebox.hide();
+	});
+	
+	imagebox.on("click", function(e){
+		imagebox.hide();
+	});
+</script>
 
 <!--REPLY SCRIPT-->
 
@@ -152,6 +170,15 @@
 	
 	$(document).ready(function() {
 		getAllList(page);
+		
+	});
+	
+	/*  */
+	$(".fileList").on("click", ".file_image", function (e) {
+		
+		imagebox.show();
+		
+		imagebox.html("<img src='"+$(e.target).attr("data-fileLink")+"'>");
 		
 	});
 	

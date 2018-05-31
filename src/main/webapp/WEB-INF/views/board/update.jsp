@@ -144,9 +144,8 @@ function showUploadedFile(uploadResultArr) {
 									+ fileCallPath
 									+ "'>"
 									+ "<img src='/resources/images/attach.png'>"
-									+ "</a><a href='/download?fileName='"+fileCallPath+"'>"
-									+ "<br>"+obj.fname
 									+ "</a>"
+									+ "<br>"+obj.fname
 									+ "<span data-file=\'"+fileCallPath+"\' data-type='file' data-uuid="+obj.uuid+"> x </span>"
 									+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
 									+ "</div>";

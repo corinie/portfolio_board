@@ -28,7 +28,6 @@ public class FileMapperTests {
 		vo.setImage("n");
 		
 		mapper.fileInsert(vo);
-		
 	}
 
 }

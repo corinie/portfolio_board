@@ -22,7 +22,6 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public List<FileVO> fileList(int bno) {
-		
 		return mapper.fileList(bno);
 	}
 	

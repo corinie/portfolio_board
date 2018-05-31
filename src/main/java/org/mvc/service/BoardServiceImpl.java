@@ -34,9 +34,12 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional
-	public int branchInsert(BoardVO vo, int bno) {
+	public void branchInsert(BoardVO vo, int bno, String[] uuid) {
 		mapper.boardInsertCount(bno);
-		return mapper.branchInsert(vo);
+		mapper.branchInsert(vo);
+		for(int i=0; i<uuid.length; i++) {
+			fmapper.fileSumbit(uuid[i]);
+		}
 	}
 
 	@Override

@@ -52,10 +52,10 @@ public class BoardController {
 	}
 	
 	@PostMapping("/replyregister")
-	public String branchInsertPost(BoardVO vo, RedirectAttributes rattr) {
+	public String branchInsertPost(BoardVO vo, RedirectAttributes rattr, String[] uuid) {
 		log.info("post branchinsert");
 		
-		service.branchInsert(vo, vo.getBno());
+		service.branchInsert(vo, vo.getBno(), uuid);
 		rattr.addFlashAttribute("message", "brsuccess");
 		
 		return "redirect:/board/list";

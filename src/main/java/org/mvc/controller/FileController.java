@@ -146,17 +146,13 @@ public class FileController {
 	public ResponseEntity<String> deleteFile(String fileName, String type) {
 		File file;
 		
-		log.info(fileName);
-		log.info(type);
-		
 		try {
 			file = new File("C:\\zzz\\upload\\"+URLDecoder.decode(fileName,"UTF-8"));
-			log.info("file+++++++++++++++++++++++" + file);
 			file.delete();
-			log.info("delete dddddddddddddddddddddd");
+			
 			if(type.equals("image")) {
+				
 				String largeFileName = file.getAbsolutePath().replace("s_", "");
-				log.info("+++++++++++++++++++++++++++++++++++++++++" + largeFileName);
 				file = new File(largeFileName);
 				file.delete();
 			}
@@ -164,7 +160,6 @@ public class FileController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
 		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 }

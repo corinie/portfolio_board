@@ -15,10 +15,13 @@ var innercstr="";
 var bodytarget="";
 var displayHeight = document.documentElement.clientHeight;
 var imagebox = $(".imagebox");
+var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+var maxSize = 5242880; //5MB
+var uuid = "";
 	
 	$(document).ready(function() {
+		console.log("ㅋㅋㅋ");
 		getAllList(page);
-		
 	});
 	
 	imagebox.attr("style", "height:"+displayHeight+"px;");
@@ -44,7 +47,7 @@ var imagebox = $(".imagebox");
 	$("#sendBtn").on("click", function (e) {
 		comments = $("#comments").val();
 		commenter = $("#commenter").val();
-		
+	
 		$.ajax({
 			url : "/comment/root",
 			type : "POST",
@@ -55,8 +58,9 @@ var imagebox = $(".imagebox");
 			data : JSON.stringify({
 				bno : bno,
 				comments : comments,
-				commenter : commenter
-			}),
+				commenter : commenter,
+				uuid : uuid
+			}),  
 			success : function (result) {
 				if(result == 'rsuccess'){
 					alert("댓글 등록 성공");
@@ -65,6 +69,45 @@ var imagebox = $(".imagebox");
 			}
 		});
 	});
+
+	
+	
+	/* Input File Event */
+	$("#fileInput").change(function(e) {
+
+		/* var files = e.originalEvent.dataTransfer.files; */
+		
+		files = e.target.files;
+		uploadAjax(files);
+	});
+
+
+	function uploadAjax(files) {
+		formData = new FormData();
+		// file upload size, extension option
+		for (var i = 0; i < files.length; i++) {
+			if(!checkExtension(files[i].name, files[i].size)){
+				return false;
+			}
+			formData.append("uploadFile", files[i]);
+		}
+
+		$.ajax({
+			url : "/comment/uploadAjax",
+			type : "POST",
+			data : formData,
+			dataType : 'json',
+			processData : false,
+			contentType : false,
+			success : function(result) {
+
+				showUploadedFile(result);
+
+			}
+		});
+	}
+
+	
 	
 	/*re-comment view*/
 	$(".response").on("click", ".resendopen", function (e) {
@@ -266,4 +309,43 @@ var imagebox = $(".imagebox");
 		
 		$(".pagination").html(pstr);
 	};
+	
+	function checkExtension(fileName, fileSize){
+		
+		if(fileSize >= maxSize){
+			alert("파일 사이즈 초과");
+			return false;
+		}
+		
+		if(regex.test(fileName)){
+			alert("해당 종류의 파일은 업로드할 수 없습니다.");
+			return false;
+		}
+		return true;
+	}
+	function showUploadedFile(uploadResultArr) {
+		upstr = "";
+		$(uploadResultArr)
+				.each(
+						function(i, obj) {
+							
+								var fileCallPath = encodeURIComponent(obj.datefolder
+										+ "/s_" + obj.uuid + "_" + obj.fname);
+								var originalFile = encodeURIComponent(obj.datefolder
+										+ "/" + obj.uuid + "_" + obj.fname);
+								upstr += "<div>"
+										+ "<img class='file_image' src='/display?fileName="
+										+ fileCallPath
+										+ "' data-fileLink='/display?fileName="
+										+ originalFile+"'>"
+										+ "<br>"+obj.fname
+										+ "<span data-file=\'"+fileCallPath+"\' data-type='image' data-uuid="+obj.uuid+"> x </span>"
+										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
+										+ "</div>";
+							
+								uuid = obj.uuid;
+								
+						});
+		$(".uploadList").append(upstr);
+	}
 

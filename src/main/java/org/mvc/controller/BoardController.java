@@ -66,7 +66,7 @@ public class BoardController {
 		log.info("get view");
 		
 		model.addAttribute("vo", service.read(bno));
-		model.addAttribute("fileList", fservice.fileList(bno));
+		model.addAttribute("fileList", fservice.listFile(bno));
 		model.addAttribute("cri", cri);
 	}
 	
@@ -76,7 +76,7 @@ public class BoardController {
 		log.info("get update");
 		
 		model.addAttribute("vo", service.read(bno));
-		model.addAttribute("fileList", fservice.fileList(bno));
+		model.addAttribute("fileList", fservice.listFile(bno));
 	}
 	
 	@PostMapping("/update")

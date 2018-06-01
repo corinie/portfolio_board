@@ -1,9 +1,9 @@
 package org.mvc.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.mvc.domain.CommentFileVO;
 import org.mvc.domain.CommentVO;
 import org.mvc.service.CommentService;
 import org.mvc.util.Criteria;
@@ -33,6 +33,9 @@ public class CommentController {
 		
 	@PostMapping("/root")
 	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
+		log.info(vo.getUuid());
+		log.info("¿Ô´Ù");
+	
 		ResponseEntity<String> entity = null;
 		try {
 			service.rootInsert(vo);

@@ -2,8 +2,8 @@ package org.mvc.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mvc.domain.FileVO;
-import org.mvc.mapper.FileMapper;
+import org.mvc.domain.CommentFileVO;
+import org.mvc.mapper.CommentFileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,20 +14,36 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
-public class FileMapperTests {
+public class CommentFileMapperTests {
 	
 	@Setter(onMethod_= {@Autowired})
-	private FileMapper mapper;
+	CommentFileMapper mapper;
 	
 	@Test
 	public void testInsert() {
 		
-		FileVO vo = new FileVO();
-		vo.setFname("sadfssdfadf");
-		vo.setUuid("asdfsasdfdfdsd");
-		vo.setImage("n");
+		CommentFileVO vo = new CommentFileVO();
+		vo.setFname("testfname");
+		vo.setDatefolder("testfolder");
+		vo.setUuid("sdfasdfsfsdafsfesd");
 		
 		mapper.insertFile(vo);
+		
+	}
+	
+	@Test
+	public void testSubmitCno() {
+		
+		CommentFileVO vo = new CommentFileVO();
+		vo.setFname("testfname");
+		vo.setDatefolder("testfolder");
+		vo.setUuid("sdfasdfsfsdafsfesd");
+		
+		String uuid = "sdfasdfsfsdafsfesd";
+		
+		mapper.insertFile(vo);
+		mapper.submitFile(uuid);
+		
 	}
 
 }

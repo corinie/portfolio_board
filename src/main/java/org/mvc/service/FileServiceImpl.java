@@ -16,13 +16,13 @@ public class FileServiceImpl implements FileService {
 	FileMapper mapper;
 	
 	@Override
-	public void fileInsert(FileVO vo) {
-		mapper.fileInsert(vo);
+	public void insertFile(FileVO vo) {
+		mapper.insertFile(vo);
 	}
 
 	@Override
-	public List<FileVO> fileList(int bno) {
-		return mapper.fileList(bno);
+	public List<FileVO> listFile(int bno) {
+		return mapper.listFile(bno);
 	}
 	
 	

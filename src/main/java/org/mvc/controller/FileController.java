@@ -68,8 +68,6 @@ public class FileController {
 				File saveFile = new File(uploadPath, uploadFileName);
 				multipartFile.transferTo(saveFile);
 
-				log.info(saveFile.toString());
-
 				fileVO.setAddress(saveFile.toString());
 				fileVO.setUuid(uuid.toString());
 				fileVO.setDatefolder(uploadFolderPath);
@@ -81,17 +79,14 @@ public class FileController {
 				}else {
 					fileVO.setImage("n");
 				}
-				service.fileInsert(fileVO);
+				service.insertFile(fileVO);
 				list.add(fileVO);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
-
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-
 	
 	@GetMapping(value="/download", produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	@ResponseBody

@@ -85,7 +85,16 @@
 					<input type="text" name="commenter" placeholder="Name" required="" id="commenter">
 					<textarea name="comment" placeholder="Message" required="" id="comments"></textarea>
 					</form>
+						<br>
+						<div class="file-area">
+							<input id="fileInput" type="file">
+							<div id="upload">
+								<div class="uploadList"></div>
+							</div>
+						</div>
 					<h4 align="right"><button class="label label-default" id="sendBtn">SEND</button></h4>
+				
+					
 			</div>
 			<!--comment REGISTER END-->
 			

@@ -6,7 +6,7 @@ import org.mvc.domain.FileVO;
 
 public interface FileService {
 	
-	public void fileInsert(FileVO vo);
-	public List<FileVO> fileList(int bno);
+	public void insertFile(FileVO vo);
+	public List<FileVO> listFile(int bno);
 
 }

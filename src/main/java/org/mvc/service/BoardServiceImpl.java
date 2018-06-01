@@ -28,7 +28,7 @@ public class BoardServiceImpl implements BoardService {
 	public void rootInsert(BoardVO vo, String[] uuid) {
 		mapper.rootInsert(vo);
 		for(int i=0; i<uuid.length; i++) {
-			fmapper.fileSumbit(uuid[i]);
+			fmapper.submitFile(uuid[i]);
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
 		mapper.boardInsertCount(bno);
 		mapper.branchInsert(vo);
 		for(int i=0; i<uuid.length; i++) {
-			fmapper.fileSumbit(uuid[i]);
+			fmapper.submitFile(uuid[i]);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class BoardServiceImpl implements BoardService {
 		fmapper.updateNull(vo.getBno());
 		if(uuid != null) {
 			for(int i=0; i<uuid.length; i++) {
-				fmapper.fileUpdateSumbit(uuid[i], vo.getBno());
+				fmapper.updateSumbitFile(uuid[i], vo.getBno());
 			}
 		}
 		return mapper.update(vo);

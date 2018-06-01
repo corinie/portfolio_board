@@ -50,7 +50,7 @@ $(".file-area").on("drop", function(e) {
 $("#fileInput").change(function(e) {
 
 	/* var files = e.originalEvent.dataTransfer.files; */
-
+	
 	files = e.target.files;
 	uploadAjax(files);
 });

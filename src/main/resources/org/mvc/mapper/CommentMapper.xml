@@ -52,19 +52,46 @@
 				)
 	</update>
 	
+	<resultMap type="org.mvc.domain.CommentVO" id="commentMap">
+	<id property="cno" column="cno"/>
+	<result property="bno" column="bno"/>
+	<result property="gno" column="gno"/>
+	<result property="comments" column="comments"/>
+	<result property="commenter" column="commenter"/>
+	<result property="depth" column="depth" />
+	<result property="deleteyn" column="deleteyn"/>
+	<result property="regdate" column="regdate"/>
+	<result property="updatedate" column="updatedate"  />
+	<collection property="fileList" resultMap="fileMap"></collection>
+	</resultMap>
+	
+	<resultMap type="org.mvc.domain.CommentFileVO" id="fileMap">
+	<id property="cfno" column="fno"/>
+	<result property="cno" column="cno"/>
+	<result property="uuid" column="uuid"/>
+	<result property="fname" column="fname"/>
+	<result property="datefolder" column="datefolder"/>
+	<result property="regdate" column="regdate"/>
+	<result property="updatedate" column="updatedate" />
+	</resultMap>
+	
 	<!--LIST -->
-	<select id="list" resultType="org.mvc.domain.CommentVO">
-		select * from 
+	<select id="list" resultMap="commentMap">
+select * from 
+    (
+    select * from 
     		(
     		select * from 
         		(
         		select rownum rn , ranking, gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate from 
             		(
-            		select rank() over(partition by gno order by depth asc, cno asc) as ranking, gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate 
-            		from tbl_comment where bno = #{bno} and deleteyn = 'n' or deleteyn = 'm' order by gno desc
-           	 	<![CDATA[
-           	 	)) where rn <=  #{cri.page} * 10
-        	) where rn > (#{cri.page}-1) * 10]]>
+                    select * from (
+            		select row_number() over(partition by gno order by depth asc, tbl_comment.cno asc) as ranking, gno, tbl_comment.cno, bno, deleteyn, COMMENTER, COMMENTS, tbl_comment.regdate, tbl_comment.updatedate 
+                    from tbl_comment where bno = #{bno} and deleteyn = 'n' or deleteyn = 'm' 
+                    ) order by gno desc, cno asc
+           	 	)) c left outer join tbl_comment_file f  on c.cno = f.cno order by c.gno desc, cfno asc
+        	) <![CDATA[ where rn <=  #{cri.page} * 10
+    ) where rn > (#{cri.page}-1) * 10 order by rn asc]]>
 	</select>
 
 	<select id="total" resultType="int">

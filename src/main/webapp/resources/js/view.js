@@ -17,10 +17,9 @@ var displayHeight = document.documentElement.clientHeight;
 var imagebox = $(".imagebox");
 var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 var maxSize = 5242880; //5MB
-var uuid = "";
+var uuid = new Array();
 	
 	$(document).ready(function() {
-		console.log("ㅋㅋㅋ");
 		getAllList(page);
 	});
 	
@@ -45,9 +44,12 @@ var uuid = "";
 	
 	/*REPLY CREATE*/
 	$("#sendBtn").on("click", function (e) {
+		
+		
 		comments = $("#comments").val();
 		commenter = $("#commenter").val();
 	
+		$.ajaxSettings.traditional = true;
 		$.ajax({
 			url : "/comment/root",
 			type : "POST",
@@ -100,9 +102,7 @@ var uuid = "";
 			processData : false,
 			contentType : false,
 			success : function(result) {
-
 				showUploadedFile(result);
-
 			}
 		});
 	}
@@ -255,9 +255,18 @@ var uuid = "";
 				 		  	  +"<div class='media-body response-text-right'>";
 				 
 				 	if(this.deleteyn == 'm'){
-				 		innercstr += "<p>이 댓글은 삭제된 댓글입니다. </p>"
+				 		innercstr += "<p>이 댓글은 삭제된 댓글입니다. </p>";
 				 	}else{
-				 		innercstr += "<div class="+this.cno+"><p>"+this.comments+"</p></div>"
+				 		innercstr += "<div class="+this.cno+"><p>"+this.comments+"</p></div>";
+				 		console.log("LENGTH"+this.fileList.length);
+				 		console.log("LIST"+this.fileList);
+				 		if(this.fileList[0].fname != null){
+					 		for(var i=0; i<this.fileList.length; i++){
+					 			var fileUrl = encodeURIComponent(this.fileList[i].datefolder
+										+ "/s_" + this.fileList[i].uuid + "_" + this.fileList[i].fname);
+					 			innercstr += "<img src='/display?fileName="+fileUrl+"'>";
+					 		}
+				 		}
 				 	}
 				 	innercstr +="<ul><li>"+this.regdate+"</li>";
 				 	
@@ -333,6 +342,7 @@ var uuid = "";
 										+ "/s_" + obj.uuid + "_" + obj.fname);
 								var originalFile = encodeURIComponent(obj.datefolder
 										+ "/" + obj.uuid + "_" + obj.fname);
+								
 								upstr += "<div>"
 										+ "<img class='file_image' src='/display?fileName="
 										+ fileCallPath
@@ -341,11 +351,10 @@ var uuid = "";
 										+ "<br>"+obj.fname
 										+ "<span data-file=\'"+fileCallPath+"\' data-type='image' data-uuid="+obj.uuid+"> x </span>"
 										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
-										+ "</div>";
-							
-								uuid = obj.uuid;
-								
+										+ "</div>";							
+								uuid.push(obj.uuid);
 						});
 		$(".uploadList").append(upstr);
+		
 	}
 

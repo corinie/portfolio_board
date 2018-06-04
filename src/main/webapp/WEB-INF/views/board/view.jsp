@@ -87,7 +87,7 @@
 					</form>
 						<br>
 						<div class="file-area">
-							<input id="fileInput" type="file">
+							<input id="fileInput" type="file" multiple="multiple">
 							<div id="upload">
 								<div class="uploadList"></div>
 							</div>

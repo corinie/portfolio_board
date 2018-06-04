@@ -33,9 +33,6 @@ public class CommentController {
 		
 	@PostMapping("/root")
 	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
-		log.info(vo.getUuid());
-		log.info("¿Ô´Ù");
-	
 		ResponseEntity<String> entity = null;
 		try {
 			service.rootInsert(vo);

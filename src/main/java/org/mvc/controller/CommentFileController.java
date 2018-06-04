@@ -39,20 +39,21 @@ public class CommentFileController {
 
 	@PostMapping("/uploadAjax")
 	@ResponseBody
-	public ResponseEntity<CommentFileVO> uploadAjaxPost(MultipartFile uploadFile) {
+	public ResponseEntity<List<CommentFileVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
 
-		List<FileVO> list = new ArrayList<>();
+		List<CommentFileVO> list = new ArrayList<>();
 		String uploadFolder = "C:\\zzz\\upload";
 		String uploadFolderPath = UploadFileUtils.getFolder();
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 
-		// File.exists 지정한 파일이 있는지 확인
+		// File.exists check
 		if (uploadPath.exists() == false) {
 			uploadPath.mkdirs();
 		} // make date folder
-
+		
+		for (MultipartFile multipartFile : uploadFile) {
 		CommentFileVO fileVO = new CommentFileVO();
-		String uploadFileName = uploadFile.getOriginalFilename();
+		String uploadFileName = multipartFile.getOriginalFilename();
 
 		uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
 		fileVO.setFname(uploadFileName);
@@ -62,22 +63,24 @@ public class CommentFileController {
 
 		try {
 			File saveFile = new File(uploadPath, uploadFileName);
-			uploadFile.transferTo(saveFile);
+			multipartFile.transferTo(saveFile);
 
 			fileVO.setUuid(uuid.toString());
 			fileVO.setDatefolder(uploadFolderPath);
 			
 			FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
-			Thumbnailator.createThumbnail(uploadFile.getInputStream(), thumbnail, 100, 100);
+			Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 200, 200);
 			thumbnail.close();
 		
 			service.insertFile(fileVO);
+			list.add(fileVO);
 		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		}
 
-		return new ResponseEntity<CommentFileVO>(fileVO, HttpStatus.OK);
+		return new ResponseEntity<List<CommentFileVO>>(list, HttpStatus.OK);
 	}
 
 	

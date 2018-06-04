@@ -4,31 +4,25 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.mvc.mapper.CommentFileMapper">
 
-<insert id="insertFile">
+	<insert id="insertFile">
+		insert into tbl_comment_file (cfno, uuid, fname, datefolder)
+		values(seq_comment_file.nextval, #{uuid}, #{fname}, #{datefolder})
+	</insert>
 
-insert into tbl_comment_file (cfno, uuid, fname, datefolder)
-values(seq_comment_file.nextval, #{uuid}, #{fname}, #{datefolder})
+	<update id="submitFile">
+		update tbl_comment_file set cno = seq_comment.currval where uuid = #{uuid}
+	</update>
 
-</insert>
+	<update id="updateSubmitFile">
+		update tbl_comment_file set cno = #{cno} where uuid = #{uuid}
+	</update>
 
-<update id="submitFile">
+	<update id="updateNull">
+		update tbl_comment_file set cno = null where cno = #{cno}
+	</update>
 
-update tbl_comment_file set cno = seq_comment.currval where uuid = #{uuid}
-
-</update>
-
-<update id="updateSubmitFile">
-update tbl_comment_file set cno = #{cno} where uuid = #{uuid} 
-</update>
-
-<update id = "updateNull">
-update tbl_comment_file set cno = null where cno = #{cno}
-</update>
-
-<select id="listFile" resultType="org.mvc.domain.FileVO">
-
-select * from tbl_comment_file where cno = #{cno}
-
-</select>
+	<select id="listFile" resultType="org.mvc.domain.FileVO">
+		select * from tbl_comment_file where cno = #{cno}
+	</select>
 
 </mapper>

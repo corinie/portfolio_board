@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-
+@Log4j
 public class CommentMapperTests {
 	
 	
@@ -79,8 +79,8 @@ public class CommentMapperTests {
 	@Test
 	public void testList() {
 		Criteria cri = new Criteria(1);
-		int bno = 1500000;
-		mapper.list(cri, bno);
+		int bno = 120605;
+		log.info(mapper.list(cri, bno));
 	
 	}
 

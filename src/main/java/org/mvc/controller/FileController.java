@@ -49,7 +49,7 @@ public class FileController {
 		String uploadFolderPath = UploadFileUtils.getFolder();
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 
-		// File.exists 지정한 파일이 있는지 확인
+		// File.exists check
 		if (uploadPath.exists() == false) {
 			uploadPath.mkdirs();
 		} // make date folder
@@ -158,24 +158,3 @@ public class FileController {
 		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

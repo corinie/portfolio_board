@@ -28,6 +28,8 @@ $("#fileInput").change(function(e) {
 /* uploadFile Delete */
 $(".uploadList").on("click", "span", function(e){
 	$(e.target).parent("div").remove();	
+	
+	
 });
 
 function uploadAjax(files) {

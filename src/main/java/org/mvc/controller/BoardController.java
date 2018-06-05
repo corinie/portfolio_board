@@ -39,7 +39,7 @@ public class BoardController {
 	public String insertPost(BoardVO vo, String[] uuid, RedirectAttributes rattr) {
 		log.info("post insert");
 		service.rootInsert(vo, uuid);
-		rattr.addFlashAttribute("message", "rsuccess");
+		rattr.addFlashAttribute("message", "0");
 		
 		return "redirect:/board/list";
 	}
@@ -83,7 +83,7 @@ public class BoardController {
 	public String updatePost(BoardVO vo, String type, String keyword, int page, String[] uuid, RedirectAttributes rattr) {
 		log.info("post update");
 		service.update(vo, uuid);	
-		rattr.addFlashAttribute("message", "usuccess");
+		rattr.addFlashAttribute("message", "2");
 		if(type == null) {
 			return "redirect:/board/list?page="+page;
 		}else {
@@ -96,7 +96,7 @@ public class BoardController {
 	public String delete(int bno, int pbno, RedirectAttributes rattr) {
 		log.info("post delete");
 		service.delete(bno, pbno);
-		rattr.addFlashAttribute("message", "dsuccess");
+		rattr.addFlashAttribute("message", "1");
 		return "redirect:/board/list";
 	}
 	

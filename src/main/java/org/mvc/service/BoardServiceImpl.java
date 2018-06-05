@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.mvc.domain.BoardVO;
 import org.mvc.mapper.BoardMapper;
+import org.mvc.mapper.CommentFileMapper;
+import org.mvc.mapper.CommentMapper;
 import org.mvc.mapper.FileMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,20 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper mapper;
 	@Setter(onMethod_= {@Autowired})
 	FileMapper fmapper;
+	@Setter(onMethod_= {@Autowired})
+	CommentMapper cmapper;
+	@Setter(onMethod_= {@Autowired})
+	CommentFileMapper cfmapper;
 	
 	
 	@Override
 	@Transactional
 	public void rootInsert(BoardVO vo, String[] uuid) {
 		mapper.rootInsert(vo);
-		for(int i=0; i<uuid.length; i++) {
-			fmapper.submitFile(uuid[i]);
+		if(uuid != null) {
+			for(int i=0; i<uuid.length; i++) {
+				fmapper.submitFile(uuid[i]);
+			}
 		}
 	}
 	
@@ -37,8 +45,10 @@ public class BoardServiceImpl implements BoardService {
 	public void branchInsert(BoardVO vo, int bno, String[] uuid) {
 		mapper.boardInsertCount(bno);
 		mapper.branchInsert(vo);
-		for(int i=0; i<uuid.length; i++) {
-			fmapper.submitFile(uuid[i]);
+		if(uuid != null) {
+			for(int i=0; i<uuid.length; i++) {
+				fmapper.submitFile(uuid[i]);
+			}
 		}
 	}
 
@@ -53,6 +63,8 @@ public class BoardServiceImpl implements BoardService {
 		mapper.boardDeleteCount(bno);
 		mapper.delete(bno);
 		fmapper.updateNull(bno);
+		cmapper.commentFullDelete(bno);
+		cfmapper.deleteFullFile(bno);
 		return mapper.checkDeleteYN(bno);
 	}
 

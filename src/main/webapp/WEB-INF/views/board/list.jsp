@@ -116,7 +116,29 @@ var num = "";
 var replyList = "";
 var urlbuilder = "";
 var display = "";
+var message = "";
 
+
+/* ALERT DIVISION*/
+$(document).ready(function() {
+	message = "${message}";
+	checkModal(message);
+	history.replaceState({}, null, null);
+	
+	console.dir(message);
+	function checkModal(message) {
+		 if (message === '' || history.state) {
+			return;
+		}else if(parseInt(message) == 0){
+			alert("create success");
+		}else if(parseInt(message) == 1){
+			alert("delete success");
+		}else if(parseInt(message) == 2){
+			alert("update success");
+		}
+	}
+
+});
 
 /* FUNCTION */
 $(document).ready(function () {
@@ -156,15 +178,17 @@ function makeURI(bno){
 </script>
 
 <script>
-	if(${message eq "rsuccess"}){
-		alert("wow register success baby !");
-	}
-	if(${message eq "usuccess"}){
-		alert("wow update success baby !");
-	}
-	if(${message eq "dsuccess"}){
-		alert("wow delete success baby !");
-	}
+
+
+
+$(document).ready(function () {
+	
+	$("#type").val("${param.type}");
+	$("#keyword").val("${param.keyword}");
+	
+});
+
+
 </script>
 
 <script src="/resources/js/list.js"></script>

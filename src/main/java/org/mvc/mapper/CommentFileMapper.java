@@ -10,9 +10,11 @@ public interface CommentFileMapper {
 	public void insertFile(CommentFileVO vo);
 	public void submitFile(String uuid);
 	
-	public void updateSumbitFile(@Param("uuid") String uuid, @Param("bno") int bno);
-	public void updateNull(int bno);
+	public void updateSubmitFile(@Param("uuid") String uuid, @Param("cno") int cno);
+	public void updateNull(int cno);
+	public void deleteFullFile(int bno);
 	
 	public List<CommentFileVO> listFile(int bno);
+	
 
 }

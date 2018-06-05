@@ -1,6 +1,5 @@
 package org.mvc.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mvc.domain.CommentVO;
@@ -11,32 +10,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.fabric.xmlrpc.base.Array;
-
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+
 @Log4j
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
-	@Setter(onMethod_={@Autowired})
+	@Setter(onMethod_ = { @Autowired })
 	private CommentMapper mapper;
-	@Setter(onMethod_={@Autowired})
-	private CommentFileMapper fileMapper;
-	
-	
+	@Setter(onMethod_ = { @Autowired })
+	private CommentFileMapper fmapper;
+
 	@Override
 	@Transactional
 	public void rootInsert(CommentVO vo) {
 		mapper.rootInsert(vo);
-		
-		if(vo.getUuid() != null && vo.getUuid().length > 0) {
-			for(int i = 0; i < vo.getUuid().length ; i++) {	
-				fileMapper.submitFile(vo.getUuid()[i]);
-			}//for end
+
+		if (vo.getUuid() != null && vo.getUuid().length > 0) {
+			for (int i = 0; i < vo.getUuid().length; i++) {
+				fmapper.submitFile(vo.getUuid()[i]);
+			} // for end
 		}
 	}
-	
+
 	@Override
 	public void branchInsert(CommentVO vo) {
 		mapper.branchInsert(vo);
@@ -48,15 +45,25 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
+	@Transactional
 	public void update(CommentVO vo) {
+		
+		log.info("vo=========================" + vo);
+		fmapper.updateNull(vo.getCno());
 		mapper.update(vo);
+		if (vo.getUuid() != null && vo.getUuid().length > 0) {
+			for (int i = 0; i < vo.getUuid().length; i++) {
+				fmapper.updateSubmitFile(vo.getUuid()[i], vo.getCno());
+			}
+		}
 	}
 
 	@Override
 	public void rootDelete(int cno) {
 		mapper.rootDelete(cno);
+		fmapper.updateNull(cno);
 	}
-	
+
 	@Override
 	public void branchDelete(int cno) {
 		mapper.branchDelete(cno);

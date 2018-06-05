@@ -14,6 +14,7 @@ public interface CommentMapper {
 	public void update(CommentVO vo);
 	public void rootDelete(int cno);
 	public void branchDelete(int cno);
+	public void commentFullDelete(int bno);
 	
 	public List<CommentVO> list(@Param("cri")Criteria cri, @Param("bno")int bno);
 	public int total(int bno);

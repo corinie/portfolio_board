@@ -17,13 +17,12 @@
 		1)
 	</insert>
 
-	<select id="read" resultType="org.mvc.domain.CommentVO">
-		select * from tbl_comment where cno = #{cno}
+	<select id="read" resultMap="commentMap">
+		select * from tbl_comment left outer join tbl_comment_file on tbl_comment.cno = tbl_comment_file.cno where tbl_comment.cno = #{cno}
 	</select>
 
 	<update id="update">
-		update tbl_comment set comments = #{comments}, updatedate = sysdate where
-		cno = #{cno}
+		update tbl_comment set comments = #{comments}, updatedate = sysdate where cno = #{cno}
 	</update>
 
 	
@@ -97,4 +96,8 @@ select * from
 	<select id="total" resultType="int">
 		select count(cno) from tbl_comment where deleteyn = 'n' and bno = #{bno}
 	</select>
+	
+	<update id="commentFullDelete">
+		update tbl_comment set deleteyn = 'y' where bno = #{bno}
+	</update>
 </mapper>

@@ -9,7 +9,7 @@ insert into tbl_file(fno, fname, uuid, image, datefolder)
 values(seq_file.nextval, #{fname}, #{uuid}, #{image}, #{datefolder})
 </insert>
 
-<update id="sumbitFile">
+<update id="submitFile">
 update tbl_file set bno = seq_board.currval where uuid = #{uuid} 
 </update>
 

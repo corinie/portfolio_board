@@ -20,6 +20,10 @@
 	<update id="updateNull">
 		update tbl_comment_file set cno = null where cno = #{cno}
 	</update>
+	
+	<update id="deleteFullFile">
+		update tbl_comment_file set cno = null where cno in (select cno from tbl_comment where bno = #{bno})
+	</update>
 
 	<select id="listFile" resultType="org.mvc.domain.FileVO">
 		select * from tbl_comment_file where cno = #{cno}

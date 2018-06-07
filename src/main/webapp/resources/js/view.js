@@ -13,6 +13,7 @@ var branchCommenter = "";
 var cno ="";
 var innercstr="";
 var bodytarget="";
+var uuidArr="";
 var displayHeight = document.documentElement.clientHeight;
 var imagebox = $(".imagebox");
 var fileInput = $("#fileInput");
@@ -24,13 +25,10 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 
 	$(document).ready(function() {
 		getAllList(page);
+		imagebox.hide();
 	});
 	
 	imagebox.attr("style", "height:"+displayHeight+"px;");
-	
-	$(document).ready(function () {
-		imagebox.hide();
-	});
 	
 	imagebox.on("click", function(e){
 		imagebox.hide();
@@ -50,6 +48,14 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		
 		comments = $("#comments").val();
 		commenter = $("#commenter").val();
+		
+		uuidArr = $(".uploadList").find(".image_area span");
+		for(var i = 0 ; i < uuidArr.length ; i++){
+			console.log(uuidArr[i].dataset.uuid);
+			uuid.push(uuidArr[i].dataset.uuid);
+			console.log(uuid);
+		}
+		
 
 		if(comments != ""){
 			$.ajaxSettings.traditional = true;
@@ -74,58 +80,61 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 						fileInput.val("");
 						uploadList.html("");
 						alert("댓글 등록 성공");
-						uuid = "";
+						uuid = [];
 					}
 				}
 			});
 		}else{
 			alert("댓글 내용을 작성하세요.");
 		}
+	});
 	
+	/*ROOT COMMENT DELETE*/
+	$(".response").on("click", ".rdelete", function (e) {
+	
+		cno = $(e.target).attr("data-cno");
 		
-	});
-
-	
-	
-	/* Input File Event */
-	$("#fileInput").change(function(e) {
-
-		/* var files = e.originalEvent.dataTransfer.files; */
-		
-		files = e.target.files;
-		getAllList(page);
-		uploadAjax(files);
-	});
-	
-	$(".file-area").on("dragenter dragover", function(e) {
-		e.preventDefault();
-	});
-	/* Drag and Drop Event */
-	$(".file-area").on("drop", function(e) {
-		e.preventDefault();
-
-		files = e.originalEvent.dataTransfer.files;
-		uploadAjax(files);
-
-	});
-	
-	/* uploadFile Delete */
-	$(".uploadList").on("click", "span", function(e){
-			var targetFile = $(this).data("file");
-			var type = $(this).data("type");
-
-			$.ajax({
-				url : "/deleteFile",
-				data : {fileName : targetFile, type : type},
-				dataType : 'text',
-				type: 'post',
-				success : function(result){
-					$(e.target).parent("div").remove();
+		$.ajax({
+			url : "/comment/rdelete/"+cno,
+			type : "PUT",
+			dataType : "text",
+			
+			success : function (result) {
+				if(result == 'rcdsuccess'){
+					alert("댓글 삭제 성공");
+					getAllList(page);
 				}
-			});	
+			}
 		});
+	});
+	
+/*BRANCH COMMENT DELETE*/
+	$(".response").on("click", ".innercomment .bdelete", function (e) {
+		
+		cno = $(e.target).attr("data-cno");
+ 		
+		$.ajax({
+			url : "/comment/bdelete/"+cno,
+			type : "PUT",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			success : function (result) {
+				if(result == 'bcdsuccess'){
+					alert("댓글 삭제 성공");
+					getAllList(page);
+				}
+			}
+		});
+	});
 
-	/*re-comment view*/
+	
+	
+
+	
+	
+/*re-comment view*/
 	$(".response").on("click", ".resendopen", function (e) {
 		
 		target = $(this).attr("data-cno"); 
@@ -141,11 +150,13 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		};
 		
 	});
-	/*re-commnet register*/
+
+/*re-comment register*/
 	$(".response").on("click", ".resend", function (e) {
 		e.preventDefault();
 		
 		branch = $("."+target);
+	
 		branchComments = branch[1].children[1].value;
 		branchCommenter = branch[1].children[0].value;
 		
@@ -173,50 +184,17 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 			}
 		});
 	});
-	
-	/*ROOT COMMENT DELETE*/
-	$(".response").on("click", ".rdelete", function (e) {
-	
-		cno = $(e.target).attr("data-cno");
+
+
 		
-		$.ajax({
-			url : "/comment/rdelete/"+cno,
-			type : "PUT",
-			dataType : "text",
-			
-			success : function (result) {
-				if(result == 'rcdsuccess'){
-					alert("댓글 삭제 성공");
-					getAllList(page);
-				}
-			}
-		});
-	});
 	
-	/*BRANCH COMMENT DELETE*/
-	$(".response").on("click", ".innercomment .bdelete", function (e) {
-		
-		cno = $(e.target).attr("data-cno");
- 		
-		$.ajax({
-			url : "/comment/bdelete/"+cno,
-			type : "PUT",
-			dataType : "text",
-			headers : {
-				"Content-Type" : "application/json"
-			},
-			success : function (result) {
-				if(result == 'bcdsuccess'){
-					alert("댓글 삭제 성공");
-					getAllList(page);
-				}
-			}
-		});
-	});
-		
-	/*COMMENT UPDATE*/
+/*COMMENT UPDATE*/
 	$(".response").on("click", ".rupdate", function (e) {
+		
+		e.stopPropagation();
+		
 		bodytarget = $(e.target).attr("data-cno");
+		
 		
 		//comment opened-reset		
 		$("#comments").val("");
@@ -225,44 +203,73 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		uploadList.html("");
 		
 		$.getJSON("/comment/"+bodytarget, function (data) {
+			console.log("TEST");
 			console.log(data);
-			
-			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='5' >"+data.comments+"</textarea>"
+			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='5'style='width : 100%; margin-bottom : 10px' >"+data.comments+"</textarea>"
 						+"<div class='file-area'>"
-							+"<input id='fileInput' type='file' multiple='multiple'>"
+							+"<input id='fileInput' type='file' multiple='multiple' data-cno=" + data.cno + ">"
 							+"<div id='upload'>"
-							+"<div class='uploadList'>";
+							+"<div class='uploadList reuploadList'>";
+			
 			if(data.fileList[0].fname != null){
 				for(var i=0; i<data.fileList.length; i++){
+					
+					console.log("loop count: " + data.fileList.length);	
+					
 					var fileUrl = encodeURIComponent(data.fileList[i].datefolder
 							+ "/s_" + data.fileList[i].uuid + "_" + data.fileList[i].fname);
 				
-					innercstr += "<div><img src='/display?fileName="+fileUrl+"'>"
-								+ "<br>"+data.fileList[i].fname
-								+ "<span data-file=\'"+fileUrl+"\' data-type='image' data-uuid="+data.fileList[i].uuid+"> x </span>"
+					innercstr += "<div class='image_area'><img src='/display?fileName="+fileUrl+"'>"
+								+ "<br>"+data.fileList[i].fname+"<span data-file=\'"+fileUrl+"\' data-type='image' data-uuid="+data.fileList[i].uuid+""
+								+ " class='a'> x </span>"
 								+ "<input type='hidden' name='uuid' value='"+data.fileList[i].uuid+"'></div>";
-					
-					uuid.push(data.fileList[i].uuid);
 					
 				}
 			}
-				innercstr +="</div>"
-							+"</div>"
-							+"</div>"
-							+"<button class='label label-default upsend'>update</button>";
-							
-			$("."+bodytarget).html(innercstr);
+			
+			innercstr +="</div>"
+						+"</div>"
+						+"</div>"
+						+"<button class='label label-default upsend'>update</button>";
+				
+			$(".A_"+bodytarget).html(innercstr);
+			
+			console.log("-----------------------------------------------");
+			
+			
 			innercstr = "";
+			
+			if(data.cno != null) {
+				
+				
+				
+			} else {
+				
+				
+				
+			}
+			
 		});
 	});
 	
-	//COMMENT UPDATE DATA SENDING
+
+
+	
+//COMMENT UPDATE DATA SENDING
 	$(".response").on("click", ".upsend", function (e){
 		var ucomment = $("#ucomment").val();
 		var ucno = $("#ucomment").attr("data-cno");
 		
-		console.log(uuid);
+		uuidArr = $(".uploadList").find(".image_area .a");
+
 		
+		console.log("==============================");
+		console.log($(".uploadList").find(".image_area .a"));
+		
+		for(var i = 0; i < uuidArr.length; i++){
+			uuid.push(uuidArr[i].dataset.uuid);
+		}
+				
 		$.ajaxSettings.traditional = true;
 		$.ajax({
 			url : "/comment/"+ucno,
@@ -280,6 +287,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 				if(result == 'usuccess'){
 					alert("댓글 수정 성공");
 					getAllList(page);
+					uuid = [];
 				}
 			}
 		});
@@ -293,6 +301,70 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		getAllList(pageNum);
 	});
 	
+	/* Update File Event */
+	$(".response").change("#fileInput", function(e) {
+		
+		console.dir(e.target.dataset.cno);
+		
+		if (e.target.dataset.cno != null) {
+			
+			
+		} else {
+			
+			
+		}
+		
+		
+		files = e.target.files;
+		uploadAjax(files);
+		
+	});
+	
+	
+	
+	
+	/* Input File Event */
+	$("#fileInput").change(function(e) {
+		
+		/* var files = e.originalEvent.dataTransfer.files; */
+		
+		files = e.target.files;
+		getAllList(page);
+		uploadAjax(files);
+	});
+	
+	$(".file-area").on("dragenter dragover", function(e) {
+		e.preventDefault();
+	});
+	
+	
+/* Drag and Drop Event */
+	$(".file-area").on("drop", function(e) {
+		e.preventDefault();
+		
+		files = e.originalEvent.dataTransfer.files;
+		uploadAjax(files);
+		
+	});
+	
+	
+	
+/* uploadFile Delete */
+	$(".uploadList").on("click", "span", function(e){
+		var targetFile = $(this).data("file");
+		var type = $(this).data("type");
+		
+		$.ajax({
+			url : "/deleteFile",
+			data : {fileName : targetFile, type : type},
+			dataType : 'text',
+			type: 'post',
+			success : function(result){
+				$(e.target).parent("div").remove();
+			}
+		});	
+	});
+	
 	/* uploadFile Delete */
 	$(".response").on("click",".uploadList span", function(e){
 		e.preventDefault();
@@ -300,33 +372,41 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		$(e.target).parent("div").remove();	
 	});
 	
+	
+	
+	
+	
+	/* LIST FUNCTION */
 	function getAllList(pageNum) {
 		$.getJSON("/comment/" + bno + "/" + pageNum, function(data) {
 			console.log(data.list);
 			$(data.list).each(function() {
-			 		innercstr = "<div class='media response-info'>"
-				 		 	  +	"<div class='media-left response-text-left'>"
-				   		      +"<h5>"+this.commenter+"</h5>"
-				 		  	  +"</div>"
-				 		  	  +"<div class='media-body response-text-right'>";
+		 		innercstr = "<div class='media response-info'>"
+			 		 	  +	"<div class='media-left response-text-left'>"
+			   		      +"<h5>"+this.commenter+"</h5>"
+			 		  	  +"</div>"
+			 		  	  +"<div class='media-body response-text-right'>";
 				 
 				 	if(this.deleteyn == 'm'){
 				 		innercstr += "<p>이 댓글은 삭제된 댓글입니다. </p>";
 				 	}else{
-				 		innercstr += "<div class="+this.cno+"><p>"+this.comments+"</p>";
+				 		innercstr += "<div class="+"A_"+this.cno+"><p>"+this.comments+"</p>";
 				 		if(this.fileList[0].fname != null){
 					 		for(var i=0; i<this.fileList.length; i++){
 					 			var fileUrl = encodeURIComponent(this.fileList[i].datefolder
 										+ "/s_" + this.fileList[i].uuid + "_" + this.fileList[i].fname);
-					 			innercstr += "<img src='/display?fileName="+fileUrl+"'>";
+					 		innercstr += "<img src='/display?fileName="+fileUrl+"'>";
 					 		}
-					 		innercstr += "</div>";
 				 		}
+				 		innercstr += "</div>";
 				 	}
+				 	
 				 	innercstr +="<ul><li>"+this.regdate+"</li>";
 				 	
+				 	console.log("cno"+this.cno);
+				 	console.log("gno"+this.gno);
 				if(this.cno == this.gno){
-					cstr 	 += innercstr
+						cstr += innercstr
 							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>"
 							 +"<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button>"
 							 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li></ul>"
@@ -351,14 +431,20 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 						 	+"</div></div></div></div>"
 						 	+"<hr>";
 				}
+			innercstr = "";
 			});
 			$(".outer").html(cstr);
+			
 			cstr = "";
 			
 			pagination(data.pm);
 		});
 	};
 	
+	
+	
+	
+	/* PAGINATION FUNCTION */
 	function pagination(page) {
 		var pstr = "";
 		if(page.prev){
@@ -399,22 +485,23 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 								var originalFile = encodeURIComponent(obj.datefolder
 										+ "/" + obj.uuid + "_" + obj.fname);
 								
-								upstr += "<div>"
+								upstr += "<div class='image_area'>"
 										+ "<img class='file_image' src='/display?fileName="
 										+ fileCallPath
 										+ "' data-fileLink='/display?fileName="
 										+ originalFile+"'>"
 										+ "<br>"+obj.fname
-										+ "<span data-file=\'"+fileCallPath+"\' data-type='image' data-uuid="+obj.uuid+"> x </span>"
+										+ "<span data-file=\'"+fileCallPath+"\' data-type='image' data-uuid="+obj.uuid+" class='uuid'> x </span>"
 										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
 										+ "</div>";							
-								uuid.push(obj.uuid);
+								/*uuid.push(obj.uuid);*/
 						});
-		$(".uploadList").append(upstr);
 		
-		
+		$(".reuploadList").append(upstr);
 	}
 	
+	
+	/* FILE UPLOAD FUNCTION */
 	function uploadAjax(files) {
 		formData = new FormData();
 		// file upload size, extension option
@@ -440,7 +527,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		});
 	}
 	
-
+	/* FILE OPTION FUNCTION */
 	function checkExtension(fileName, fileSize){
 		
 		if(fileSize >= maxSize){

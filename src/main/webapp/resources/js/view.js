@@ -10,6 +10,7 @@ var target = "";
 var branch = "";
 var branchComments = "";
 var branchCommenter = "";
+var commentClone = "";
 var cno ="";
 var innercstr="";
 var bodytarget="";
@@ -157,12 +158,9 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		
 		branch = $("."+target);
 	
-		branchComments = branch[1].children[1].value;
-		branchCommenter = branch[1].children[0].value;
-		
-		console.log(branchComments);
-		console.log(branchCommenter);
-		
+		branchComments = branch[0].children[1].value;
+		branchCommenter = branch[0].children[0].value;
+				
 		$.ajax({
 			url : "/comment/branch",
 			type : "POST",
@@ -185,16 +183,22 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		});
 	});
 
-
+/*COMMENT UPDATE RETURN*/
+	$(".response").on("click", ".return", function (e){
 		
+		$(e.target.parentElement).html(commentClone);
+		
+	});
 	
-/*COMMENT UPDATE*/
+	
+/*COMMENT UPDATE*/ 
 	$(".response").on("click", ".rupdate", function (e) {
 		
 		e.stopPropagation();
 		
 		bodytarget = $(e.target).attr("data-cno");
 		
+		commentClone = e.target.parentElement.parentElement.parentElement.children[0].innerHTML;
 		
 		//comment opened-reset		
 		$("#comments").val("");
@@ -202,9 +206,9 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		fileInput.val("");
 		uploadList.html("");
 		
-		$.getJSON("/comment/"+bodytarget, function (data) {
-			console.log("TEST");
-			console.log(data);
+		
+		$.getJSON("/comment/"+bodytarget,function (data) {
+			
 			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='5'style='width : 100%; margin-bottom : 10px' >"+data.comments+"</textarea>"
 						+"<div class='file-area'>"
 							+"<input id='fileInput' type='file' multiple='multiple' data-cno=" + data.cno + ">"
@@ -214,58 +218,35 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 			if(data.fileList[0].fname != null){
 				for(var i=0; i<data.fileList.length; i++){
 					
-					console.log("loop count: " + data.fileList.length);	
-					
 					var fileUrl = encodeURIComponent(data.fileList[i].datefolder
 							+ "/s_" + data.fileList[i].uuid + "_" + data.fileList[i].fname);
 				
 					innercstr += "<div class='image_area'><img src='/display?fileName="+fileUrl+"'>"
 								+ "<br>"+data.fileList[i].fname+"<span data-file=\'"+fileUrl+"\' data-type='image' data-uuid="+data.fileList[i].uuid+""
-								+ " class='a'> x </span>"
+								+ " > x </span>"
 								+ "<input type='hidden' name='uuid' value='"+data.fileList[i].uuid+"'></div>";
-					
 				}
 			}
-			
 			innercstr +="</div>"
 						+"</div>"
 						+"</div>"
-						+"<button class='label label-default upsend'>update</button>";
+						+"<button class='label label-default upsend'>SUBMIT</button>"
+						+"<button class='label label-default return'>RETURN</button>";
 				
 			$(".A_"+bodytarget).html(innercstr);
 			
-			console.log("-----------------------------------------------");
-			
-			
 			innercstr = "";
-			
-			if(data.cno != null) {
-				
-				
-				
-			} else {
-				
-				
-				
-			}
-			
 		});
 	});
 	
-
-
 	
 //COMMENT UPDATE DATA SENDING
 	$(".response").on("click", ".upsend", function (e){
 		var ucomment = $("#ucomment").val();
 		var ucno = $("#ucomment").attr("data-cno");
 		
-		uuidArr = $(".uploadList").find(".image_area .a");
+		uuidArr = $(".uploadList").find(".image_area span");
 
-		
-		console.log("==============================");
-		console.log($(".uploadList").find(".image_area .a"));
-		
 		for(var i = 0; i < uuidArr.length; i++){
 			uuid.push(uuidArr[i].dataset.uuid);
 		}
@@ -301,36 +282,17 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		getAllList(pageNum);
 	});
 	
-	/* Update File Event */
-	$(".response").change("#fileInput", function(e) {
-		
-		console.dir(e.target.dataset.cno);
-		
-		if (e.target.dataset.cno != null) {
-			
-			
-		} else {
-			
-			
-		}
-		
-		
-		files = e.target.files;
-		uploadAjax(files);
-		
-	});
+
 	
 	
-	
-	
-	/* Input File Event */
+/* Input File Event */
 	$("#fileInput").change(function(e) {
 		
 		/* var files = e.originalEvent.dataTransfer.files; */
 		
 		files = e.target.files;
 		getAllList(page);
-		uploadAjax(files);
+		uploadAjax(files, ".uploadList");
 	});
 	
 	$(".file-area").on("dragenter dragover", function(e) {
@@ -343,7 +305,28 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		e.preventDefault();
 		
 		files = e.originalEvent.dataTransfer.files;
-		uploadAjax(files);
+		uploadAjax(files, ".uploadList");
+		
+	});
+	
+/* Update File Event */
+	$(".response").on("change","#fileInput",function(e) {
+		
+		files = e.target.files;
+		uploadAjax(files, ".reuploadList");
+			
+	});
+	
+	$(".response").on("dragenter dragover", ".file-area", function(e) {
+		e.preventDefault();
+	});
+	
+/* Drag and Drop Event */
+	$(".response").on("drop", ".file-area", function(e) {
+		e.preventDefault();
+		
+		files = e.originalEvent.dataTransfer.files;
+		uploadAjax(files, ".reuploadList");
 		
 	});
 	
@@ -365,7 +348,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		});	
 	});
 	
-	/* uploadFile Delete */
+/* uploadFile Delete */
 	$(".response").on("click",".uploadList span", function(e){
 		e.preventDefault();
 		e.stopPropagation();
@@ -379,7 +362,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 	/* LIST FUNCTION */
 	function getAllList(pageNum) {
 		$.getJSON("/comment/" + bno + "/" + pageNum, function(data) {
-			console.log(data.list);
+			
 			$(data.list).each(function() {
 		 		innercstr = "<div class='media response-info'>"
 			 		 	  +	"<div class='media-left response-text-left'>"
@@ -402,9 +385,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 				 	}
 				 	
 				 	innercstr +="<ul><li>"+this.regdate+"</li>";
-				 	
-				 	console.log("cno"+this.cno);
-				 	console.log("gno"+this.gno);
+				 
 				if(this.cno == this.gno){
 						cstr += innercstr
 							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>"
@@ -460,20 +441,36 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		$(".pagination").html(pstr);
 	};
 	
-	function checkExtension(fileName, fileSize){
-		
-		if(fileSize >= maxSize){
-			alert("파일 사이즈 초과");
-			return false;
+	
+	
+	
+	/*여기 FILE UPLOAD FUNCTION */
+	function uploadAjax(files, className) {
+		formData = new FormData();
+		// file upload size, extension option
+		for (var i = 0; i < files.length; i++) {
+			if(!checkExtension(files[i].name, files[i].size)){
+				fileInput.val("");
+				return false;
+			}
+			formData.append("uploadFile", files[i]);
 		}
-		
-		if(regex.test(fileName)){
-			alert("해당 종류의 파일은 업로드할 수 없습니다.");
-			return false;
-		}
-		return true;
+
+		$.ajax({
+			url : "/comment/uploadAjax",
+			type : "POST",
+			data : formData,
+			dataType : 'json',
+			processData : false,
+			contentType : false,
+			success : function(result) {
+				showUploadedFile(result, className);
+				
+			}
+		});
 	}
-	function showUploadedFile(uploadResultArr) {
+	
+	function showUploadedFile(uploadResultArr, className) {
 		upstr = "";
 	
 		$(uploadResultArr)
@@ -494,38 +491,12 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 										+ "<span data-file=\'"+fileCallPath+"\' data-type='image' data-uuid="+obj.uuid+" class='uuid'> x </span>"
 										+ "<input type='hidden' name='uuid' value='"+obj.uuid+"'>"
 										+ "</div>";							
-								/*uuid.push(obj.uuid);*/
 						});
 		
-		$(".reuploadList").append(upstr);
+		$(className).append(upstr);
 	}
 	
 	
-	/* FILE UPLOAD FUNCTION */
-	function uploadAjax(files) {
-		formData = new FormData();
-		// file upload size, extension option
-		for (var i = 0; i < files.length; i++) {
-			if(!checkExtension(files[i].name, files[i].size)){
-				fileInput.val("");
-				return false;
-			}
-			formData.append("uploadFile", files[i]);
-		}
-
-		$.ajax({
-			url : "/comment/uploadAjax",
-			type : "POST",
-			data : formData,
-			dataType : 'json',
-			processData : false,
-			contentType : false,
-			success : function(result) {
-				showUploadedFile(result);
-				
-			}
-		});
-	}
 	
 	/* FILE OPTION FUNCTION */
 	function checkExtension(fileName, fileSize){

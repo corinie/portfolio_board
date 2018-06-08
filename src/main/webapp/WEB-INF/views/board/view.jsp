@@ -21,8 +21,7 @@
 			<div class="agile-blog-grid">
 				<div class="agile-blog-grid-left-img">
 					<a class="havebno" href="/board/list${cri.getUrl(param.bno)}" data-bno="${param.bno}"><button
-							class="label label-danger">back</button></a> <a href="single.html"><img
-						src="images/2a.jpg" alt="" /></a>
+							class="label label-danger">back</button></a> <a href="single.html"></a>
 				</div>
 			
 				<div class="blog-left-grids">
@@ -105,8 +104,7 @@
 					<div class="outer">
 						<div class="media response-info">
 							<div class="media-left response-text-left">
-								<a href="#"> <img class="media-object" src="images/t1.jpg"
-									alt="">
+								<a href="#"> 
 								</a>
 								<h5>comment</h5>
 							</div>

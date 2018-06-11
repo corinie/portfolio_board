@@ -41,7 +41,6 @@
 
 	<context:component-scan base-package="org.mvc.service"></context:component-scan>
 
-
 </beans>
 
 

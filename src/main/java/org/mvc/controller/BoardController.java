@@ -8,6 +8,7 @@ import org.mvc.service.FileService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/board/*")
 @Log4j
+@PreAuthorize("isAuthenticated()")
 public class BoardController {
 	
 	@Setter(onMethod_={@Autowired})	
@@ -101,6 +103,8 @@ public class BoardController {
 	}
 	
 	//LIST, SEARCH
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
 		List<BoardVO> list = null;

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mvc.mapper.MemberMapper">
+
+<insert id="createMember">
+	insert into tbl_member (mid, mpw, mname, email) values (#{mid}, #{mpw}, #{mname}, #{email})
+</insert>
+	
+<insert id = "setAuth">
+	insert into tbl_member_auth (mid, auth) values(#{mid}, #{auth})
+</insert>
+
+
+<resultMap type="org.mvc.domain.MemberVO" id="memberMap">
+	<id property="mid" column="mid"/>
+	<result property="mname" column="mname"/>
+	<result property="mpw" column="mpw"/>
+	<result property="email" column="email"/>
+	<collection property="authList" resultMap="authMap"></collection>
+</resultMap>
+
+<resultMap type="org.mvc.domain.AuthVO" id="authMap">
+	<result property="mid" column="mid"/>
+	<result property="auth" column="auth"/>
+</resultMap>
+
+<select id="readMember" resultMap="memberMap"> 
+	select * from tbl_member inner join tbl_member_auth on tbl_member.mid = tbl_member_auth.mid where tbl_member.mid = #{mid}
+</select>
+
+</mapper>

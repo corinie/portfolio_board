@@ -55,7 +55,7 @@ var getAllListClone= "";
 		for(var i = 0 ; i < uuidArr.length ; i++){
 			console.log(uuidArr[i].dataset.uuid);
 			uuid.push(uuidArr[i].dataset.uuid);
-			console.log(uuid);
+			
 		}
 		
 		if(comments != ""){

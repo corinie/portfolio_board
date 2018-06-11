@@ -23,7 +23,9 @@ var maxSize = 5242880; //5MB
 var uuid = new Array();
 var uploadList = $(".uploadList");
 var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
+var getAllListClone= "";
 
+	/*DOCUMENT READY*/
 	$(document).ready(function() {
 		getAllList(page);
 		imagebox.hide();
@@ -35,16 +37,15 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		imagebox.hide();
 	});
 	
-	/*  */
+	/*FILE LIGHT BOX*/
 	$(".fileList").on("click", ".file_image", function (e) {
-		
 		imagebox.show();
-		
 		imagebox.html("<img src='"+$(e.target).attr("data-fileLink")+"'>");
-		
 	});
 	
-	/*REPLY CREATE*/
+	
+	
+	/*COMMENT CREATE*/
 	$("#sendBtn").on("click", function (e) {
 		
 		comments = $("#comments").val();
@@ -57,7 +58,6 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 			console.log(uuid);
 		}
 		
-
 		if(comments != ""){
 			$.ajaxSettings.traditional = true;
 			$.ajax({
@@ -90,113 +90,13 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		}
 	});
 	
-	/*ROOT COMMENT DELETE*/
-	$(".response").on("click", ".rdelete", function (e) {
 	
-		cno = $(e.target).attr("data-cno");
-		
-		$.ajax({
-			url : "/comment/rdelete/"+cno,
-			type : "PUT",
-			dataType : "text",
-			
-			success : function (result) {
-				if(result == 'rcdsuccess'){
-					alert("댓글 삭제 성공");
-					getAllList(page);
-				}
-			}
-		});
-	});
-	
-/*BRANCH COMMENT DELETE*/
-	$(".response").on("click", ".innercomment .bdelete", function (e) {
-		
-		cno = $(e.target).attr("data-cno");
- 		
-		$.ajax({
-			url : "/comment/bdelete/"+cno,
-			type : "PUT",
-			dataType : "text",
-			headers : {
-				"Content-Type" : "application/json"
-			},
-			success : function (result) {
-				if(result == 'bcdsuccess'){
-					alert("댓글 삭제 성공");
-					getAllList(page);
-				}
-			}
-		});
-	});
-
-	
-	
-
-	
-	
-/*re-comment view*/
-	$(".response").on("click", ".resendopen", function (e) {
-		
-		target = $(this).attr("data-cno"); 
-		 
-		if(($(this).attr("data-display") == "hide")){
-		$("."+target).show();
-		$(this).html("x");
-		$(this).attr("data-display","show");
-		}else{
-			$("."+target).hide();
-			$(this).html("comment");
-			$(this).attr("data-display", "hide");
-		};
-		
-	});
-
-/*re-comment register*/
-	$(".response").on("click", ".resend", function (e) {
-		e.preventDefault();
-		
-		branch = $("."+target);
-	
-		branchComments = branch[0].children[1].value;
-		branchCommenter = branch[0].children[0].value;
-				
-		$.ajax({
-			url : "/comment/branch",
-			type : "POST",
-			dataType : "text",
-			headers : {
-				"Content-Type" : "application/json"
-			},
-			data : JSON.stringify({
-				bno : bno,
-				gno : target,
-				comments : branchComments,
-				commenter : branchCommenter
-			}),
-			success : function (result) {
-				if(result == 'bsuccess'){
-					alert("댓글 등록 성공");
-					getAllList(page);
-				}
-			}
-		});
-	});
-
-/*COMMENT UPDATE RETURN*/
-	$(".response").on("click", ".return", function (e){
-		
-		$(e.target.parentElement).html(commentClone);
-		
-	});
-	
-	
-/*COMMENT UPDATE*/ 
+	/*COMMENT UPDATE*/ 
 	$(".response").on("click", ".rupdate", function (e) {
-		
 		e.stopPropagation();
 		
 		bodytarget = $(e.target).attr("data-cno");
+		closeModal();
 		
 		commentClone = e.target.parentElement.parentElement.parentElement.children[0].innerHTML;
 		
@@ -206,9 +106,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		fileInput.val("");
 		uploadList.html("");
 		
-		
 		$.getJSON("/comment/"+bodytarget,function (data) {
-			
 			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='5'style='width : 100%; margin-bottom : 10px' >"+data.comments+"</textarea>"
 						+"<div class='file-area'>"
 							+"<input id='fileInput' type='file' multiple='multiple' data-cno=" + data.cno + ">"
@@ -230,7 +128,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 			innercstr +="</div>"
 						+"</div>"
 						+"</div>"
-						+"<button class='label label-default upsend'>SUBMIT</button>"
+						+"<button class='label label-default updateSubmit'>SUBMIT</button>"
 						+"<button class='label label-default return'>RETURN</button>";
 				
 			$(".A_"+bodytarget).html(innercstr);
@@ -240,8 +138,14 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 	});
 	
 	
-//COMMENT UPDATE DATA SENDING
-	$(".response").on("click", ".upsend", function (e){
+	/*COMMENT CLOSE*/
+	function closeModal(){
+		$(".outer").html(getAllListClone);
+	}
+	
+	
+	//COMMENT UPDATE DATA SENDING
+	$(".response").on("click", ".updateSubmit", function (e){
 		var ucomment = $("#ucomment").val();
 		var ucno = $("#ucomment").attr("data-cno");
 		
@@ -284,8 +188,111 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 	
 
 	
+	/*ROOT COMMENT DELETE*/
+	$(".response").on("click", ".rdelete", function (e) {
 	
-/* Input File Event */
+		cno = $(e.target).attr("data-cno");
+		
+		$.ajax({
+			url : "/comment/rdelete/"+cno,
+			type : "PUT",
+			dataType : "text",
+			
+			success : function (result) {
+				if(result == 'rcdsuccess'){
+					alert("댓글 삭제 성공");
+					getAllList(page);
+				}
+			}
+		});
+	});
+	
+
+	
+	
+
+	
+	
+	
+
+	/*BRANCH COMMENT CREATE*/
+	$(".response").on("click", ".resend", function (e) {
+		e.preventDefault();
+		
+		branch = $("."+target);
+	
+		branchComments = branch[0].children[1].value;
+		branchCommenter = branch[0].children[0].value;
+				
+		$.ajax({
+			url : "/comment/branch",
+			type : "POST",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			data : JSON.stringify({
+				bno : bno,
+				gno : target,
+				comments : branchComments,
+				commenter : branchCommenter
+			}),
+			success : function (result) {
+				if(result == 'bsuccess'){
+					alert("댓글 등록 성공");
+					getAllList(page);
+				}
+			}
+		});
+	});
+	
+	/*BRANCH COMMENT READ*/
+	$(".response").on("click", ".resendopen", function (e) {
+		
+		target = $(this).attr("data-cno"); 
+		 
+		if(($(this).attr("data-display") == "hide")){
+		$("."+target).show();
+		$(this).html("x");
+		$(this).attr("data-display","show");
+		}else{
+			$("."+target).hide();
+			$(this).html("comment");
+			$(this).attr("data-display", "hide");
+		};
+		
+	});
+	
+	/*COMMENT UPDATE RETURN*/
+	$(".response").on("click", ".return", function (e){
+		$(e.target.parentElement).html(commentClone);
+	});
+	
+	/*BRANCH COMMENT DELETE*/
+	$(".response").on("click", ".innercomment .bdelete", function (e) {
+		
+		cno = $(e.target).attr("data-cno");
+ 		
+		$.ajax({
+			url : "/comment/bdelete/"+cno,
+			type : "PUT",
+			dataType : "text",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			success : function (result) {
+				if(result == 'bcdsuccess'){
+					alert("댓글 삭제 성공");
+					getAllList(page);
+				}
+			}
+		});
+	});
+
+
+	
+
+	/* Input File Event */
 	$("#fileInput").change(function(e) {
 		
 		/* var files = e.originalEvent.dataTransfer.files; */
@@ -295,33 +302,9 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		uploadAjax(files, ".uploadList");
 	});
 	
-	$(".file-area").on("dragenter dragover", function(e) {
-		e.preventDefault();
-	});
 	
 	
-/* Drag and Drop Event */
-	$(".file-area").on("drop", function(e) {
-		e.preventDefault();
-		
-		files = e.originalEvent.dataTransfer.files;
-		uploadAjax(files, ".uploadList");
-		
-	});
-	
-/* Update File Event */
-	$(".response").on("change","#fileInput",function(e) {
-		
-		files = e.target.files;
-		uploadAjax(files, ".reuploadList");
-			
-	});
-	
-	$(".response").on("dragenter dragover", ".file-area", function(e) {
-		e.preventDefault();
-	});
-	
-/* Drag and Drop Event */
+	/* Drag and Drop Event reuploadList*/
 	$(".response").on("drop", ".file-area", function(e) {
 		e.preventDefault();
 		
@@ -330,9 +313,37 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		
 	});
 	
+	/* Drag and Drop Event uploadList*/
+	$(".file-area").on("drop", function(e) {
+		e.preventDefault();
+		
+		files = e.originalEvent.dataTransfer.files;
+		uploadAjax(files, ".uploadList");
+		
+	});
+	
+	/* Drag and Drop stop*/
+	$(".file-area").on("dragenter dragover", function(e) {
+		e.preventDefault();
+		
+	});
+	
+	$(".response").on("dragenter dragover", ".file-area", function(e) {
+		e.preventDefault();
+	});
+	
+	/* Update File Event */
+	$(".response").on("change","#fileInput",function(e) {
+		
+		files = e.target.files;
+		uploadAjax(files, ".reuploadList");
+			
+	});
 	
 	
-/* uploadFile Delete */
+	
+
+	/* uploadFile Delete DATA SENDING*/
 	$(".uploadList").on("click", "span", function(e){
 		var targetFile = $(this).data("file");
 		var type = $(this).data("type");
@@ -348,7 +359,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		});	
 	});
 	
-/* uploadFile Delete */
+	/* uploadFile Delete */
 	$(".response").on("click",".uploadList span", function(e){
 		e.preventDefault();
 		e.stopPropagation();
@@ -415,7 +426,7 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 			innercstr = "";
 			});
 			$(".outer").html(cstr);
-			
+			getAllListClone = cstr;
 			cstr = "";
 			
 			pagination(data.pm);
@@ -425,26 +436,8 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 	
 	
 	
-	/* PAGINATION FUNCTION */
-	function pagination(page) {
-		var pstr = "";
-		if(page.prev){
-			pstr += "<li><a href='"+(page.start-1)+"' class='pageNum'>이전</a>";
-		}
-		for(var i = page.start; i <= page.end; i++){
-			pstr += "<li><a href='"+i+"' class='pageNum'>"+i+"</a>";
-		}
-		if(page.next){
-			pstr += "<li><a href='"+(page.end+1)+"' class='pageNum'>다음</a>";
-		}
-		
-		$(".pagination").html(pstr);
-	};
 	
-	
-	
-	
-	/*여기 FILE UPLOAD FUNCTION */
+	/*FILE UPLOAD FUNCTION */
 	function uploadAjax(files, className) {
 		formData = new FormData();
 		// file upload size, extension option
@@ -470,6 +463,8 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 		});
 	}
 	
+	
+	/*FILE LIST */
 	function showUploadedFile(uploadResultArr, className) {
 		upstr = "";
 	
@@ -511,4 +506,26 @@ var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 			return false;
 		}
 		return true;
-	}	
+	}
+	
+	
+	
+
+	/* PAGINATION FUNCTION */
+	function pagination(page) {
+		var pstr = "";
+		if(page.prev){
+			pstr += "<li><a href='"+(page.start-1)+"' class='pageNum'>이전</a>";
+		}
+		for(var i = page.start; i <= page.end; i++){
+			pstr += "<li><a href='"+i+"' class='pageNum'>"+i+"</a>";
+		}
+		if(page.next){
+			pstr += "<li><a href='"+(page.end+1)+"' class='pageNum'>다음</a>";
+		}
+		
+		$(".pagination").html(pstr);
+	};
+	
+	
+	

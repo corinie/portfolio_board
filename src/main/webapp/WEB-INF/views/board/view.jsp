@@ -47,12 +47,15 @@
 						</div>
 					</div>
 					<div align="right">
+						<c:if test="${vo.writer eq userName }">
 						<a href="/board/update${cri.getUrl(param.bno)}"><button
 								class="label label-default">UPDATE</button></a>
 						<form method="post"
 							action="/board/delete?bno=${vo.bno}&pbno=${vo.pbno}">
+							<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token}">
 							<button class="label label-default">DELETE</button>
 						</form>
+						</c:if>
 						<a href="/board/replyregister${cri.getUrl(param.bno)}">
 						<button class="label label-default">REPLY</button></a>
 					</div>
@@ -81,7 +84,7 @@
 			<div class="opinion">
 				<h3>Leave Your Comment</h3>
 					<form>
-					<input type="text" name="commenter" placeholder="Name" required="" id="commenter">
+					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${userName }" readonly="readonly">
 					<textarea name="comment" placeholder="Message" required="" id="comments"></textarea>
 					</form>
 						<br>
@@ -142,6 +145,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
+	
+
 
 <script src="/resources/js/view.js"></script>
 

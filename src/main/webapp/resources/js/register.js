@@ -23,6 +23,7 @@ $(".uploadList").on("click", "span", function(e){
 		var targetFile = $(this).data("file");
 		var type = $(this).data("type");
 		
+		setCSRF(csrftoken);
 		$.ajax({
 			url : "/deleteFile",
 			data : {fileName : targetFile, type : type},
@@ -72,7 +73,8 @@ function uploadAjax(files) {
 		}
 		formData.append("uploadFile", files[i]);
 	}
-
+	
+	setCSRF(csrftoken);
 	$.ajax({
 		url : "/uploadAjax",
 		type : "POST",

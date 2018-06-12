@@ -29,6 +29,7 @@
 							<input type="hidden" name="bno" value="${param.bno }">
 							<input type="hidden" name="depth" value="${vo.depth }">
 							<input type="hidden" name="rbno" value="${vo.rbno }">
+							<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 							<button class="btn1">Submit</button>
 						</form>
 					</div>

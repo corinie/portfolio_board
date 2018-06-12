@@ -38,7 +38,7 @@ function uploadAjax(files) {
 	for (var i = 0; i < files.length; i++) {
 		formData.append("uploadFile", files[i]);
 	}
-
+	setCSRF(csrftoken);
 	$.ajax({
 		url : "/uploadAjax",
 		type : "POST",

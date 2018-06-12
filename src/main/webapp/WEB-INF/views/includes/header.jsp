@@ -41,15 +41,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="container">
 			<div class="w3layouts-address">
 				<ul>
-					<li><i class="fa fa-mobile" aria-hidden="true"></i> +11 222 333 4444</li>
-					<li><i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:info@example.com"> mail@example.com</a></li>
+					<li><i class="fa fa-user" aria-hidden="true"></i>${userDetails.username}</li>
+					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>${userDetails.authorities}</li>
 				</ul>
 			</div>
 			<div class="agileinfo-social-grids">
 				<ul>
-					<button class="btn-primary">login</button>
+					
+					<c:if test="${userDetails.username ne null}">
+					<form action="/logout" method="post">
 					<button class="btn-primary">logout</button>
-					<button class="btn-primary">Join</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
+					</form>
+					</c:if>
 				</ul>
 				</div>
 			</div>

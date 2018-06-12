@@ -6,7 +6,7 @@
 <!-- about-heading -->
 <div class="about-heading">
 	<h2>
-		Our <span>Blog</span>
+		CORINIE <span>COMPANY</span>
 	</h2>
 </div>
 <!-- //about-heading -->

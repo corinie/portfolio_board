@@ -25,6 +25,7 @@ var uploadList = $(".uploadList");
 var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 var getAllListClone= "";
 
+
 	/*DOCUMENT READY*/
 	$(document).ready(function() {
 		getAllList(page);
@@ -50,6 +51,7 @@ var getAllListClone= "";
 		
 		comments = $("#comments").val();
 		commenter = $("#commenter").val();
+		console.log(csrftoken);
 		
 		uuidArr = $(".uploadList").find(".image_area span");
 		for(var i = 0 ; i < uuidArr.length ; i++){
@@ -60,6 +62,7 @@ var getAllListClone= "";
 		
 		if(comments != ""){
 			$.ajaxSettings.traditional = true;
+			setCSRF(csrftoken);
 			$.ajax({
 				url : "/comment/root",
 				type : "POST",
@@ -154,7 +157,7 @@ var getAllListClone= "";
 		for(var i = 0; i < uuidArr.length; i++){
 			uuid.push(uuidArr[i].dataset.uuid);
 		}
-				
+		setCSRF(csrftoken);		
 		$.ajaxSettings.traditional = true;
 		$.ajax({
 			url : "/comment/"+ucno,
@@ -192,7 +195,7 @@ var getAllListClone= "";
 	$(".response").on("click", ".rdelete", function (e) {
 	
 		cno = $(e.target).attr("data-cno");
-		
+		setCSRF(csrftoken);
 		$.ajax({
 			url : "/comment/rdelete/"+cno,
 			type : "PUT",
@@ -223,7 +226,9 @@ var getAllListClone= "";
 	
 		branchComments = branch[0].children[1].value;
 		branchCommenter = branch[0].children[0].value;
-				
+		
+		setCSRF(csrftoken);
+		
 		$.ajax({
 			url : "/comment/branch",
 			type : "POST",
@@ -273,6 +278,8 @@ var getAllListClone= "";
 		
 		cno = $(e.target).attr("data-cno");
  		
+		setCSRF(csrftoken);
+		
 		$.ajax({
 			url : "/comment/bdelete/"+cno,
 			type : "PUT",
@@ -348,6 +355,8 @@ var getAllListClone= "";
 		var targetFile = $(this).data("file");
 		var type = $(this).data("type");
 		
+		setCSRF(csrftoken);
+		
 		$.ajax({
 			url : "/deleteFile",
 			data : {fileName : targetFile, type : type},
@@ -399,29 +408,39 @@ var getAllListClone= "";
 				 
 				if(this.cno == this.gno){
 						cstr += innercstr
-							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>"
-							 +"<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button>"
-							 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li></ul>"
+							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>";
+						
+						if(this.commenter == userName){
+							cstr +="<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button>"
+								 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button>";
+						}
+							 
+						cstr +="</li></ul>"
 						 	 +"</div>"
 							 +"<div class='"+this.cno+"' style='display : none;'>"
-							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter'>"
+							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter' value='"+userName+"' readonly='readonly'>"
 							 +"&nbsp; <input name='comment' size='125' placeholder='Message' required='' class='branchcomments'>"
 							 +"&nbsp; <a href='#' class='label label-default resend' id='sendBtn' >SEND</a></div>"
 							 +"</div>"
 							 +"<hr>";
 				}else{
-					cstr += "<div class='media response-info'>"
-						 	+"<div class='media-left response-text-left'>"
-							+"<h5>     </h5>"
-						 	+"</div>"
-						 	+"<div class='media-body response-text-right'>"
-						 	+"<div class='innercomment'>"
-						 	+innercstr
-						 	+"<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button>"
-						 	+"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li></ul>"
-						 	+"<div class='clearfix'></div>"
-						 	+"</div></div></div></div>"
-						 	+"<hr>";
+						cstr += "<div class='media response-info'>"
+						 	 +"<div class='media-left response-text-left'>"
+							 +"<h5>     </h5>"
+						 	 +"</div>"
+						 	 +"<div class='media-body response-text-right'>"
+						 	 +"<div class='innercomment'>"
+						 	 +innercstr;
+					
+						if(this.commenter == userName){
+							cstr +="<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button>"
+								 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li>";
+							}
+								 		
+						
+						cstr += "</ul><div class='clearfix'></div>"
+						 	 +"</div></div></div></div>"
+						 	 +"<hr>";
 				}
 			innercstr = "";
 			});
@@ -448,6 +467,8 @@ var getAllListClone= "";
 			}
 			formData.append("uploadFile", files[i]);
 		}
+		
+		setCSRF(csrftoken);
 
 		$.ajax({
 			url : "/comment/uploadAjax",

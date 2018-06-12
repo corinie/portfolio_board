@@ -26,9 +26,9 @@
 				<div class="agileinfo-contact-form-grid">
 					<form method="post">
 						<input type="text" name="title" placeholder="title" required="">
-						<input type="text" name="writer" placeholder="writer" required="">
+						<input type="text" name="writer" placeholder="writer" required="" value="${userName }" readonly="readonly">
 						<textarea name="content" placeholder="content" required=""></textarea>
-
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<div class="file-area">
 							<input id="fileInput" type="file" multiple><br> 파일
 							선택 혹은 이 곳에 파일을 드래그하세요.<br>

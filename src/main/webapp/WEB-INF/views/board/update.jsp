@@ -26,7 +26,7 @@
 							placeholder="writer" required="" value="${vo.writer}"
 							readonly="readonly">
 						<textarea name="content" placeholder="content" required="">${vo.content}</textarea>
-
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<div class="file-area">
 							<input id="fileInput" type="file" multiple><br> 파일선택
 							혹은 이 곳에 파일을 드래그하세요.<br>

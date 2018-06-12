@@ -11,9 +11,8 @@ http://www.springframework.org/schema/security/spring-security.xsd">
 
      <security:http auto-config="true" use-expressions="false">
      <security:form-login login-page="/login/login" default-target-url="/board/list"/>
-     <security:intercept-url pattern="/board/list" access="ROLE_ADMIN"/>
-     <security:intercept-url pattern="/board/list" access="ROLE_MANAGER"/>
-     <security:intercept-url pattern="/board/list" access="ROLE_MEMBER"/>
+     <security:logout delete-cookies="JSESSIONID" logout-success-url="/login/login" invalidate-session="true"/>
+     <security:remember-me key="rememberme" token-validity-seconds="" data-source-ref="dataSource"/>
 	 <security:access-denied-handler error-page="/autherror"/>
      </security:http>
      

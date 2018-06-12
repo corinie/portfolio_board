@@ -1,5 +1,6 @@
 package org.mvc.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.mvc.domain.BoardVO;
@@ -9,6 +10,8 @@ import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +34,11 @@ public class BoardController {
 	private FileService fservice;
 	
 	//CRUD
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/register")
-	public void insert() {
-		log.info("get insert");
-		
+	public void insert(Principal principal, Model model) {
+		log.info("get insert");		
+		model.addAttribute("userName", principal.getName());
 	}
 	
 	@PostMapping("/register")
@@ -46,6 +50,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/replyregister")
 	public void branchInsert(int bno, Model model) {
 		log.info("get branchinsert");
@@ -63,16 +68,18 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/view")
-	public void read(int bno, Criteria cri, Model model) {
+	public void read(int bno, Criteria cri, Principal principal, Model model) {
 		log.info("get view");
 		
 		model.addAttribute("vo", service.read(bno));
 		model.addAttribute("fileList", fservice.listFile(bno));
 		model.addAttribute("cri", cri);
+		model.addAttribute("userName", principal.getName());
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/update")
 	public void update(int bno, Model model) {
 		log.info("get update");
@@ -104,9 +111,9 @@ public class BoardController {
 	
 	//LIST, SEARCH
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/list")
-	public void list(Criteria cri, Model model) {
+	public void list(Criteria cri, Authentication authentication, Model model) {
 		List<BoardVO> list = null;
 		PageMaker pm = null;
 		if(cri.getType() == null) {
@@ -117,8 +124,15 @@ public class BoardController {
 			list = service.searchList(cri);
 			pm = new PageMaker(cri, service.searchTotal(cri));
 		}
+				
 		model.addAttribute("cri",cri);
 		model.addAttribute("pm", pm);
-		model.addAttribute("list", list);
+		model.addAttribute("list", list); 
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		model.addAttribute("userDetails",userDetails);
+		
+		
+
 	}
 }

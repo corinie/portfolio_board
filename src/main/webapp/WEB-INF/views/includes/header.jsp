@@ -47,10 +47,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 			<div class="agileinfo-social-grids">
 				<ul>
+					<c:if test="${userDetails.username eq null}">
+					<a href="/login/login"><button class="btn-primary">LOGIN</button></a>
+					</c:if>
 					
 					<c:if test="${userDetails.username ne null}">
 					<form action="/logout" method="post">
-					<button class="btn-primary">logout</button>
+					<button class="btn-primary">LOGOUT</button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
 					</form>
 					</c:if>

@@ -34,7 +34,7 @@ public class BoardController {
 	private FileService fservice;
 	
 	//CRUD
-	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	
 	@GetMapping("/register")
 	public void insert(Principal principal, Model model) {
 		log.info("get insert");		
@@ -50,7 +50,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	
 	@GetMapping("/replyregister")
 	public void branchInsert(int bno, Model model) {
 		log.info("get branchinsert");
@@ -68,7 +68,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	
 	@GetMapping("/view")
 	public void read(int bno, Criteria cri, Principal principal, Model model) {
 		log.info("get view");
@@ -76,10 +76,12 @@ public class BoardController {
 		model.addAttribute("vo", service.read(bno));
 		model.addAttribute("fileList", fservice.listFile(bno));
 		model.addAttribute("cri", cri);
-		model.addAttribute("userName", principal.getName());
+		if(principal != null) {
+			model.addAttribute("userName", principal.getName());
+		}
 	}
 	
-	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	
 	@GetMapping("/update")
 	public void update(int bno, Model model) {
 		log.info("get update");
@@ -111,7 +113,6 @@ public class BoardController {
 	
 	//LIST, SEARCH
 	
-	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	@GetMapping("/list")
 	public void list(Criteria cri, Authentication authentication, Model model) {
 		List<BoardVO> list = null;
@@ -129,10 +130,10 @@ public class BoardController {
 		model.addAttribute("pm", pm);
 		model.addAttribute("list", list); 
 		
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		model.addAttribute("userDetails",userDetails);
-		
-		
-
+		if(authentication != null) {
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			model.addAttribute("userDetails",userDetails);
+		}
+	
 	}
 }

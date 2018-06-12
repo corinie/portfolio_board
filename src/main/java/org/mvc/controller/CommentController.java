@@ -11,6 +11,7 @@ import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +25,14 @@ import lombok.extern.log4j.Log4j;
 
 @RestController
 @RequestMapping("/comment/*")
+
 @Log4j
 public class CommentController {
 	
 	@Setter(onMethod_= {@Autowired})
 	private CommentService service;
 	
-		
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/root")
 	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
 		ResponseEntity<String> entity = null;
@@ -43,6 +45,7 @@ public class CommentController {
 		return entity;
 	}
 	
+	
 	@PostMapping("/branch")
 	public ResponseEntity<String> branchInsert(@RequestBody CommentVO vo){
 		ResponseEntity<String> entity = null;
@@ -54,7 +57,8 @@ public class CommentController {
 		}
 		return entity;
 	}
-
+	
+	
 	@GetMapping("/{cno}")
 	public ResponseEntity<CommentVO> read(@PathVariable("cno") int cno){
 		ResponseEntity<CommentVO> entity = null;
@@ -65,6 +69,7 @@ public class CommentController {
 		}
 		return entity;
 	}
+	
 	
 	@PutMapping("/rdelete/{cno}")
 	public ResponseEntity<String> rootDelete(@PathVariable("cno") int cno){
@@ -78,6 +83,7 @@ public class CommentController {
 		return entity;
 	}
 	
+	
 	@PutMapping("/bdelete/{cno}")
 	public ResponseEntity<String> branchDelete(@PathVariable("cno") int cno){
 		ResponseEntity<String> entity = null;
@@ -89,6 +95,7 @@ public class CommentController {
 		}
 		return entity;
 	}
+	
 	
 	@PutMapping("/{cno}")
 	public ResponseEntity<String> update(@RequestBody CommentVO vo, @PathVariable("cno") int cno){
@@ -103,7 +110,7 @@ public class CommentController {
 		return entity;
 	}
 	
-
+	
 	@GetMapping("/{bno}/{page}")
 	public ResponseEntity<Map<String, Object>> list(@PathVariable("bno") int bno, Criteria cri){
 		ResponseEntity<Map<String, Object>> entity = null;

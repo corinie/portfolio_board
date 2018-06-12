@@ -20,7 +20,7 @@
 					<input type="text" name="username" placeholder="ID" required="">
 					<input type="password" name="password" placeholder="Password"
 						required="">
-					<input type="checkbox" name="remember-me"> Remember-me
+					<input type="checkbox" name="remember-me" > Remember-me
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					<div class="tp">
 						<input type="submit" value="LOGIN NOW">

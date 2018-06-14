@@ -26,7 +26,7 @@
 				<div class="agileinfo-contact-form-grid">
 					<form method="post">
 						<input type="text" name="title" placeholder="title" required="">
-						<input type="text" name="writer" placeholder="writer" required="" value="${userName }" readonly="readonly">
+						<input type="text" name="writer" placeholder="writer" required="" value="${principal}" readonly="readonly">
 						<textarea name="content" placeholder="content" required=""></textarea>
 						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<div class="file-area">

@@ -80,12 +80,18 @@
 				
 				<br><br>
 				
+				
 			<!--comment REGISTER -->
 			<div class="opinion">
 				<h3>Leave Your Comment</h3>
+					
 					<form>
-					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${userName }" readonly="readonly">
+					
+					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${principal}" readonly="readonly">
 					<textarea name="comment" placeholder="Message" required="" id="comments"></textarea>
+					
+					
+				
 					</form>
 						<br>
 						<div class="file-area">
@@ -146,7 +152,9 @@
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
 	
-
+<script>
+	var userName = ${principal};
+</script>
 
 <script src="/resources/js/view.js"></script>
 

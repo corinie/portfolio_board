@@ -17,7 +17,7 @@
 					<div class="agileinfo-contact-form-grid">
 						<form method="post">
 							<input type="text" name="title" placeholder="title" required="" value="Reply:${vo.title }">
-							<input type="text" name="writer" placeholder="writer" required="">
+							<input type="text" name="writer" placeholder="writer" required="" >
 							<textarea name="content" placeholder="content" required=""></textarea>
 							<div class="file-area">
 							<input id="fileInput" type="file" multiple><br> 파일

@@ -24,13 +24,14 @@ var uuid = new Array();
 var uploadList = $(".uploadList");
 var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 var getAllListClone= "";
-
+var pinfo = $("#pinfo").val();
 
 	/*DOCUMENT READY*/
 	$(document).ready(function() {
 		getAllList(page);
 		imagebox.hide();
 	});
+	
 	
 	imagebox.attr("style", "height:"+displayHeight+"px;");
 	
@@ -49,6 +50,7 @@ var getAllListClone= "";
 	/*COMMENT CREATE*/
 	$("#sendBtn").on("click", function (e) {
 		
+		authCheck();
 		comments = $("#comments").val();
 		commenter = $("#commenter").val();
 		console.log(csrftoken);
@@ -80,18 +82,21 @@ var getAllListClone= "";
 					if(result == 'rsuccess'){
 						getAllList(page);
 						$("#comments").val("");
-						$("#commenter").val("");
 						fileInput.val("");
 						uploadList.html("");
 						alert("댓글 등록 성공");
 						uuid = [];
-					}
+					
+					}	
 				}
 			});
 		}else{
 			alert("댓글 내용을 작성하세요.");
 		}
+		//json end
+		
 	});
+	
 	
 	
 	/*COMMENT UPDATE*/ 
@@ -105,7 +110,7 @@ var getAllListClone= "";
 		
 		//comment opened-reset		
 		$("#comments").val("");
-		$("#commenter").val("");
+		$("#commenter").val();
 		fileInput.val("");
 		uploadList.html("");
 		
@@ -221,6 +226,8 @@ var getAllListClone= "";
 	/*BRANCH COMMENT CREATE*/
 	$(".response").on("click", ".resend", function (e) {
 		e.preventDefault();
+		
+		authCheck();
 		
 		branch = $("."+target);
 	
@@ -547,6 +554,14 @@ var getAllListClone= "";
 		
 		$(".pagination").html(pstr);
 	};
+	
+	/*LOGIN CHECK */
+	function authCheck(){
+		if(pinfo == 'anonymousUser'){
+			alert("로그인이 필요합니다.");
+		}
+	
+	}
 	
 	
 	

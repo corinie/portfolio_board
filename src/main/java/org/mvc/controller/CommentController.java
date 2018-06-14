@@ -1,9 +1,9 @@
 package org.mvc.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.mvc.domain.CommentFileVO;
 import org.mvc.domain.CommentVO;
 import org.mvc.service.CommentService;
 import org.mvc.util.Criteria;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,10 +33,12 @@ public class CommentController {
 	@Setter(onMethod_= {@Autowired})
 	private CommentService service;
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/root")
-	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
+	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo, Principal principal){
 		ResponseEntity<String> entity = null;
+		
+		if(principal != null) {
 		try {
 			service.rootInsert(vo);
 			entity = new ResponseEntity<String>("rsuccess", HttpStatus.OK);
@@ -43,9 +46,13 @@ public class CommentController {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
 		}
 		return entity;
+		}else {
+			return entity = new ResponseEntity<String>("auth", HttpStatus.OK);
+			
+		}
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/branch")
 	public ResponseEntity<String> branchInsert(@RequestBody CommentVO vo){
 		ResponseEntity<String> entity = null;
@@ -58,7 +65,7 @@ public class CommentController {
 		return entity;
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{cno}")
 	public ResponseEntity<CommentVO> read(@PathVariable("cno") int cno){
 		ResponseEntity<CommentVO> entity = null;
@@ -70,7 +77,7 @@ public class CommentController {
 		return entity;
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/rdelete/{cno}")
 	public ResponseEntity<String> rootDelete(@PathVariable("cno") int cno){
 		ResponseEntity<String> entity = null;
@@ -83,7 +90,7 @@ public class CommentController {
 		return entity;
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/bdelete/{cno}")
 	public ResponseEntity<String> branchDelete(@PathVariable("cno") int cno){
 		ResponseEntity<String> entity = null;
@@ -96,7 +103,7 @@ public class CommentController {
 		return entity;
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/{cno}")
 	public ResponseEntity<String> update(@RequestBody CommentVO vo, @PathVariable("cno") int cno){
 		ResponseEntity<String> entity = null;

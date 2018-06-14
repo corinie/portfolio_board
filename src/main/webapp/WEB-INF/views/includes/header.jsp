@@ -36,22 +36,33 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 </head>
 <body>
+
 	<!-- header-top -->
 	<div class="header-top">
 		<div class="container">
 			<div class="w3layouts-address">
 				<ul>
-					<li><i class="fa fa-user" aria-hidden="true"></i>${userDetails.username}</li>
-					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>${userDetails.authorities}</li>
+				<sec:authentication property="principal" var="pinfo"/>
+				
+				<c:if test="${pinfo ne 'anonymousUser'}">
+					<li><i class="fa fa-user" aria-hidden="true"></i>${pinfo.username}</li>
+					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>${pinfo.authorities}</li>
+					</c:if>
+					<c:if test="${pinfo eq 'anonymousUser'}">
+					<li><i class="fa fa-user" aria-hidden="true"></i>USERNAME</li>
+					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>AUTHORIES</li>
+					</c:if>
+					<input type="hidden" name="pinfo" id="pinfo" value="${pinfo}">
 				</ul>
 			</div>
 			<div class="agileinfo-social-grids">
 				<ul>
-					<c:if test="${userDetails.username eq null}">
+					
+					<c:if test="${pinfo eq 'anonymousUser'}">
 					<a href="/login/login"><button class="btn-primary">LOGIN</button></a>
 					</c:if>
 					
-					<c:if test="${userDetails.username ne null}">
+					<c:if test="${pinfo ne 'anonymousUser'}">
 					<form action="/logout" method="post">
 					<button class="btn-primary">LOGOUT</button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
@@ -63,7 +74,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="clearfix"> </div>
 		</div>
 	</div>
-
+	
 	<!-- //header-top -->
 	<!-- header -->
 	<div class="header">
@@ -79,6 +90,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					  </button>
 						<div class="w3layouts-logo">
 							<h1><a href="/board/list">Hosting <span>City</span></a></h1>
+							
 						</div>
 					</div>
 
@@ -108,3 +120,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</nav>
 			</div>
 	</div>
+	

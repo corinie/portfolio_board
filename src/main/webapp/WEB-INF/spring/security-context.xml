@@ -13,7 +13,7 @@ http://www.springframework.org/schema/security/spring-security.xsd">
      <security:form-login login-page="/login/login" default-target-url="/board/list" />
      <security:logout delete-cookies="JSESSIONID, remember-me-cookie"  logout-success-url="/login/login" invalidate-session="true"/>
      <security:remember-me key="remember-me" remember-me-cookie="remember-me-cookie" token-validity-seconds="3600" data-source-ref="dataSource"/>
-	 <security:access-denied-handler error-page="/autherror"/>
+	 <security:access-denied-handler ref="customAccessDenied"/>
 	 </security:http>
      
      
@@ -23,7 +23,7 @@ http://www.springframework.org/schema/security/spring-security.xsd">
      </security:authentication-provider>
      </security:authentication-manager>
      
-     
+      <bean id="customAccessDenied" class="org.mvc.security.CustomAccessDeniedHandler"></bean>
       <bean id="sampleEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
       <bean id="customUserService" class="org.mvc.security.CustomUserDetailService"></bean>
       

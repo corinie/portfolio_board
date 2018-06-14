@@ -11,7 +11,6 @@ import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/board/*")
 @Log4j
-@PreAuthorize("isAuthenticated()")
+
 public class BoardController {
 	
 	@Setter(onMethod_={@Autowired})	
@@ -34,13 +33,14 @@ public class BoardController {
 	private FileService fservice;
 	
 	//CRUD
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")
 	public void insert(Principal principal, Model model) {
 		log.info("get insert");		
-		model.addAttribute("userName", principal.getName());
-	}
+		
 	
+	}
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
 	public String insertPost(BoardVO vo, String[] uuid, RedirectAttributes rattr) {
 		log.info("post insert");
@@ -50,14 +50,14 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/replyregister")
 	public void branchInsert(int bno, Model model) {
 		log.info("get branchinsert");
 		
 		model.addAttribute("vo", service.read(bno));
 	}
-	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/replyregister")
 	public String branchInsertPost(BoardVO vo, RedirectAttributes rattr, String[] uuid) {
 		log.info("post branchinsert");
@@ -77,11 +77,11 @@ public class BoardController {
 		model.addAttribute("fileList", fservice.listFile(bno));
 		model.addAttribute("cri", cri);
 		if(principal != null) {
-			model.addAttribute("userName", principal.getName());
+		model.addAttribute("principal", principal.getName());
 		}
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/update")
 	public void update(int bno, Model model) {
 		log.info("get update");
@@ -89,7 +89,7 @@ public class BoardController {
 		model.addAttribute("vo", service.read(bno));
 		model.addAttribute("fileList", fservice.listFile(bno));
 	}
-	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update")
 	public String updatePost(BoardVO vo, String type, String keyword, int page, String[] uuid, RedirectAttributes rattr) {
 		log.info("post update");
@@ -102,7 +102,7 @@ public class BoardController {
 		}
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/delete")
 	public String delete(int bno, int pbno, RedirectAttributes rattr) {
 		log.info("post delete");
@@ -114,7 +114,7 @@ public class BoardController {
 	//LIST, SEARCH
 	
 	@GetMapping("/list")
-	public void list(Criteria cri, Authentication authentication, Model model) {
+	public void list(Criteria cri, Model model) {
 		List<BoardVO> list = null;
 		PageMaker pm = null;
 		if(cri.getType() == null) {
@@ -130,10 +130,6 @@ public class BoardController {
 		model.addAttribute("pm", pm);
 		model.addAttribute("list", list); 
 		
-		if(authentication != null) {
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			model.addAttribute("userDetails",userDetails);
-		}
-	
+		
 	}
 }

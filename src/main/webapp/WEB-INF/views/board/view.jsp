@@ -47,7 +47,7 @@
 						</div>
 					</div>
 					<div align="right">
-						<c:if test="${vo.writer eq userName }">
+						<c:if test="${vo.writer eq pinfo }">
 						<a href="/board/update${cri.getUrl(param.bno)}"><button
 								class="label label-default">UPDATE</button></a>
 						<form method="post"
@@ -87,7 +87,16 @@
 					
 					<form>
 					
-					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${principal}" readonly="readonly">
+					<c:if test="${pinfo eq 'anonymousUser'}">
+					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${pinfo}" readonly="readonly">
+					</c:if>
+					
+					
+					<c:if test="${pinfo ne 'anonymousUser'}">
+					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${pinfo.username}" readonly="readonly">
+					</c:if>
+					
+					
 					<textarea name="comment" placeholder="Message" required="" id="comments"></textarea>
 					
 					
@@ -152,9 +161,7 @@
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
 	
-<script>
-	var userName = ${principal};
-</script>
+
 
 <script src="/resources/js/view.js"></script>
 

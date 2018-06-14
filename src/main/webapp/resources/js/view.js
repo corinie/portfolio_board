@@ -417,7 +417,7 @@ var pinfo = $("#pinfo").val();
 						cstr += innercstr
 							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>";
 						
-						if(this.commenter == userName){
+						if(this.commenter == pinfo){
 							cstr +="<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button>"
 								 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button>";
 						}
@@ -425,7 +425,7 @@ var pinfo = $("#pinfo").val();
 						cstr +="</li></ul>"
 						 	 +"</div>"
 							 +"<div class='"+this.cno+"' style='display : none;'>"
-							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter' value='"+userName+"' readonly='readonly'>"
+							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter' value='"+pinfo+"' readonly='readonly'>"
 							 +"&nbsp; <input name='comment' size='125' placeholder='Message' required='' class='branchcomments'>"
 							 +"&nbsp; <a href='#' class='label label-default resend' id='sendBtn' >SEND</a></div>"
 							 +"</div>"
@@ -439,7 +439,7 @@ var pinfo = $("#pinfo").val();
 						 	 +"<div class='innercomment'>"
 						 	 +innercstr;
 					
-						if(this.commenter == userName){
+						if(this.commenter == pinfo){
 							cstr +="<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button>"
 								 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li>";
 							}

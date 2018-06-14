@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <title>Hosting City a Hosting Category Flat Bootstrap responsive Website Template | Blog :: w3layouts</title>
@@ -42,17 +42,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="container">
 			<div class="w3layouts-address">
 				<ul>
+				
 				<sec:authentication property="principal" var="pinfo"/>
 				
-				<c:if test="${pinfo ne 'anonymousUser'}">
+		
+		
+				 <c:if test="${pinfo ne 'anonymousUser'}">
 					<li><i class="fa fa-user" aria-hidden="true"></i>${pinfo.username}</li>
 					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>${pinfo.authorities}</li>
 					</c:if>
+			
 					<c:if test="${pinfo eq 'anonymousUser'}">
-					<li><i class="fa fa-user" aria-hidden="true"></i>USERNAME</li>
-					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>AUTHORIES</li>
+					<li><i class="fa fa-user" aria-hidden="true"></i>${pinfo}</li>
+					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>GUEST</li>
 					</c:if>
-					<input type="hidden" name="pinfo" id="pinfo" value="${pinfo}">
+					
+					
 				</ul>
 			</div>
 			<div class="agileinfo-social-grids">

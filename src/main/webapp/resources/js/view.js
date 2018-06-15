@@ -382,10 +382,6 @@ var pinfo = $("#pinfo").val();
 		$(e.target).parent("div").remove();	
 	});
 	
-	
-	
-	
-	
 	/* LIST FUNCTION */
 	function getAllList(pageNum) {
 		$.getJSON("/comment/" + bno + "/" + pageNum, function(data) {

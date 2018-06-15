@@ -10,6 +10,8 @@ import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,6 +77,7 @@ public class BoardController {
 		model.addAttribute("vo", service.read(bno));
 		model.addAttribute("fileList", fservice.listFile(bno));
 		model.addAttribute("cri", cri);
+		
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -110,7 +113,7 @@ public class BoardController {
 	//LIST, SEARCH
 	
 	@GetMapping("/list")
-	public void list(Criteria cri, Model model) {
+	public void list(Criteria cri,Model model) {
 		List<BoardVO> list = null;
 		PageMaker pm = null;
 		if(cri.getType() == null) {
@@ -127,5 +130,16 @@ public class BoardController {
 		model.addAttribute("list", list); 
 		
 		
+	}
+	
+	
+	@GetMapping("/dev")
+	public void about() {
+		log.info("get dev......");
+	}
+	
+	@GetMapping("/skills")
+	public void skills() {
+		log.info("get skills......");
 	}
 }

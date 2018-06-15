@@ -30,7 +30,7 @@ function getJson(bno){
 				+				"<div class='blog-left-grids'><div class='blog-left-left'>"
 				+					"<i class='fa fa-pencil' aria-hidden='true'></i>"
 				+				"</div>"
-				+				"<div class='blog-left-right'><div class='blog-left-right-top'>"
+				+				"<div class='blog-left-right-in'><div class='blog-left-right-top'>"
 				+						"<div class='blog-left-right-top'>";
 				
 				if(this.deleteyn == 'n'){

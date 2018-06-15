@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<title>Hosting City a Hosting Category Flat Bootstrap responsive Website Template | Blog :: w3layouts</title>
+<title>Corinie Team</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Hosting City Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -44,9 +44,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<ul>
 				
 				<sec:authentication property="principal" var="pinfo"/>
-				
-		
-		
+					
 				 <c:if test="${pinfo ne 'anonymousUser'}">
 					<li><i class="fa fa-user" aria-hidden="true"></i>${pinfo.username}</li>
 					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>${pinfo.authorities}</li>
@@ -94,7 +92,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<span class="icon-bar"></span>
 					  </button>
 						<div class="w3layouts-logo">
-							<h1><a href="/board/list">Hosting <span>City</span></a></h1>
+							<h1><a href="/board/list">Web <span>project</span></a></h1>
 							
 						</div>
 					</div>
@@ -103,21 +101,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
 						<nav>
 							<ul class="nav navbar-nav">
-								<li><a href="/board/list" class="hvr-sweep-to-bottom">Home</a></li>
-								<li><a href="/board/register" class="hvr-sweep-to-bottom">Register</a></li>
-								<li><a href="plans.html" class="hvr-sweep-to-bottom">Plans</a></li>
-								<li><a href="#" class="dropdown-toggle hvr-sweep-to-bottom" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pages<span class="caret"></span></a>
-									<ul class="dropdown-menu">
-										<li><a class="hvr-sweep-to-bottom" href="services.html">Services</a></li>
-										<li><a class="hvr-sweep-to-bottom" href="faq.html">FAQs</a></li>
-										<li><a class="hvr-sweep-to-bottom" href="login.html">Login</a></li>
-										<li><a class="hvr-sweep-to-bottom" href="registration.html">Registration</a></li>
-										<li><a class="hvr-sweep-to-bottom" href="icons.html">Icons</a></li>
-										<li><a class="hvr-sweep-to-bottom" href="typography.html">Typography</a></li>          
-									</ul>
-								</li>
-								<li class="active"><a href="blog.html" class="hvr-sweep-to-bottom">Blog</a></li>
-								<li><a href="mail.html" class="hvr-sweep-to-bottom">Mail Us</a></li>
+								<li><a href="/board/home" class="hvr-sweep-to-bottom">About</a></li>
+								<li><a href="/board/skills" class="hvr-sweep-to-bottom">Skills</a></li>
+								<li><a href="/board/list" class="hvr-sweep-to-bottom">Board</a></li>
+								<li><a href="/board/dev" class="hvr-sweep-to-bottom">Dev</a></li>
 							</ul>
 						</nav>
 					</div>

@@ -85,8 +85,9 @@
 			<div class="opinion">
 				<h3>Leave Your Comment</h3>
 					
+				
 					<form>
-					
+					<h1>${uinfo }</h1>
 					<c:if test="${pinfo eq 'anonymousUser'}">
 					<input type="text" name="commenter" placeholder="Name" required="" id="commenter" value="${pinfo}" readonly="readonly">
 					</c:if>

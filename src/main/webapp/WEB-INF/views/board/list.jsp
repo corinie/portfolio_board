@@ -6,7 +6,7 @@
 <!-- about-heading -->
 <div class="about-heading">
 	<h2>
-		CORINIE <span>COMPANY</span>
+		Result <span>Board</span>
 	</h2>
 </div>
 <!-- //about-heading -->
@@ -37,6 +37,7 @@
 										<span><a href="${item.bno }" class="replyBtn"  data-display="show">(${item.boardcount })</a></span>
 									</h4>
 									</c:if>
+									
 									<p>
 										Writer &nbsp;&nbsp;
 										<c:out value="${item.writer }"></c:out>
@@ -49,13 +50,18 @@
 										<c:out value="${item.bno}"></c:out>
 									</p>
 								</div>
+								
 								<div class="replyList">
 									<div id="${item.bno}"></div>
 								</div>
 								<div class="clearfix"></div>
+								<hr style="border: dashed 1px gray">
 							</div>
+							
 						</div>
+						
 					</div>
+					
 				</c:forEach>
 				
 				<!--SEARCH VAR-->

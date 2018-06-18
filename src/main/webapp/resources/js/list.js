@@ -26,7 +26,7 @@ function getJson(bno){
 			if(this.depth != 0){
 				urlbuilder =  makeURI(this.bno);
 	
-				replystr += "<div class='agile-blog-grid'>"
+				replystr += "<div class='agile-blog-grid'><div>"
 				+				"<div class='blog-left-grids'><div class='blog-left-left'>"
 				+					"<i class='fa fa-pencil' aria-hidden='true'></i>"
 				+				"</div>"
@@ -51,7 +51,7 @@ function getJson(bno){
 				+						"<div id='"+this.bno+"'></div>"
 				+					"</div>"
 				+				"</div>"
-				+			"</div>";
+				+			"</div></div>";
 			}
 			replyList.html(replystr);
 			

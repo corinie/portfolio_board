@@ -24,12 +24,13 @@ var uuid = new Array();
 var uploadList = $(".uploadList");
 var regex = new RegExp("(.*?)\.(jpg|png|gif|bmp)$");
 var getAllListClone= "";
-var pinfo = $("#pinfo").val();
+var pinfo = $("#pinfo").data("pinfo");
 
 	/*DOCUMENT READY*/
 	$(document).ready(function() {
 		getAllList(page);
 		imagebox.hide();
+		
 	});
 	
 	

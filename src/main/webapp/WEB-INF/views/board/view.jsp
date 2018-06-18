@@ -56,6 +56,7 @@
 							<button class="label label-default">DELETE</button>
 						</form>
 						</c:if>
+						
 						<a href="/board/replyregister${cri.getUrl(param.bno)}">
 						<button class="label label-default">REPLY</button></a>
 					</div>

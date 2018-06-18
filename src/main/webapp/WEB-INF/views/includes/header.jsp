@@ -34,6 +34,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		});
 	});
 </script>
+<link href='css/immersive-slider.css' rel='stylesheet' type='text/css'>
+<!-- pricing -->
+<link rel="stylesheet" href="css/jquery.flipster.css">
+<!-- //pricing -->
 </head>
 <body>
 
@@ -43,14 +47,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="w3layouts-address">
 				<ul>
 				
-				<sec:authentication property="principal" var="pinfo"/>
-					
+				<sec:authentication property="principal" var="pinfo"/>				
 				 <c:if test="${pinfo ne 'anonymousUser'}">
+				 	<span id="pinfo" data-pinfo="${pinfo.username}"></span>	
 					<li><i class="fa fa-user" aria-hidden="true"></i>${pinfo.username}</li>
 					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>${pinfo.authorities}</li>
 					</c:if>
 			
 					<c:if test="${pinfo eq 'anonymousUser'}">
+					<span id="pinfo" data-pinfo="Guest"></span>	
 					<li><i class="fa fa-user" aria-hidden="true"></i>${pinfo}</li>
 					<br><li><i class="fa fa-unlock" aria-hidden="true"></i>GUEST</li>
 					</c:if>
@@ -101,7 +106,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
 						<nav>
 							<ul class="nav navbar-nav">
-								<li><a href="/board/home" class="hvr-sweep-to-bottom">About</a></li>
+								<li><a href="/board/about" class="hvr-sweep-to-bottom">About</a></li>
 								<li><a href="/board/skills" class="hvr-sweep-to-bottom">Skills</a></li>
 								<li><a href="/board/list" class="hvr-sweep-to-bottom">Board</a></li>
 								<li><a href="/board/dev" class="hvr-sweep-to-bottom">Dev</a></li>

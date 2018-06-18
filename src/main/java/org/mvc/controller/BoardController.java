@@ -132,9 +132,13 @@ public class BoardController {
 		
 	}
 	
+	@GetMapping("/about")
+	public void about() {
+		log.info("get dev......");
+	}
 	
 	@GetMapping("/dev")
-	public void about() {
+	public void dev() {
 		log.info("get dev......");
 	}
 	

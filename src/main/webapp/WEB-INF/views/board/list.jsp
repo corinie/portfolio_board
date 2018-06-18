@@ -1,6 +1,6 @@
 <%@ include file="../includes/header.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <!-- //header -->
 <!-- about-heading -->
@@ -15,6 +15,11 @@
 	<div class="container">
 		<div class="agile-blog-grids">
 			<div class="container">
+				<div class="one-fifth button-right ">
+			
+						<a href="/board/register"><input type="submit" value="REGISTER"></a>
+				</div>
+
 				<c:forEach items="${list }" var="item">
 					<div class="agile-blog-grid">
 						<div class="blog-left-grids">
@@ -22,22 +27,25 @@
 							<div class="blog-left-left">
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</div>
+
 							<div class="blog-left-right">
 								<div class="blog-left-right-top">
-								<c:if test="${item.deleteyn eq 'n' }">
-									<h4>
-										<a href="/board/view${cri.getUrl(item.bno)}" class="view"
-											data-bno="${item.bno}"> <c:out value="${item.title}"></c:out></a>&nbsp;
-										<span><a href="${item.bno }" class="replyBtn"  data-display="show" >(${item.boardcount })</a></span>
-									</h4>
+									<c:if test="${item.deleteyn eq 'n' }">
+										<h4>
+											<a href="/board/view${cri.getUrl(item.bno)}" class="view"
+												data-bno="${item.bno}"> <c:out value="${item.title}"></c:out></a>&nbsp;
+											<span><a href="${item.bno }" class="replyBtn"
+												data-display="show">(${item.boardcount })</a></span>
+										</h4>
 									</c:if>
 									<c:if test="${item.deleteyn eq 'm' }">
-									<h4>
-										<c:out value="이 글은 삭제된 글입니다."></c:out>&nbsp;
-										<span><a href="${item.bno }" class="replyBtn"  data-display="show">(${item.boardcount })</a></span>
-									</h4>
+										<h4>
+											<c:out value="이 글은 삭제된 글입니다."></c:out>
+											&nbsp; <span><a href="${item.bno }" class="replyBtn"
+												data-display="show">(${item.boardcount })</a></span>
+										</h4>
 									</c:if>
-									
+
 									<p>
 										Writer &nbsp;&nbsp;
 										<c:out value="${item.writer }"></c:out>
@@ -46,44 +54,55 @@
 									</p>
 								</div>
 								<div class="blog-left-right-bottom">
-									<p>	
+									<p>
 										<c:out value="${item.bno}"></c:out>
 									</p>
 								</div>
-								
+
 								<div class="replyList">
 									<div id="${item.bno}"></div>
 								</div>
 								<div class="clearfix"></div>
 								<hr style="border: dashed 1px gray">
 							</div>
-							
-						</div>
-						
-					</div>
-					
-				</c:forEach>
-				
-				<!--SEARCH VAR-->
-				<div>
-					<form action="/board/list">
-						<select name="type" id="searchType">
-							<option>----</option>
-							<option value="t">title</option>
-							<option value="c">content</option>
-							<option value="w">writer</option>
-							<option value="tc">title+content</option>
-							<option value="tw">title+writer</option>
-							<option value="cw">content+writer</option>
-							<option value="tcw">title+content+writer</option>
-						</select> <input type="text" name="keyword" id="searchKeyword">
-						<button>search</button>
-					</form>
 
-					<h3 class="hdg" align="right">
-						<a href="/board/register"><button class="label label-success">REGISTER</button></a>
-					</h3>
-				</div>
+						</div>
+
+					</div>
+
+				</c:forEach>
+
+				<!--SEARCH VAR-->
+				<form action="/board/list">
+					<div class="two-fifth column first">
+						<h2>
+							Search <span>keyword</span>
+						</h2>
+					</div>
+					<div class="one-fifth column">
+						<span class="selection-box"> <select name="type"
+							id="searchType">
+								<option>----</option>
+								<option value="t">title</option>
+								<option value="c">content</option>
+								<option value="w">writer</option>
+								<option value="tc">title+content</option>
+								<option value="tw">title+writer</option>
+								<option value="cw">content+writer</option>
+								<option value="tcw">title+content+writer</option>
+						</select>
+						</span>
+					</div>
+					<div class="three-fifth column first">
+						<input type="text" class="text" name="keyword" id="searchKeyword"
+							placeholder="Enter to search the keyword" required="">
+					</div>
+
+					<div class="one-fifth column button-right">
+						<input type="submit" value="Search">
+					</div>
+					<div class="clearfix"></div>
+				</form>
 				<!--SEARCH VAR END-->
 
 				<!--PAGINATION-->

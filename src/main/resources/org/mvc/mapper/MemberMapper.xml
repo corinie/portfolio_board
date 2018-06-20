@@ -13,6 +13,93 @@
 </insert>
 
 
+<select id="readMember" resultMap="memberMap"> 
+	select * from tbl_member inner join tbl_member_auth 
+	on tbl_member.mid = tbl_member_auth.mid where tbl_member.mid = #{mid}
+</select>
+
+
+<select id="listMember" resultMap="memberinfoMap">
+	select * from(
+		select * from(<include refid="memberList" />)
+		<![CDATA[ where rn <= (#{page} * 10)
+				) where rn > (#{page} - 1) * 10 ]]> 
+</select>
+
+
+<select id="searchListMember" resultMap="memberinfoMap">
+	select * from(
+		select * from(<include refid="memberList" />
+				      <include refid="searchoption" />)
+		<![CDATA[ where rn <= (#{page} * 10)
+				) where rn > (#{page} - 1) * 10 ]]> 
+		
+</select>
+
+
+<select id="total" resultType="int">
+	select count(*) from 
+		( <include refid="memberList" /> )
+</select>
+
+
+<select id="searchTotal" resultType="int">
+	select count(*) from 
+		(<include refid="memberList" />)
+	<include refid="searchoption" />
+</select>
+
+
+
+<!--tbl_member + tbl_member_auth -->
+	<sql id="memberList">
+	select rownum rn, mname, mid, email, deleteyn, auth, regdate, updatedate from 
+			(
+			select * from 
+				(
+    				select auth.mid mid, mname, email, deleteyn, auth, regdate, updatedate from tbl_member inner join 
+    				(
+        				select member.mid, auth from (select * from tbl_member_auth where auth = 'ROLE_MEMBER')member 
+        				inner join (select mid from tbl_member_auth where auth = 'ROLE_MEMBER' minus (select mid from tbl_member_auth where auth = 'ROLE_MANAGER'))auth on member.mid = auth.mid
+        				union all(select * from tbl_member_auth where auth = 'ROLE_ADMIN' union all select manager.mid mid, auth from (select * from tbl_member_auth where auth = 'ROLE_MANAGER')manager 
+        				inner join (select mid from tbl_member_auth where auth = 'ROLE_MANAGER' minus (select mid from tbl_member_auth where auth = 'ROLE_ADMIN'))auth on manager.mid = auth.mid)
+    				)auth on tbl_member.mid = auth.mid order by regdate asc
+				) where deleteyn = 'n'
+			)		
+	</sql>
+
+
+<!--SEARCH OPTION -->
+	<sql id="searchoption">
+	
+		<where>
+			<foreach collection="authArr" separator=" or " item="key">
+				<if test="key eq 'a'.toString()">
+					auth = 'ROLE_ADMIN'
+				</if>
+				<if test="key eq 'm'.toString()">
+					auth = 'ROLE_MANAGER'					
+				</if>
+				<if test="key eq 'n'.toString()">
+					auth = 'ROLE_MEMBER'
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	
+	
+	
+<resultMap type="org.mvc.domain.MemberVO" id="memberinfoMap">
+	<id property="mid" column="mid"/>
+	<result property="mname" column="mname"/>
+	<result property="email" column="email"/>
+	<result property="deleteyn" column="deleteyn"/>
+	<result property="regdate" column="regdate"/>
+	<result property="updatedate" column="updatedate"/>
+	<collection property="authList" resultMap="authMap"></collection>
+</resultMap>
+
+
 <resultMap type="org.mvc.domain.MemberVO" id="memberMap">
 	<id property="mid" column="mid"/>
 	<result property="mname" column="mname"/>
@@ -25,9 +112,4 @@
 	<result property="mid" column="mid"/>
 	<result property="auth" column="auth"/>
 </resultMap>
-
-<select id="readMember" resultMap="memberMap"> 
-	select * from tbl_member inner join tbl_member_auth on tbl_member.mid = tbl_member_auth.mid where tbl_member.mid = #{mid}
-</select>
-
 </mapper>

@@ -7,6 +7,7 @@ import org.mvc.mapper.BoardMapper;
 import org.mvc.mapper.CommentFileMapper;
 import org.mvc.mapper.CommentMapper;
 import org.mvc.mapper.FileMapper;
+import org.mvc.mapper.MessageMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ public class BoardServiceImpl implements BoardService {
 	CommentMapper cmapper;
 	@Setter(onMethod_= {@Autowired})
 	CommentFileMapper cfmapper;
-	
+	@Setter(onMethod_= {@Autowired})
+	MessageMapper mmapper;
 	
 	@Override
 	@Transactional
@@ -58,6 +60,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public String rootWriter(int bno) {
+		return mapper.rootWriter(bno);
+	}
+	
+	@Override
 	@Transactional
 	public int delete(int bno, int pbno) {
 		mapper.boardDeleteCount(bno);
@@ -79,8 +86,33 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return mapper.update(vo);
 	}
-
 	
+	@Override
+	@Transactional
+	public void allStatus(int bno, String status) {
+		mapper.updateStatus(bno, status);
+
+		if(status.equals("ongoing")) {
+			mmapper.confirmMessage(bno);
+			mmapper.confirmReceiver(bno);
+			mapper.updateAllStatus(bno);
+			mapper.updateParentStatus(bno);
+		}
+		if(status.equals("completion")) {
+			mapper.updateAllStatus(bno);
+			mapper.updateParentStatus(bno);
+			mapper.updateRootStatus(bno);
+			mmapper.confirmFinalMessage(bno);
+			mmapper.confirmFinalReceiver(bno);
+		}
+		if(status.equals("refuse")) {
+			mmapper.refuseMessage(bno);
+			mmapper.confirmReceiver(bno);
+		}
+
+	}
+	
+
 	@Override
 	public List<BoardVO> list(Criteria cri) {
 		return mapper.list(cri);

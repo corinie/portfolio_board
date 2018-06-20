@@ -4,50 +4,37 @@
 
 <!-- //header -->
 <!-- about-heading -->
-<div class="about-heading" style="margin-bottom: 30px">
+<div class="about-heading">
 	<h2>
 		Result <span>Board</span>
 	</h2>
 </div>
-
 <!-- //about-heading -->
 <!-- blog -->
-	<!-- 	<h1>asssddddaa</h1>
-		  <h1><a href="/board/list?status=pause"><span class="label label-danger">PAUSE</span></a></h1>
-	
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=ongoing"><input type="submit" name="status" value="ongoing"></a>
-		</div>
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=completion"><input type="submit" name="status" value="completion"></a>
-		</div> -->
-		<div class="container">
-		<a href="/board/list?status=pause"><span class="label label-danger">PAUSE</span></a>
-	
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=ongoing"><input type="submit" name="status" value="ongoing"></a>
-		</div>
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=completion"><input type="submit" name="status" value="completion"></a>
-		</div>
-	
-		<div class="one-fifth button-right ">
-		  <a href="/board/register"><input type="submit" value="REGISTER"></a>
-		</div>
-		
-		</div>
 <div class="blog">
-		<!-- 검색조건-->
-		
-		<div class="container">
+	<div class="container">
 		<div class="agile-blog-grids">
 			<div class="container">
-				<!-- <div class="one-fifth button-right ">
-			
-						<a href="/board/register"><input type="submit" value="REGISTER"></a>
-				</div> -->
-
+				
+								
+				<div class="one-fifth button-right">
+					<a href="/admin/list"><input type="submit" value="ALL"></a>
+				</div>
+				<div class="one-fifth button-right">	
+					<a href="/admin/list?authType=a"><input type="submit" value="ADMIN"></a>
+				</div>	
+				<div class="one-fifth button-right">	
+					<a href="/admin/list?authType=m"><input type="submit" value="MANAGER"></a>
+				</div>	
+				<div class="one-fifth button-right">	
+					<a href="/admin/list?authType=n"><input type="submit" value="MEMBER"></a>
+				</div>
+				<h4><hr style="border: solid 2px black"></h4>
+				</div>
+				
+	<div class="agile-blog-grids">
 				<c:forEach items="${list }" var="item">
+				<!--mname, tbl_member.mid, email, regdate, updatedate-->
 					<div class="agile-blog-grid">
 						<div class="blog-left-grids">
 
@@ -58,36 +45,27 @@
 							<div class="blog-left-right">
 								<div class="blog-left-right-top">
 									<c:if test="${item.deleteyn eq 'n' }">
-										<h4>[${item.status }]
-											<a href="/board/view${cri.getUrl(item.bno)}" class="view"
-												data-bno="${item.bno}"> <c:out value="${item.title}"></c:out></a>&nbsp;
-											<span><a href="${item.bno }" class="replyBtn"
-												data-display="show">(${item.boardcount })</a></span>
-										</h4>
-									</c:if>
-									<c:if test="${item.deleteyn eq 'm' }">
 										<h4>
-											<c:out value="이 글은 삭제된 글입니다."></c:out>
-											&nbsp; <span><a href="${item.bno }" class="replyBtn"
-												data-display="show">(${item.boardcount })</a></span>
+											<a href="#" class="view" data-bno="${item.mname}"> 
+											&nbsp;<c:out value="${item.mname}"></c:out><br>
+											</a>
 										</h4>
 									</c:if>
 
 									<p>
-										Writer &nbsp;&nbsp;
-										<c:out value="${item.writer }"></c:out>
-										&nbsp;&nbsp;
-										<c:out value="${item.regdate }"></c:out>
+										ID&nbsp; : &nbsp;<c:out value="${item.mid}"></c:out><br>
+										Auth: &nbsp;<c:out value="${item.authList[0].auth}"></c:out><br>
+										JOB HISTORY : &nbsp;&nbsp;
+										&nbsp;regdate = <c:out value="${item.regdate }"></c:out>
+										&nbsp;updatedate = <c:out value="${item.updatedate }"></c:out>
 									</p>
 								</div>
 								<div class="blog-left-right-bottom">
-									<p>
-										<c:out value="${item.bno}"></c:out>
-									</p>
+									
 								</div>
 
 								<div class="replyList">
-									<div id="${item.bno}"></div>
+									
 								</div>
 								<div class="clearfix"></div>
 								<hr style="border: dashed 1px gray">
@@ -100,30 +78,25 @@
 				</c:forEach>
 
 				<!--SEARCH VAR-->
-				<form action="/board/list">
-				<input type="hidden" name="status" value="${cri.status}">
+				<form action="/admin/list">
 					<div class="two-fifth column first">
 						<h2>
 							Search <span>keyword</span>
 						</h2>
 					</div>
 					<div class="one-fifth column">
-						<span class="selection-box"> <select name="type"
-							id="searchType">
+						<span class="selection-box"> <select name="authType"
+							id="authType">
 								<option>----</option>
-								<option value="t">title</option>
-								<option value="c">content</option>
-								<option value="w">writer</option>
-								<option value="tc">title+content</option>
-								<option value="tw">title+writer</option>
-								<option value="cw">content+writer</option>
-								<option value="tcw">title+content+writer</option>
+								<option value="a">ADMIN</option>
+								<option value="m">MANAGER</option>
+								<option value="n">MEMBER</option>
+								<option value="am">ADMIN + MANAGER</option>
+								<option value="an">ADMIN + MEMBER</option>
+								<option value="mn">MANAGER + MEMBER</option>
+								<option value="amn">ADMIN + MANAGER + MEMBER</option>
 						</select>
 						</span>
-					</div>
-					<div class="three-fifth column first">
-						<input type="text" class="text" name="keyword" id="searchKeyword"
-							placeholder="Enter to search the keyword" required="">
 					</div>
 
 					<div class="one-fifth column button-right">
@@ -157,9 +130,9 @@
 
 <script>
 var pagination = $(".pagination");
-var url = "<li><a href='/board/list?";
-var type = "${param.type}";
-var keyword = "${param.keyword}";
+var url = "<li><a href='/admin/list?";
+var authType = "${param.authType}";
+
 
 var replyBtn = $(".replyBtn");
 var replystr = "";
@@ -196,9 +169,9 @@ $(document).ready(function() {
 /* FUNCTION */
 $(document).ready(function () {
 
-	if(type) {
+	if(authType) {
 		bno = $(".view").data("bno");
-		param = "/board/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
+		param = "/admin/view?bno="+bno+"&page="+${pm.page}+"&type=${param.type}&keyword=${param.keyword}";
 		$(".view").attr("href", param);
 	}
 	paging();
@@ -206,8 +179,8 @@ $(document).ready(function () {
 });
 
 function paging() {
-	if(type){
-		url += "type="+type+"&keyword="+keyword+"&"; 
+	if(authType){
+		url += "authType="+authType+"&"; 
 	}
 	if(${pm.prev}){
 		str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
@@ -235,8 +208,9 @@ function makeURI(bno){
 
 
 $(document).ready(function () {
-	$("#type").val("${param.type}");
-	$("#keyword").val("${param.keyword}");
+	
+	$("#authType").val("${param.authType}");
+	
 	
 });
 

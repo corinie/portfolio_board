@@ -1,14 +1,19 @@
 package org.mvc.controller;
 
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.mvc.domain.BoardVO;
 import org.mvc.service.BoardService;
+import org.mvc.service.BoardServiceImpl;
 import org.mvc.service.FileService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,12 +39,12 @@ public class BoardController {
 	private FileService fservice;
 	
 	//CRUD
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasRole('ROLE_MANAGER')")
 	@GetMapping("/register")
 	public void insert(Model model) {
 		log.info("get insert");		
 		
-	
+			
 	}
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
@@ -69,15 +74,18 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/view")
-	public void read(int bno, Criteria cri, Model model) {
+	public void read(int bno, Authentication authentication, Criteria cri, Model model) {
 		log.info("get view");
-		
+		UserDetails user = (UserDetails)authentication.getPrincipal();
+		model.addAttribute("rootWriter", service.rootWriter(bno));
 		model.addAttribute("vo", service.read(bno));
 		model.addAttribute("fileList", fservice.listFile(bno));
 		model.addAttribute("cri", cri);
+		model.addAttribute("user", user);
 		
+//		boolean projectManager = 
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -88,10 +96,12 @@ public class BoardController {
 		model.addAttribute("vo", service.read(bno));
 		model.addAttribute("fileList", fservice.listFile(bno));
 	}
+
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/update")
 	public String updatePost(BoardVO vo, String type, String keyword, int page, String[] uuid, RedirectAttributes rattr) {
 		log.info("post update");
+		log.info(vo);
 		service.update(vo, uuid);	
 		rattr.addFlashAttribute("message", "2");
 		if(type == null) {
@@ -99,6 +109,14 @@ public class BoardController {
 		}else {
 			return "redirect:/board/list?page="+page+"&type="+type+"&keyword="+keyword;
 		}
+	}
+	
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/statusupdate")
+	public String statusUpdate(int bno, String status) {
+		service.allStatus(bno, status);
+		return "redirect:/board/list";
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -109,13 +127,14 @@ public class BoardController {
 		rattr.addFlashAttribute("message", "1");
 		return "redirect:/board/list";
 	}
-	
-	//LIST, SEARCH
-	
+
+	//LIST, SEARCH	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/list")
-	public void list(Criteria cri,Model model) {
+	public void list(Criteria cri, Model model) {
 		List<BoardVO> list = null;
 		PageMaker pm = null;
+		log.info("+++++++++++++++++++++++++"+cri.getStatus());
 		if(cri.getType() == null) {
 			list = service.list(cri);
 			pm = new PageMaker(cri, service.total());
@@ -124,11 +143,10 @@ public class BoardController {
 			list = service.searchList(cri);
 			pm = new PageMaker(cri, service.searchTotal(cri));
 		}
-				
+
 		model.addAttribute("cri",cri);
 		model.addAttribute("pm", pm);
 		model.addAttribute("list", list); 
-		
 		
 	}
 	

@@ -23,6 +23,22 @@ public class BoardMapperTests {
 	@Setter(onMethod_={@Autowired})	
 	private BoardMapper mapper;
 	
+	@Test
+	public void rootWriterTest() {
+		
+		int bno = 120934;
+		
+		log.info(mapper.rootWriter(bno));
+	}
+	
+	@Test
+	public void setStatusOngoing() {
+		int bno = 120924;
+		String status = "ongoing";
+		
+		mapper.updateStatus(bno, status);
+	}
+	
 	/*@Test
 	public void rootinsert() {
 		for(int i = 0 ; i < 100000 ; i++) {

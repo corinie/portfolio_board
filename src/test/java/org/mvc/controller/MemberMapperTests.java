@@ -1,10 +1,15 @@
 package org.mvc.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mvc.domain.AuthVO;
+import org.mvc.domain.BoardVO;
 import org.mvc.domain.MemberVO;
 import org.mvc.mapper.MemberMapper;
+import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,10 +31,10 @@ public class MemberMapperTests {
      private MemberMapper mapper;
 
 
-     @Transactional //DB연동시 Transactional 상황 처리
+     //DB연동시 Transactional 상황 처리
      @Test
      public void testInsert() {
-           for(int i = 0; i < 100; i++) {
+           for(int i = 100; i < 200; i++) {
                 MemberVO vo = new MemberVO();
                
                 vo.setMid("user" + i);
@@ -72,5 +77,25 @@ public class MemberMapperTests {
 		
 		log.info(mapper.readMember("user0"));
 		
+	}
+	
+	@Test
+	public void listMember() {
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		Criteria cri = new Criteria();
+		cri.setPage(1);
+		
+		log.info(mapper.listMember(cri));
+	}
+	
+	
+	@Test
+	public void searchList() {
+		
+		Criteria cri = new Criteria();
+		cri.setPage(1);
+		cri.setType("a");
+		
+		mapper.searchTotal(cri);
 	}
 }

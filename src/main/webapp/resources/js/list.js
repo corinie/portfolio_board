@@ -34,7 +34,7 @@ function getJson(bno){
 				+						"<div class='blog-left-right-top'>";
 				
 				if(this.deleteyn == 'n'){
-					replystr += "<h4><a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
+					replystr += "<h4>["+this.status+"] <a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
 					+								"<span><a href='"+this.bno+"' class='replyBtn' data-display='show'>("+this.boardcount+")</a></span>"
 					+							"</h4>";
 				}else if(this.deleteyn == 'm'){

@@ -42,6 +42,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<script type="text/javascript">
 		$(document).ready( function() {
 			$("#immersive_slider").immersive_slider({

@@ -417,6 +417,7 @@ ul.dropdown-menu {
 	width: 14.4%;
 	padding-right:0.6em;
 }
+
 .column {
 	float: left;
 	margin: 0 0 0 1%;
@@ -425,6 +426,8 @@ ul.dropdown-menu {
 .button-right {
 	float: right;
 	position: relative;
+	
+	
 }
 .selection-box {
 	display: block;
@@ -487,6 +490,7 @@ ul.dropdown-menu {
     -moz-appearance: none;
 }
 .one-fifth input[type="submit"]{
+	width: 150px;
 	padding:14px 40px;
 }
 .two-fifth h2{
@@ -3424,5 +3428,9 @@ i.fa.fa-pencil{
 	top: 0;
 	left: 0;
 	display: flex;	
+}
+
+#message-list{
+	text-align: center; 
 }
 

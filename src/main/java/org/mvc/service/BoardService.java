@@ -10,6 +10,7 @@ public interface BoardService {
 	public void rootInsert(BoardVO vo, String[] uuid);
 	public void branchInsert(BoardVO vo, int bno, String[] uuid);
 	public BoardVO read(int bno);
+	public String rootWriter(int bno);
 	public int delete(int bno, int pbno);
 	public int update(BoardVO vo, String[] uuid);
 	
@@ -21,4 +22,5 @@ public interface BoardService {
 	
 	public List<BoardVO> replyList(int bno);
 	
+	public void allStatus(int bno, String status);
 }

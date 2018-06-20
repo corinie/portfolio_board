@@ -11,12 +11,16 @@
 	</insert>
 
 	<insert id="branchInsert">
-		insert into tbl_board (bno, rbno, pbno, depth, title, writer, content)
-			values(seq_board.nextval, #{rbno}, #{bno}, #{depth}+1, #{title}, #{writer}, #{content})
+		insert into tbl_board (bno, rbno, pbno, depth, title, writer, content, status)
+			values(seq_board.nextval, #{rbno}, #{bno}, #{depth}+1, #{title}, #{writer}, #{content}, 'standby')
 	</insert>
 
 	<select id="read" resultType="org.mvc.domain.BoardVO">
 		select * from tbl_board where bno = #{bno}
+	</select>
+	
+	<select id="rootWriter" resultType="string">
+		select writer from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})
 	</select>
 
 	<update id="update">
@@ -43,10 +47,10 @@
 			select * from
 				(
 				select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, 
-					title, content, writer, deleteyn, regdate, updatedate from 
+					title, content, writer, status, deleteyn, regdate, updatedate from 
 					(
 					select /*+INDEX_DESC(tbl_board pk_board) */ * 
-						from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0
+						from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0 and status = #{status}
 					)
 				) <![CDATA[ where rn <= (#{page} * 5)
 			) where rn > (#{page} - 1) * 5 ]]> 
@@ -65,9 +69,9 @@
 			(
 			select * from 
 				(
-				select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, title, content, writer, deleteyn, regdate, updatedate  from 
+				select rownum rn, bno, pbno, rbno, depth, hit,status, replycount, boardcount, title, content, writer, deleteyn, regdate, updatedate  from 
 					(
-					select /*+INDEX_DESC(tbl_board pk_board) */ * from tbl_board where deleteyn = 'n' and depth = 0
+					select /*+INDEX_DESC(tbl_board pk_board) */ * from tbl_board where deleteyn = 'n' and depth = 0 and status = #{status}
 					) 
 		<include refid="searchoption" />
     			)<![CDATA[ where rn <= (#{page}* 5)
@@ -104,7 +108,29 @@
 		select * from tbl_board where pbno = #{bno} and (deleteyn = 'n' or deleteyn = 'm')
 			start with depth = 0 connect by NOCYCLE prior bno = pbno order siblings by rbno desc, bno asc
 	</select>
-
+	
+	<!-- rootStatus  -->
+	<update id="updateStatus">
+		update tbl_board set status = #{status} where bno = #{bno}
+	</update>
+	
+	<update id="updateAllStatus">
+		update tbl_board set status = 'refuse' where bno = (
+		select bno from tbl_board 
+		where rbno = (select rbno from tbl_board where bno = #{bno}) 
+		and depth = (select depth from tbl_board where bno = #{bno})
+		and bno != #{bno})
+	</update>
+	
+	<update id="updateParentStatus">
+		update tbl_board set status = 'choice' where bno = (select bno from (
+		select * from tbl_board where bno = (select pbno from tbl_board where bno = #{bno})
+		) board where board.bno != board.rbno)
+	</update>
+	
+	<update id="updateRootStatus">
+		update tbl_board set status = 'completion' where bno = (select rbno from tbl_board where bno = #{bno})
+	</update>
 	<!--SEARCH OPTION -->
 	<sql id="searchoption">
 	
@@ -123,7 +149,4 @@
 		</where>
 	</sql>
 	
-	
-
-
 </mapper>

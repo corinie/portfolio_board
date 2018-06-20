@@ -15,6 +15,7 @@ public class Criteria {
 	private int page = 1;
 	private String keyword;
 	private String type;
+	private String status;
 	
 	public String[] getArr() {
 		
@@ -28,6 +29,7 @@ public class Criteria {
 	
 	public Criteria() {
 		this.page = 1;
+		this.status = "ongoing";
 	}
 	
 	public Criteria(int page) {
@@ -42,12 +44,36 @@ public class Criteria {
 		UriComponents uri;
 		if(this.type != null) {
 			uri = UriComponentsBuilder.newInstance()
-					.path("").queryParam("page", this.page).queryParam("type", this.type).queryParam("keyword", this.keyword).queryParam("bno", bno).build();
+					.path("").queryParam("status", this.status).queryParam("page", this.page).queryParam("type", this.type).queryParam("keyword", this.keyword).queryParam("bno", bno).build();
 		}else {
 			uri = UriComponentsBuilder.newInstance()
-					.path("").queryParam("page", this.page).queryParam("bno", bno).build();
+					.path("").queryParam("status", this.status).queryParam("page", this.page).queryParam("bno", bno).build();
 		}
 		return uri.toUriString();	
 	}
+	
+	//auth type 
+		private String authType;
+		public String[] getAuthArr() {
+			if(this.authType == null) {
+				return null;
+			}
+			
+			String[] authTypes =  this.authType.split("");
+			return authTypes;
+		}
+		
+		public String getAuthUrl() {
+			UriComponents uri;
+			if(this.type != null) {
+				uri = UriComponentsBuilder.newInstance()
+						.path("").queryParam("page", this.page).queryParam("authType", this.authType).build();
+			}else {
+				uri = UriComponentsBuilder.newInstance()
+						.path("").queryParam("page", this.page).build();
+			}
+			return uri.toUriString();	
+		}
+
 
 }

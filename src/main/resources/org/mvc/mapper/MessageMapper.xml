@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mvc.mapper.MessageMapper">
+
+<insert id="confirmFinalMessage">
+	insert into tbl_message (mno, sender, message, title)
+	values (seq_message.nextval, (select writer from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})), (select title from tbl_board where bno = #{bno})||'프로젝트가 완료되었습니다.', (select title from tbl_board where bno = #{bno})||'프로젝트가 완료되었습니다.')
+</insert>
+
+<insert id="confirmFinalReceiver">
+	insert into tbl_message_receiver (rmno, mno, receiver)
+	select seq_message_receiver.nextval rmno, seq_message.currval mno, receiver from
+	(select min(writer) receiver from tbl_board where rbno = (select rbno from tbl_board where bno = #{rbno}) group by writer)
+</insert>
+
+<insert id="confirmMessage">
+	insert into tbl_message (mno, sender, message, title)
+	values (seq_message.nextval, (select writer from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})), (select title from tbl_board where bno = #{bno})||'보고가 통과되었습니다.', (select title from tbl_board where bno = #{bno})||'보고가 통과되었습니다.')
+</insert>
+
+<insert id="confirmReceiver">
+	insert into tbl_message_receiver (rmno, mno, receiver)
+	values (SEQ_MESSAGE_RECEIVER.NEXTVAL, seq_message.currval, (select writer from tbl_board where bno = #{bno}))
+</insert>
+
+<insert id="refuseMessage">
+	insert into tbl_message (mno, sender, message, title)
+	values (seq_message.nextval, (select writer from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})), (select title from tbl_board where bno = #{bno})||'보고가 반려되었습니다.', (select title from tbl_board where bno = #{bno})||'보고가 반려되었습니다.')
+</insert>
+
+<select id="getList" resultType="org.mvc.domain.MessageVO">
+	select rn, rmno, mno, title, message, sender, receiver, deleteyn, status, regdate, updatedate from
+	(select rn, rmno, mno, title, message, sender, receiver, deleteyn, status, regdate, updatedate from
+	(select /*+INDEX_DESC(r pk_message_receiver)INDEX_DESC(m pk_message)*/ rownum rn, r.RMNO rmno, r.mno mno, m.title title, m.message message, m.sender sender, r.RECEIVER receiver, r.DELETEYN deleteyn, r.status status, r.REGDATE regdate, r.UPDATEDATE updatedate 
+	from tbl_message m inner join tbl_message_receiver r on m.mno = r.mno where r.receiver = #{receiver} and deleteyn = 'n')
+	<![CDATA[where rn <= (#{cri.page} * 10))
+	where rn > (#{cri.page} -1 )*10]]>
+</select>
+
+<select id="read" resultType="org.mvc.domain.MessageVO">
+	select r.RMNO rmno, r.mno mno, m.title title, m.message message, m.sender sender, r.RECEIVER receiver, r.DELETEYN deleteyn, r.status status, r.REGDATE regdate, r.UPDATEDATE updatedate 
+	from tbl_message m inner join tbl_message_receiver r on m.mno = r.mno where r.rmno = #{rmno}
+</select>
+
+<update id="updateStatus">
+	update tbl_message_receiver set status = 'y' where rmno = #{rmno}
+</update>
+
+<update id="delete">
+	update tbl_message_receiver set deleteyn = 'y' where rmno = #{rmno}
+</update>
+
+<select id="total" resultType="int">
+	select count(*) from tbl_message m inner join tbl_message_receiver r on m.mno = r.mno where r.receiver = #{receiver} and deleteyn = 'n' 
+</select>
+
+</mapper>

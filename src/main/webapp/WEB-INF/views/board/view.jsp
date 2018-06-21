@@ -22,12 +22,12 @@
 <div class="blog">
 	<div class="container">
 	<form action='/board/statusupdate' method="post">
-		<c:if test="${vo.rbno eq vo.bno and user.username eq vo.writer}">
+		<c:if test="${vo.rbno eq vo.bno and user.username eq vo.writer and vo.status ne 'pause'}">
 			<input type="radio" name="status" value="pause" > 중지
 			<button>설정</button>
 		</c:if>
 		<c:forEach items="${user.authorities}" var="auth">
-			<c:if test="${vo.rbno ne vo.bno and auth eq 'ROLE_MANAGER' and rootWriter eq user.username}">
+			<c:if test="${vo.rbno ne vo.bno and auth eq 'ROLE_MANAGER' and rootWriter eq user.username and vo.status ne 'pause'}">
 			<input type="radio" name="status" value="refuse"> 반려
 			<input type="radio" name="status" value="ongoing"> 진행
 			<input type="radio" name="status" value="completion"> 최종

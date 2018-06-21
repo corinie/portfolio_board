@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.mvc.domain.BoardVO;
+import org.mvc.domain.MemberVO;
 import org.mvc.util.Criteria;
 
 public interface BoardMapper {
@@ -19,7 +20,7 @@ public interface BoardMapper {
 	public int boardInsertCount(int bno);
 	
 	public List<BoardVO> list(Criteria cri);
-	public int total();
+	public int total(String status);
 	
 	public List<BoardVO> searchList(Criteria cri);
 	public int searchTotal(Criteria cri);
@@ -30,4 +31,5 @@ public interface BoardMapper {
 	public void updateAllStatus(int bno);
 	public void updateParentStatus(int bno);
 	public void updateRootStatus(int bno);
-}
+	public void updatePauseStatus(int bno);
+	}

@@ -2,13 +2,18 @@ package org.mvc.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mvc.domain.BoardVO;
+import org.mvc.domain.MemberVO;
 import org.mvc.mapper.BoardMapper;
 import org.mvc.util.Criteria;
+import org.mvc.util.ExcelRead;
+import org.mvc.util.ReadOption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -22,7 +27,34 @@ public class BoardMapperTests {
 
 	@Setter(onMethod_={@Autowired})	
 	private BoardMapper mapper;
+
 	
+/*	@Test
+	public void insertMemberTest() {
+
+		ReadOption ro = new ReadOption();
+		ro.setFilePath("C:/zzz/webbook.xlsx");
+	    ro.setOutputColumns("A", "B", "C", "D");
+	    ro.setStartRow(1);
+	    ExcelRead excelRead = new ExcelRead();
+	    List<Map<String, String>> result = excelRead.read(ro);
+	    MemberVO vo = new MemberVO();
+		int i = 1;
+	    for(Map<String, String> map : result) {
+	    	i += 1;
+	    	System.out.println(map.get("A"));
+	        System.out.println(map.get("B"));
+	        System.out.println(map.get("C"));
+	        System.out.println(map.get("D"));
+	    	vo.setMname(map.get("A"));
+	    	vo.setMid(map.get("B") + i);
+	    	vo.setMpw(map.get("C"));
+	    	vo.setEmail(map.get("D"));
+	    	log.info(vo);
+	    	mapper.insertMember(vo);
+	    }
+	}*/
+
 	@Test
 	public void rootWriterTest() {
 		
@@ -99,7 +131,7 @@ public class BoardMapperTests {
 	
 	@Test
 	public void total() {
-		int count = mapper.total();
+		int count = mapper.total("pause");
 		log.info(count);
 	}
 	

@@ -14,27 +14,40 @@
 <div class="blog">
 	<div class="container">
 		<div class="agile-blog-grids">
+			<p style="color: red;">* 새로운 회원 데이터는 확장자 엑셀(.xlsx) 파일만 올려주세요 *</p>
+			<form method="post" enctype="multipart/form-data"
+				action="/admin/insert">
+				<input type="hidden" name="${_csrf.parameterName }"
+					value="${_csrf.token }"> <input type="file"
+					name='uploadFile' style="display: inline">
+				<button class="btn1">전송</button>
+
+			</form>
+
 			<div class="container">
-				
-								
 				<div class="one-fifth button-right">
 					<a href="/admin/list"><input type="submit" value="ALL"></a>
 				</div>
-				<div class="one-fifth button-right">	
-					<a href="/admin/list?authType=a"><input type="submit" value="ADMIN"></a>
-				</div>	
-				<div class="one-fifth button-right">	
-					<a href="/admin/list?authType=m"><input type="submit" value="MANAGER"></a>
-				</div>	
-				<div class="one-fifth button-right">	
-					<a href="/admin/list?authType=n"><input type="submit" value="MEMBER"></a>
+				<div class="one-fifth button-right">
+					<a href="/admin/list?authType=a"><input type="submit"
+						value="ADMIN"></a>
 				</div>
-				<h4><hr style="border: solid 2px black"></h4>
+				<div class="one-fifth button-right">
+					<a href="/admin/list?authType=m"><input type="submit"
+						value="MANAGER"></a>
 				</div>
-				
-	<div class="agile-blog-grids">
+				<div class="one-fifth button-right">
+					<a href="/admin/list?authType=n"><input type="submit"
+						value="MEMBER"></a>
+				</div>
+				<h4>
+					<hr style="border: solid 2px black">
+				</h4>
+			</div>
+
+			<div class="agile-blog-grids">
 				<c:forEach items="${list }" var="item">
-				<!--mname, tbl_member.mid, email, regdate, updatedate-->
+					<!--mname, tbl_member.mid, email, regdate, updatedate-->
 					<div class="agile-blog-grid">
 						<div class="blog-left-grids">
 
@@ -46,27 +59,26 @@
 								<div class="blog-left-right-top">
 									<c:if test="${item.deleteyn eq 'n' }">
 										<h4>
-											<a href="#" class="view" data-bno="${item.mname}"> 
-											&nbsp;<c:out value="${item.mname}"></c:out><br>
+											<a href="#" class="view" data-bno="${item.mname}"> &nbsp;<c:out
+													value="${item.mname}"></c:out><br>
 											</a>
 										</h4>
 									</c:if>
 
 									<p>
-										ID&nbsp; : &nbsp;<c:out value="${item.mid}"></c:out><br>
-										Auth: &nbsp;<c:out value="${item.authList[0].auth}"></c:out><br>
-										JOB HISTORY : &nbsp;&nbsp;
-										&nbsp;regdate = <c:out value="${item.regdate }"></c:out>
-										&nbsp;updatedate = <c:out value="${item.updatedate }"></c:out>
+										ID&nbsp; : &nbsp;
+										<c:out value="${item.mid}"></c:out>
+										<br> Auth: &nbsp;
+										<c:out value="${item.authList[0].auth}"></c:out>
+										<br> JOB HISTORY : &nbsp;&nbsp; &nbsp;regdate =
+										<c:out value="${item.regdate }"></c:out>
+										&nbsp;updatedate =
+										<c:out value="${item.updatedate }"></c:out>
 									</p>
 								</div>
-								<div class="blog-left-right-bottom">
-									
-								</div>
+								<div class="blog-left-right-bottom"></div>
 
-								<div class="replyList">
-									
-								</div>
+								<div class="replyList"></div>
 								<div class="clearfix"></div>
 								<hr style="border: dashed 1px gray">
 							</div>

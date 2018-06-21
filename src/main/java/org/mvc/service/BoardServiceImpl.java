@@ -3,6 +3,7 @@ package org.mvc.service;
 import java.util.List;
 
 import org.mvc.domain.BoardVO;
+import org.mvc.domain.MemberVO;
 import org.mvc.mapper.BoardMapper;
 import org.mvc.mapper.CommentFileMapper;
 import org.mvc.mapper.CommentMapper;
@@ -109,18 +110,23 @@ public class BoardServiceImpl implements BoardService {
 			mmapper.refuseMessage(bno);
 			mmapper.confirmReceiver(bno);
 		}
+		if(status.equals("pause")) {
+			mapper.updatePauseStatus(bno);
+			mmapper.pauseMessage(bno);
+			mmapper.pauseReceiver(bno);
+		}
 
 	}
 	
-
+	
 	@Override
 	public List<BoardVO> list(Criteria cri) {
 		return mapper.list(cri);
 	}
 	
 	@Override
-	public int total() {
-		return mapper.total();
+	public int total(String status) {
+		return mapper.total(status);
 	}
 
 	@Override

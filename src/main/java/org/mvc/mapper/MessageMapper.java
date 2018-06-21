@@ -11,6 +11,9 @@ public interface MessageMapper {
 	public void confirmFinalMessage(int bno);
 	public void confirmFinalReceiver(int rbno);
 	
+	public void pauseMessage(int bno);
+	public void pauseReceiver(int rbno);
+	
 	public void confirmMessage(int bno);
 	public void confirmReceiver(int bno);
 	

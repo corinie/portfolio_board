@@ -37,7 +37,6 @@ public class CommentController {
 	public ResponseEntity<String> rootInsert(@RequestBody CommentVO vo){
 		ResponseEntity<String> entity = null;
 		
-		
 		try {
 			service.rootInsert(vo);
 			entity = new ResponseEntity<String>("rsuccess", HttpStatus.OK);

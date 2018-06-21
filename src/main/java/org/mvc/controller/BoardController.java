@@ -101,7 +101,7 @@ public class BoardController {
 	@PostMapping("/update")
 	public String updatePost(BoardVO vo, String type, String keyword, int page, String[] uuid, RedirectAttributes rattr) {
 		log.info("post update");
-		log.info(vo);
+		
 		service.update(vo, uuid);	
 		rattr.addFlashAttribute("message", "2");
 		if(type == null) {
@@ -137,7 +137,7 @@ public class BoardController {
 		log.info("+++++++++++++++++++++++++"+cri.getStatus());
 		if(cri.getType() == null) {
 			list = service.list(cri);
-			pm = new PageMaker(cri, service.total());
+			pm = new PageMaker(cri, service.total(cri.getStatus()));
 		}
 		else if(cri.getType() != null) {
 			list = service.searchList(cri);

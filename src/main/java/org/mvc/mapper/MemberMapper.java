@@ -12,6 +12,7 @@ public interface MemberMapper {
 	public MemberVO readMember(String mid);
 	
 	public void setAuth(AuthVO vo);
+	public void insertMember(MemberVO vo);
 	
 	public List<MemberVO> listMember(Criteria cri);
 	public int total();

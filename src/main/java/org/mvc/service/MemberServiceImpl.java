@@ -2,11 +2,13 @@ package org.mvc.service;
 
 import java.util.List;
 
+import org.mvc.domain.AuthVO;
 import org.mvc.domain.MemberVO;
 import org.mvc.mapper.MemberMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -27,6 +29,19 @@ public class MemberServiceImpl implements MemberService {
 	public int total() {
 		return mapper.total();
 	}
+	
+	@Override
+	public void setAuth(AuthVO vo) {
+		mapper.setAuth(vo);
+	}
+	
+	@Transactional
+	@Override
+	public void insertMember(MemberVO vo, AuthVO avo) {
+		mapper.insertMember(vo);
+		mapper.setAuth(avo);
+	}
+
 	
 	@Override
 	public List<MemberVO> searchList(Criteria cri){

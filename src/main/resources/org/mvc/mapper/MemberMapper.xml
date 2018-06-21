@@ -9,9 +9,12 @@
 </insert>
 	
 <insert id = "setAuth">
-	insert into tbl_member_auth (mid, auth) values(#{mid}, #{auth})
+	insert into tbl_member_auth (mid, auth) values (#{mid}, #{auth})
 </insert>
 
+<insert id="insertMember">
+	insert into tbl_member(mname, mid, mpw, email) values(#{mname}, #{mid}, #{mpw}, #{email})
+</insert>
 
 <select id="readMember" resultMap="memberMap"> 
 	select * from tbl_member inner join tbl_member_auth 

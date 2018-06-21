@@ -10,141 +10,136 @@
 	</h2>
 </div>
 
-<!-- //about-heading -->
-<!-- blog -->
-	<!-- 	<h1>asssddddaa</h1>
-		  <h1><a href="/board/list?status=pause"><span class="label label-danger">PAUSE</span></a></h1>
-	
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=ongoing"><input type="submit" name="status" value="ongoing"></a>
-		</div>
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=completion"><input type="submit" name="status" value="completion"></a>
-		</div> -->
-		<div class="container">
-		<a href="/board/list?status=pause"><span class="label label-danger">PAUSE</span></a>
-	
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=ongoing"><input type="submit" name="status" value="ongoing"></a>
-		</div>
-		<div class="one-fifth column button-right">
-		  <a href="/board/list?status=completion"><input type="submit" name="status" value="completion"></a>
-		</div>
-	
-		<div class="one-fifth button-right ">
-		  <a href="/board/register"><input type="submit" value="REGISTER"></a>
-		</div>
-		
-		</div>
 <div class="blog">
-		<!-- 검색조건-->
-		
-		<div class="container">
+	<!-- 검색조건-->
+	
+	<div class="container">
 		<div class="agile-blog-grids">
 			<div class="container">
-				<!-- <div class="one-fifth button-right ">
+				<div class="one-fifth button-right">
+					<a href="/board/register"><input type="submit" value="REGISTER" class="label"></a>
+				</div>
+
+				<div class="one-fifth button-right">
+					<a href="/board/list?status=completion"><input type="submit" name="status" value="completion" class="label" style="background: #5B5AFF"></a>
+				</div>
+				<div class="one-fifth button-right">
+					<a href="/board/list?status=pause"><input type="submit"
+						name="status" value="pause" class="label" style="background: #5B5AFF"></a>
+				</div>
+				<div class="one-fifth button-right">
+					<a href="/board/list?status=ongoing"><input type="submit"
+						name="status" value="ongoing" class="label" style="background: #5B5AFF"></a>
+				</div>
+				<h4>
+					<hr style="border: solid 2px grey">
+				</h4>
+			</div>
+			<!-- <div class="one-fifth button-right ">
 			
 						<a href="/board/register"><input type="submit" value="REGISTER"></a>
 				</div> -->
 
-				<c:forEach items="${list }" var="item">
-					<div class="agile-blog-grid">
-						<div class="blog-left-grids">
+			<c:forEach items="${list }" var="item">
+				<div class="agile-blog-grid">
+					<div class="blog-left-grids">
 
-							<div class="blog-left-left">
-								<i class="fa fa-pencil" aria-hidden="true"></i>
+						<div class="blog-left-left">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</div>
+
+						<div class="blog-left-right">
+							<div class="blog-left-right-top">
+								<c:if test="${item.deleteyn eq 'n' }">
+									<h4>
+										[${item.status }] <a href="/board/view${cri.getUrl(item.bno)}"
+											class="view" data-bno="${item.bno}"> <c:out
+												value="${item.title}"></c:out></a>&nbsp; <span><a
+											href="${item.bno }" class="replyBtn" data-display="show">(${item.boardcount })</a></span>
+									</h4>
+								</c:if>
+								<c:if test="${item.deleteyn eq 'm' }">
+									<h4>
+										<c:out value="이 글은 삭제된 글입니다."></c:out>
+										&nbsp; <span><a href="${item.bno }" class="replyBtn"
+											data-display="show">(${item.boardcount })</a></span>
+									</h4>
+								</c:if>
+
+								<p>
+									Writer &nbsp;&nbsp;
+									<c:out value="${item.writer }"></c:out>
+									&nbsp;&nbsp;
+									<c:out value="${item.regdate }"></c:out>
+								</p>
+							</div>
+							<div class="blog-left-right-bottom">
+								<p>
+									<c:out value="${item.bno}"></c:out>
+								</p>
 							</div>
 
-							<div class="blog-left-right">
-								<div class="blog-left-right-top">
-									<c:if test="${item.deleteyn eq 'n' }">
-										<h4>[${item.status }]
-											<a href="/board/view${cri.getUrl(item.bno)}" class="view"
-												data-bno="${item.bno}"> <c:out value="${item.title}"></c:out></a>&nbsp;
-											<span><a href="${item.bno }" class="replyBtn"
-												data-display="show">(${item.boardcount })</a></span>
-										</h4>
-									</c:if>
-									<c:if test="${item.deleteyn eq 'm' }">
-										<h4>
-											<c:out value="이 글은 삭제된 글입니다."></c:out>
-											&nbsp; <span><a href="${item.bno }" class="replyBtn"
-												data-display="show">(${item.boardcount })</a></span>
-										</h4>
-									</c:if>
-
-									<p>
-										Writer &nbsp;&nbsp;
-										<c:out value="${item.writer }"></c:out>
-										&nbsp;&nbsp;
-										<c:out value="${item.regdate }"></c:out>
-									</p>
-								</div>
-								<div class="blog-left-right-bottom">
-									<p>
-										<c:out value="${item.bno}"></c:out>
-									</p>
-								</div>
-
-								<div class="replyList">
-									<div id="${item.bno}"></div>
-								</div>
-								<div class="clearfix"></div>
-								<hr style="border: dashed 1px gray">
+							<div class="replyList">
+								<div id="${item.bno}"></div>
 							</div>
-
+							<div class="clearfix"></div>
+							<hr style="border: dashed 1px gray">
 						</div>
 
 					</div>
 
-				</c:forEach>
+				</div>
 
-				<!--SEARCH VAR-->
-				<form action="/board/list">
+			</c:forEach>
+
+			<!--SEARCH VAR-->
+			<form action="/board/list">
 				<input type="hidden" name="status" value="${cri.status}">
-					<div class="two-fifth column first">
-						<h2>
-							Search <span>keyword</span>
-						</h2>
-					</div>
-					<div class="one-fifth column">
-						<span class="selection-box"> <select name="type"
-							id="searchType">
-								<option>----</option>
-								<option value="t">title</option>
-								<option value="c">content</option>
-								<option value="w">writer</option>
-								<option value="tc">title+content</option>
-								<option value="tw">title+writer</option>
-								<option value="cw">content+writer</option>
-								<option value="tcw">title+content+writer</option>
-						</select>
-						</span>
-					</div>
-					<div class="three-fifth column first">
-						<input type="text" class="text" name="keyword" id="searchKeyword"
-							placeholder="Enter to search the keyword" required="">
-					</div>
+				<div class="two-fifth column first">
+					<h2>
+						Search <span>keyword</span>
+					</h2>
+				</div>
+				<div class="one-fifth column">
+					<span class="selection-box"> <select name="type"
+						id="searchType">
+							<option>----</option>
+							<option value="t">title</option>
+							<option value="c">content</option>
+							<option value="w">writer</option>
+							<option value="tc">title+content</option>
+							<option value="tw">title+writer</option>
+							<option value="cw">content+writer</option>
+							<option value="tcw">title+content+writer</option>
+					</select>
+					</span>
+				</div>
+				<div class="three-fifth column first">
+					<input type="text" class="text" name="keyword" id="searchKeyword"
+						placeholder="Enter to search the keyword" required="">
+				</div>
 
-					<div class="one-fifth column button-right">
-						<input type="submit" value="Search">
-					</div>
-					<div class="clearfix"></div>
-				</form>
-				<!--SEARCH VAR END-->
+				<div class="one-fifth column button-right">
+					<input type="submit" value="Search">
+				</div>
+				<div class="clearfix"></div>
+			</form>
+			<!--SEARCH VAR END-->
 
-				<!--PAGINATION-->
+			<!--PAGINATION-->
+			<div align="center">
 				<nav>
 					<ul class="pagination">
 
 					</ul>
 				</nav>
-				<!--PAGINATION END-->
 			</div>
-			<div class="col-md-4 agile-blog-grid-right"></div>
-			<div class="clearfix"></div>
+			<!--PAGINATION END-->
 		</div>
+		<div class="col-md-4 agile-blog-grid-right"></div>
+		<div class="clearfix"></div>
 	</div>
+</div>
 </div>
 
 

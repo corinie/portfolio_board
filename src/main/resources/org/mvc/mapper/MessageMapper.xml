@@ -15,6 +15,17 @@
 	(select min(writer) receiver from tbl_board where rbno = (select rbno from tbl_board where bno = #{rbno}) group by writer)
 </insert>
 
+<insert id="pauseMessage">
+	insert into tbl_message (mno, sender, message, title)
+	values (seq_message.nextval, (select writer from tbl_board where bno = #{bno}), (select title from tbl_board where bno = #{bno})||'프로젝트가 중지되었습니다.', (select title from tbl_board where bno = #{bno})||'프로젝트가 중지되었습니다.')
+</insert>
+
+<insert id="pauseReceiver">
+	insert into tbl_message_receiver (rmno, mno, receiver)
+	select seq_message_receiver.nextval rmno, seq_message.currval mno, receiver from
+	(select min(writer) receiver from tbl_board where rbno = #{rbno} group by writer)
+</insert>
+
 <insert id="confirmMessage">
 	insert into tbl_message (mno, sender, message, title)
 	values (seq_message.nextval, (select writer from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})), (select title from tbl_board where bno = #{bno})||'보고가 통과되었습니다.', (select title from tbl_board where bno = #{bno})||'보고가 통과되었습니다.')

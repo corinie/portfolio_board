@@ -148,6 +148,8 @@ public class BoardController {
 		model.addAttribute("pm", pm);
 		model.addAttribute("list", list); 
 		
+		log.info(list);
+		
 	}
 	
 	@GetMapping("/about")

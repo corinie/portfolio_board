@@ -1,7 +1,87 @@
 <%@ include file="../includes/header.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-	
+	<!-- about -->
+	<div class="about">
+		<!-- team -->
+		<div class="team">
+			<div class="container">
+				<div class="w3-banner-bottom-heading">
+					<h3>Our <span>Team</span></h3>
+				</div>
+				<div class="team-grids">
+					<!-- Bottom to top-->
+						<div class="col-sm-4 team-grid">
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								<div class="img"><img src="/resources/images/t1.jpg" alt="img" /></div>
+								<div class="info">
+									
+									
+								</div>
+							</div>
+							<!-- end normal -->
+						</div>
+						<div class="col-sm-4 team-grid">
+							<!-- normal -->
+							<div class="ih-item circle  bottom_to_top">
+								<div class="img"><img src="/resources/images/t2.jpg" alt="img" /></div>
+								<div class="info">
+									
+									
+								</div>
+							</div>
+							<!-- end normal -->
+						</div>
+						<div class="col-sm-4 team-grid">
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								<div class="img"><img src="/resources/images/t3.jpg" alt="img" /></div>
+								<div class="info">
+									
+									
+								</div>
+							</div>
+							<!-- end normal -->
+						</div>
+						<div class="col-sm-4 team-grid">
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								<div class="img"><img src="/resources/images/t4.jpg" alt="img" /></div>
+								<div class="info">
+									
+									
+								</div>
+							</div>
+							<!-- end normal -->
+						</div>
+						<div class="col-sm-4 team-grid">
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								<div class="img"><img src="/resources/images/t5.jpg" alt="img" /></div>
+								<div class="info">
+									
+									
+								</div>
+							</div>
+							<!-- end normal -->
+						</div>
+						<div class="col-sm-4 team-grid">
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								<div class="img"><img src="/resources/images/t6.jpg" alt="img" /></div>
+								<div class="info">
+									
+								</div>
+							</div>
+							<!-- end normal -->
+						</div>
+						<div class="clearfix"> </div>
+					<!-- end Bottom to top-->
+				</div>
+			</div>
+		</div>
+		<!-- //team -->
 	<!-- banner -->
 	<div class="main">
 		<div class="page_container">
@@ -53,272 +133,7 @@
 	</script>
 	
 	
-	<!-- special -->
-	<div class="special">
-		<div class="container">
-			<div class="w3-banner-bottom-heading">
-				<h3>Special Introductory <span>Offers</span></h3>
-			</div>
-			<div class="wthree-special-grid">
-				<div class="flipster">
-				  <ul>
-					<li>
-						<div class="pricing">
-							<div class="pricing-top green-top">
-								<h3>Business</h3>
-								<p>$50/month</p>
-							</div>
-							<div class="pricing-bottom">
-								<div class="pricing-bottom-top">
-									<p>1 Website</p>
-									<p>1 Year Updates</p>
-									<p>1 Year Email Support</p>
-								</div>
-								<div class="pricing-bottom-bottom">
-									<p><span>Unlimited</span> Email Addresses</p>
-									<p><span>65GB </span> of Storage</p>
-									<p><span>75</span> Databases</p>  
-									<p><span>25</span> Domains</p>
-									<p class="text"><span>24/7</span> Unlimited Support</p>
-								</div>
-								<div class="buy-button">
-									<a href="plans.html">Read More</a>
-								</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="pricing">
-							<div class="pricing-top blue-top">
-								<h3>Corporate</h3>
-								<p>$70/month</p>
-							</div>
-							<div class="pricing-bottom">
-								<div class="pricing-bottom-top">
-									<p>1 Website</p>
-									<p>1 Year Updates</p>
-									<p>1 Year Email Support</p>
-								</div>
-								<div class="pricing-bottom-bottom">
-									<p><span>Unlimited</span> Email Addresses</p>
-									<p><span>85GB </span> of Storage</p>
-									<p><span>65</span> Databases</p>  
-									<p><span>30</span> Domains</p>
-									<p class="text"><span>24/7</span> Unlimited Support</p>
-								</div>
-								<div class="buy-button">
-									<a href="plans.html">Read More</a>
-								</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="pricing">
-							<div class="pricing-top">
-								<h3>Personal</h3>
-								<p>$35/month</p>
-							</div>
-							<div class="pricing-bottom">
-								<div class="pricing-bottom-top">
-									<p>1 Website</p>
-									<p>1 Year Updates</p>
-									<p>1 Year Email Support</p>
-								</div>
-								<div class="pricing-bottom-bottom">
-									<p><span>Unlimited</span> Email Addresses</p>
-									<p><span>50GB </span> of Storage</p>
-									<p><span>55</span> Databases</p>  
-									<p><span>21</span> Domains</p>
-									<p class="text"><span>24/7</span> Unlimited Support</p>
-								</div>
-								<div class="buy-button">
-									<a href="plans.html">Read More</a>
-								</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="pricing">
-							<div class="pricing-top green-top">
-								<h3>Business</h3>
-								<p>$50/month</p>
-							</div>
-							<div class="pricing-bottom">
-								<div class="pricing-bottom-top">
-									<p>1 Website</p>
-									<p>1 Year Updates</p>
-									<p>1 Year Email Support</p>
-								</div>
-								<div class="pricing-bottom-bottom">
-									<p><span>Unlimited</span> Email Addresses</p>
-									<p><span>65GB </span> of Storage</p>
-									<p><span>75</span> Databases</p>  
-									<p><span>25</span> Domains</p>
-									<p class="text"><span>24/7</span> Unlimited Support</p>
-								</div>
-								<div class="buy-button">
-									<a href="plans.html">Read More</a>
-								</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="pricing">
-							<div class="pricing-top">
-								<h3>Personal</h3>
-								<p>$35/month</p>
-							</div>
-							<div class="pricing-bottom">
-								<div class="pricing-bottom-top">
-									<p>1 Website</p>
-									<p>1 Year Updates</p>
-									<p>1 Year Email Support</p>
-								</div>
-								<div class="pricing-bottom-bottom">
-									<p><span>Unlimited</span> Email Addresses</p>
-									<p><span>50GB </span> of Storage</p>
-									<p><span>55</span> Databases</p>  
-									<p><span>21</span> Domains</p>
-									<p class="text"><span>24/7</span> Unlimited Support</p>
-								</div>
-								<div class="buy-button">
-									<a href="plans.html">Read More</a>
-								</div>
-							</div>
-						</div>
-					</li>
-				  </ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- //special -->
-	<!-- choose -->
-	<div class="choose jarallax">
-		<div class="w3-agile-testimonial">
-			<div class="container">
-				<div class="w3-agileits-choose">
-					<div class="col-md-6 choose-grid">
-						<div class="w3-banner-bottom-heading choose-heading">
-							<h3>Why Choose<span> Us?</span></h3>
-						</div>
-						<div class="top-choose-info">
-							<div class="choose-info-top">
-								<div class="choose-left-grid col-sm-6">
-									<div class="choose-info-grid ">
-										<ul>
-											<li><i class="fa fa-bell" aria-hidden="true"></i></li>
-											<li>Lorem ipsum</li>
-										</ul>
-									</div>
-								</div>
-								<div class="choose-right-grid col-sm-6">
-									<div class="choose-info-grid ">
-										<ul>
-											<li><i class="fa fa-cog" aria-hidden="true"></i></li>
-											<li>Nulla dictum</li>
-										</ul>
-									</div>
-								</div>
-								<div class="clearfix"> </div>
-							</div>
-							<div class="choose-info-top">
-								<div class="choose-left-grid col-sm-6">
-									<div class="choose-info-grid ">
-										<ul>
-											<li><i class="fa fa-comments" aria-hidden="true"></i></li>
-											<li>Lorem ipsum</li>
-										</ul>
-									</div>
-								</div>
-								<div class="choose-right-grid col-sm-6">
-									<div class="choose-info-grid ">
-										<ul>
-											<li><i class="fa fa-user" aria-hidden="true"></i></li>
-											<li>Nulla dictum</li>
-										</ul>
-									</div>
-								</div>
-								<div class="clearfix"> </div>
-							</div>
-							<div class="choose-info-top">
-								<div class="choose-left-grid col-sm-6">
-									<div class="choose-info-grid ">
-										<ul>
-											<li><i class="fa fa-money" aria-hidden="true"></i></li>
-											<li>Lorem ipsum</li>
-										</ul>
-									</div>
-								</div>
-								<div class="choose-right-grid col-sm-6">
-									<div class="choose-info-grid ">
-										<ul>
-											<li><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></li>
-											<li>Nulla dictum</li>
-										</ul>
-									</div>
-								</div>
-								<div class="clearfix"> </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 choose-grid">
-						<div class="w3-banner-bottom-heading choose-heading">
-							<h3>What People<span> say's?</span></h3>
-						</div>
-						<div class="top-choose-info testimonial-info">
-							<div class="wthree-testimonial-grid">
-									<div class="slider">
-											<div class="callbacks_container">
-												<ul class="rslides" id="slider3">
-													<li>
-														<div class="testimonial-top">
-															<i class="fa fa-quote-right" aria-hidden="true"></i>
-															<p>Donec feugiat tellus sem, laoreet iaculis orci lobortis vel. Sed sed luctus orci, at lacinia risus. Ut porttitor ante ac tincidunt elementum. Curabitur ex dolor, condimentum vitae nunc vel, pulvinar semper justo. Vestibulum et aliquet magna, maximus dapibus enim.</p>
-															<h5>John Smith <span>- Customer</span></h5>
-														</div>
-													</li>
-													<li>
-														<div class="testimonial-top">
-															<i class="fa fa-quote-right" aria-hidden="true"></i>
-															<p>Pellentesque urna ex, ultricies a nunc at, pretium maximus nisi. Vestibulum non auctor diam. Mauris eget consectetur mauris. Aenean leo elit, accumsan vel elit vitae, mattis ultricies lacus. Cras consectetur justo lorem, sed dictum sapien eleifend at.Donec sed </p>
-															<h5>Divide Rule <span>- Customer</span></h5>
-														</div>
-													</li>
-												</ul>
-											</div>
-											<script>
-												// You can also use "$(window).load(function() {"
-												$(function () {
-												  // Slideshow 4
-												  $("#slider3").responsiveSlides({
-													auto: true,
-													pager:true,
-													nav:false,
-													speed: 500,
-													namespace: "callbacks",
-													before: function () {
-													  $('.events').append("<li>before event fired.</li>");
-													},
-													after: function () {
-													  $('.events').append("<li>after event fired.</li>");
-													}
-												  });
-											
-												});
-											 </script>
-											<!--banner Slider starts Here-->
-									</div>
-							</div>
 
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- //choose -->
 	<!-- subscribe -->
 	<div class="subscribe">
 		<div class="container">

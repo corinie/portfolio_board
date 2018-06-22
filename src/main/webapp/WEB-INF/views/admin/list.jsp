@@ -139,8 +139,16 @@
 
 							</div>
 							<div class="blog-left-left">
-								<i class="fa fa-pencil" aria-hidden="true"></i>
+				
+						
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								
+								<div class="img"><img src="/resources/images/pic/${item.mid }.jpg" alt="img" /></div>
+								
 							</div>
+						
+						</div>
 
 
 							<div class="blog-left-right">

@@ -73,12 +73,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</c:if>
 					
 					<c:if test="${pinfo ne 'anonymousUser'}">
+					
+					
 					<form action="/logout" method="post">
 					<button class="btn-primary">LOGOUT</button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
 					</form>
 					<a href="/message/list"><button class="btn-primary">MESSAGE</button></a>
 					</c:if>
+					
+					
+					
 				</ul>
 				</div>
 			</div>

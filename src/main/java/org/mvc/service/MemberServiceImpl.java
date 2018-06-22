@@ -8,6 +8,7 @@ import org.mvc.mapper.MemberMapper;
 import org.mvc.util.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -53,5 +54,10 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteAuth(String mid) {
 		return mapper.deleteAuth(mid);
 	}
-
+	@Transactional
+	@Override
+	public void insertMember(MemberVO vo, AuthVO avo) {
+		mapper.insertMember(vo);
+		mapper.setAuth(avo);
+	}
 }

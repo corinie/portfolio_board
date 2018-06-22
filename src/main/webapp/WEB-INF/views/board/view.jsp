@@ -13,37 +13,39 @@
 </div>
 
 <style>
-	h3 {
-		display: inline
-	}
+h3 {
+	display: inline
+}
 </style>
 <!-- //about-heading -->
 <!-- blog -->
 <div class="blog">
 	<div class="container">
-	<form action='/board/statusupdate' method="post">
-		<c:if test="${vo.rbno eq vo.bno and user.username eq vo.writer and vo.status ne 'pause' and vo.status ne 'completion'}">
-			<input type="radio" name="status" value="pause" > 중지
+		<form action='/board/statusupdate' method="post">
+			<c:if
+				test="${vo.rbno eq vo.bno and user.username eq vo.writer and vo.status ne 'pause' and vo.status ne 'completion'}">
+				<input type="radio" name="status" value="pause"> 중지
 			<button>설정</button>
-		</c:if>
-		<c:forEach items="${user.authorities}" var="auth">
-			<c:if test="${vo.status eq 'choice'}">
-				<input type="radio" name="status" value="refuse"> 반려
-				<button>설정</button>
 			</c:if>
-			<c:if test="${vo.rbno ne vo.bno and auth eq 'ROLE_MANAGER' and rootWriter eq user.username and vo.status ne 'pause' and vo.status ne 'refuse'}">
-			<input type="radio" name="status" value="refuse"> 반려
+			<c:forEach items="${user.authorities}" var="auth">
+				<c:if test="${vo.status eq 'choice'}">
+					<input type="radio" name="status" value="refuse"> 반려
+				<button>설정</button>
+				</c:if>
+				<c:if
+					test="${vo.rbno ne vo.bno and auth eq 'ROLE_MANAGER' and rootWriter eq user.username and vo.status ne 'pause' and vo.status ne 'refuse'}">
+					<input type="radio" name="status" value="refuse"> 반려
 			<input type="radio" name="status" value="ongoing"> 진행
 			<input type="radio" name="status" value="completion"> 최종
 			<button>설정</button>
-		</c:if>
-		</c:forEach>
-		<input type="hidden" name="bno" value="${vo.bno}">
-		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token}">
-		
-	</form>
+				</c:if>
+			</c:forEach>
+			<input type="hidden" name="bno" value="${vo.bno}"> <input
+				type="hidden" name="${_csrf.parameterName }" value="${_csrf.token}">
+
+		</form>
 		<div class="agile-blog-grids">
-			<div class="agile-blog-grid">	
+			<div class="agile-blog-grid">
 				<div class="agile-blog-grid-left-img">
 					<a class="havebno" href="/board/list${cri.getUrl(param.bno)}"
 						data-bno="${param.bno}"><button class="label label-danger">back</button></a>
@@ -52,7 +54,11 @@
 
 				<div class="blog-left-grids">
 					<div class="blog-left-left">
-						<i class="fa fa-pencil" aria-hidden="true"></i>
+						<div class="ih-item circle bottom_to_top">
+							<div class="img">
+								<img src="/resources/images/pic/${vo.writer }.jpg" alt="img" />
+							</div>
+						</div>
 					</div>
 					<div class="blog-left-right">
 						<div class="blog-left-right-top">
@@ -84,11 +90,11 @@
 								<button class="label label-default">DELETE</button>
 							</form>
 						</c:if>
-						
+
 						<c:if test="${vo.status eq 'ongoing'}">
-						<a href="/board/replyregister${cri.getUrl(param.bno)}">
-							<button class="label label-default">REPLY</button>
-						</a>
+							<a href="/board/replyregister${cri.getUrl(param.bno)}">
+								<button class="label label-default">REPLY</button>
+							</a>
 						</c:if>
 					</div>
 					<div class="clearfix"></div>
@@ -96,8 +102,7 @@
 				</div>
 
 				<!--VIEW END-->
-				<br>
-				<br>
+				<br> <br>
 
 				<div class="fileList">
 					<c:forEach items="${fileList }" var="file">
@@ -120,8 +125,7 @@
 					</c:forEach>
 				</div>
 
-				<br>
-				<br>
+				<br> <br>
 
 
 				<!--comment REGISTER -->

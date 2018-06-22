@@ -11,6 +11,7 @@ public interface MemberMapper {
 	
 	public void createMember(MemberVO vo);
 	public MemberVO readMember(String mid);
+	public void insertMember(MemberVO vo);
 	
 	public int setAuth(AuthVO vo);
 	public int deleteAuth(String mid);

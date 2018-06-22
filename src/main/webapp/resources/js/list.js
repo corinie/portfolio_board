@@ -2,7 +2,7 @@ $(".container").on("click", "span a", function (e) {
 	getAlllist(e);
 });
 
-/* LISTING*/
+/* LISTING */
 function getAlllist(e){
 	num = e.target.attributes.href.nodeValue;
 	replyList = $("#"+num);
@@ -28,13 +28,14 @@ function getJson(bno){
 	
 				replystr += "<div class='agile-blog-grid'><div>"
 				+				"<div class='blog-left-grids'><div class='blog-left-left'>"
-				+					"<i class='fa fa-pencil' aria-hidden='true'></i>"
+				+				"<div class='ih-item circle bottom_to_top'>"
+				+				"<div class='img'><img src='/resources/images/pic/"+this.writer+".jpg' alt='img' /></div></div>"
 				+				"</div>"
 				+				"<div class='blog-left-right-in'><div class='blog-left-right-top'>"
 				+						"<div class='blog-left-right-top'>";
 				
 				if(this.deleteyn == 'n'){
-					replystr += "<h4>["+this.status+"] <a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
+					replystr += "<h4><span class='label "+this.status+"'>"+this.status+"</span><a href='/board/view"+urlbuilder+"' class='view' data-bno='"+this.bno+"'>"+this.title+"</a>"
 					+								"<span><a href='"+this.bno+"' class='replyBtn' data-display='show'>("+this.boardcount+")</a></span>"
 					+							"</h4>";
 				}else if(this.deleteyn == 'm'){

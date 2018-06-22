@@ -14,7 +14,7 @@ public interface MemberService {
 	public int searchTotal(Criteria cri);
 	
 	public int setAuth(AuthVO vo);
-	
+	public void insertMember(MemberVO vo, AuthVO avo);
 	public int deleteAuth(String mid);
 	public int changeAuth(String mid, Criteria cri);
 }

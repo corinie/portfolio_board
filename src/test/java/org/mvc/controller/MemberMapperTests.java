@@ -30,7 +30,19 @@ public class MemberMapperTests {
      @Autowired
      private MemberMapper mapper;
 
-
+     @Test
+     public void testInsertAdmin() {
+    	 MemberVO vo = new MemberVO();
+    	 vo.setMid("admin");
+         vo.setMpw(encoder.encode("admin"));
+         vo.setMname("관리자");
+         vo.setEmail("admin@corinie.com");
+         mapper.createMember(vo);
+         AuthVO avo = new AuthVO();
+         avo.setMid("admin");
+         avo.setAuth("ROLE_ADMIN");
+         mapper.setAuth(avo);
+     }
      //DB연동시 Transactional 상황 처리
      @Test
      public void testInsert() {

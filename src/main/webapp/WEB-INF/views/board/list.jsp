@@ -15,47 +15,57 @@
 	
 	<div class="container">
 		<div class="agile-blog-grids">
-			<div class="container">
+			<div >
+			<div class="two-fifth column first">
+					<h2>
+						Quick<span>Search</span>
+					</h2>
+				</div>
 				<div class="one-fifth button-right">
-					<a href="/board/register"><input type="submit" value="REGISTER" class="label"></a>
+					<a href="/board/register"><input type="submit" value="New Project" class="label"></a>
 				</div>
 
-				<div class="one-fifth button-right">
-					<a href="/board/list?status=completion"><input type="submit" name="status" value="completion" class="label" style="background: #5B5AFF"></a>
+				<div class="one-fifth column button-left" >
+					<a href="/board/list?status=completion"><input type="submit" name="status" value="comp" class="label" style="background: blue"></a>
 				</div>
-				<div class="one-fifth button-right">
+				<div class="one-fifth button-left" >
 					<a href="/board/list?status=pause"><input type="submit"
-						name="status" value="pause" class="label" style="background: #5B5AFF"></a>
+						name="status" value="pause" class="label" style="background: red"></a>
 				</div>
-				<div class="one-fifth button-right">
-					<a href="/board/list?status=ongoing"><input type="submit"
-						name="status" value="ongoing" class="label" style="background: #5B5AFF"></a>
+				<div class="one-fifth button-left">
+					<a href="/board/list?status=ongoing" ><input type="submit"
+						name="status" value="ongoing" class="label" style="background: green"></a>
 				</div>
-				<h4>
-					<hr style="border: solid 2px grey">
-				</h4>
+				
 			</div>
-			<!-- <div class="one-fifth button-right ">
-			
-						<a href="/board/register"><input type="submit" value="REGISTER"></a>
-				</div> -->
+			<h1></h1>
 
 			<c:forEach items="${list }" var="item">
 				<div class="agile-blog-grid">
 					<div class="blog-left-grids">
 
 						<div class="blog-left-left">
-							<i class="fa fa-pencil" aria-hidden="true"></i>
+				
+						
+							<!-- normal -->
+							<div class="ih-item circle bottom_to_top">
+								<div class="img"><img src="/resources/images/pic/${item.writer }.jpg" alt="img" /></div>
+								
+							</div>
+							
+					
+						
 						</div>
 
 						<div class="blog-left-right">
 							<div class="blog-left-right-top">
 								<c:if test="${item.deleteyn eq 'n' }">
+								
 									<h4>
-										[${item.status }] <a href="/board/view${cri.getUrl(item.bno)}"
-											class="view" data-bno="${item.bno}"> <c:out
-												value="${item.title}"></c:out></a>&nbsp; <span><a
-											href="${item.bno }" class="replyBtn" data-display="show">(${item.boardcount })</a></span>
+										<span class="label ${item.status}">${item.status }</span> 
+										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}"> 
+										<c:out value="${item.title}"></c:out></a>&nbsp; 
+										<span><a href="${item.bno }" class="replyBtn" data-display="show">(${item.boardcount })</a></span>
 									</h4>
 								</c:if>
 								<c:if test="${item.deleteyn eq 'm' }">
@@ -65,25 +75,20 @@
 											data-display="show">(${item.boardcount })</a></span>
 									</h4>
 								</c:if>
-
+								
 								<p>
-									Writer &nbsp;&nbsp;
-									<c:out value="${item.writer }"></c:out>
-									&nbsp;&nbsp;
-									<c:out value="${item.regdate }"></c:out>
+								<h4>NAME(ID): &nbsp;<c:out value="${item.mname}(${item.writer})"></c:out></h4>
+								<h4>Regdate: <c:out value="${item.regdate }"></c:out></h4>
 								</p>
+								
 							</div>
-							<div class="blog-left-right-bottom">
-								<p>
-									<c:out value="${item.bno}"></c:out>
-								</p>
-							</div>
+							
 
 							<div class="replyList">
-								<div id="${item.bno}"></div>
+								
 							</div>
 							<div class="clearfix"></div>
-							<hr style="border: dashed 1px gray">
+							<hr style="border: solid  1px gray">
 						</div>
 
 					</div>

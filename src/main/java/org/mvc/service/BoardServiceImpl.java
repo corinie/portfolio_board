@@ -109,6 +109,7 @@ public class BoardServiceImpl implements BoardService {
 		if(status.equals("refuse")) {
 			mmapper.refuseMessage(bno);
 			mmapper.confirmReceiver(bno);
+			mapper.updateChildStatus(bno);
 		}
 		if(status.equals("pause")) {
 			mapper.updatePauseStatus(bno);

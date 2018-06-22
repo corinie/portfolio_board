@@ -13,6 +13,8 @@ public interface MemberService {
 	public List<MemberVO> searchList(Criteria cri);
 	public int searchTotal(Criteria cri);
 	
-	public void setAuth(AuthVO vo);
-	public void insertMember(MemberVO vo, AuthVO avo);
+	public int setAuth(AuthVO vo);
+	
+	public int deleteAuth(String mid);
+	public int changeAuth(String mid, Criteria cri);
 }

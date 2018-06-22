@@ -9,12 +9,29 @@
 </insert>
 	
 <insert id = "setAuth">
-	insert into tbl_member_auth (mid, auth) values (#{mid}, #{auth})
+	insert into tbl_member_auth (mid, auth) values(#{mid}, #{auth})
 </insert>
 
-<insert id="insertMember">
-	insert into tbl_member(mname, mid, mpw, email) values(#{mname}, #{mid}, #{mpw}, #{email})
+<insert id = "changeAuth">
+	insert all into tbl_member_auth(mid, auth) values (#{mid}, 'ROLE_MEMBER')
+		<foreach collection="cri.authArr" item="key">
+				<if test="key eq 'a'.toString()">
+				into tbl_member_auth(mid, auth) values (#{mid}, 'ROLE_ADMIN')
+				</if>
+				<if test="key eq 'm'.toString()">
+				into tbl_member_auth(mid, auth) values (#{mid}, 'ROLE_MANAGER')
+				</if>
+		</foreach>
+ 	select * from dual
 </insert>
+
+
+
+
+<update id= "deleteAuth">
+	delete tbl_member_auth where mid = #{mid} 
+</update>
+
 
 <select id="readMember" resultMap="memberMap"> 
 	select * from tbl_member inner join tbl_member_auth 
@@ -78,18 +95,19 @@
 		<where>
 			<foreach collection="authArr" separator=" or " item="key">
 				<if test="key eq 'a'.toString()">
-					auth = 'ROLE_ADMIN'
+					auth = 'ROLE_ADMIN' and mname like '%'||#{keyword}||'%'
 				</if>
 				<if test="key eq 'm'.toString()">
-					auth = 'ROLE_MANAGER'					
+					auth = 'ROLE_MANAGER' and mname like '%'||#{keyword}||'%'			
 				</if>
 				<if test="key eq 'n'.toString()">
-					auth = 'ROLE_MEMBER'
+					auth = 'ROLE_MEMBER' and mname like '%'||#{keyword}||'%'
 				</if>
 			</foreach>
 		</where>
 	</sql>
-	
+
+
 	
 	
 <resultMap type="org.mvc.domain.MemberVO" id="memberinfoMap">
@@ -101,7 +119,6 @@
 	<result property="updatedate" column="updatedate"/>
 	<collection property="authList" resultMap="authMap"></collection>
 </resultMap>
-
 
 <resultMap type="org.mvc.domain.MemberVO" id="memberMap">
 	<id property="mid" column="mid"/>

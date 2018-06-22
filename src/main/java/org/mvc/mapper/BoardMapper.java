@@ -32,4 +32,6 @@ public interface BoardMapper {
 	public void updateParentStatus(int bno);
 	public void updateRootStatus(int bno);
 	public void updatePauseStatus(int bno);
+	
+	public void updateChildStatus(int bno);
 	}

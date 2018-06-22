@@ -67,7 +67,7 @@ public class Criteria {
 			UriComponents uri;
 			if(this.type != null) {
 				uri = UriComponentsBuilder.newInstance()
-						.path("").queryParam("page", this.page).queryParam("authType", this.authType).build();
+						.path("").queryParam("page", this.page).queryParam("authType", this.authType).queryParam("keyword", this.keyword).build();
 			}else {
 				uri = UriComponentsBuilder.newInstance()
 						.path("").queryParam("page", this.page).build();

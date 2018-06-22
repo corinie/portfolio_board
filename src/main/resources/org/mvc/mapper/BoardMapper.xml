@@ -116,7 +116,7 @@
 	</update>
 	
 	<update id="updateAllStatus">
-		update tbl_board set status = 'refuse' where bno = (
+		update tbl_board set status = 'refuse' where bno in (
 		select bno from tbl_board 
 		where rbno = (select rbno from tbl_board where bno = #{bno}) 
 		and depth = (select depth from tbl_board where bno = #{bno})
@@ -129,6 +129,12 @@
 		) board where board.bno != board.rbno)
 	</update>
 	
+	<update id="updateChildStatus">
+		update tbl_board set status = 'refuse' where bno in (select * from (
+		select bno from tbl_board start with bno = #{bno} connect by NOCYCLE prior bno = pbno
+		) board where board.bno != #{bno})
+	</update>
+
 	<update id="updatePauseStatus">
 		update tbl_board set status = 'pause' where bno IN (select bno from tbl_board where rbno = #{bno})
 	</update>

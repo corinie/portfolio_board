@@ -16,20 +16,35 @@ function getAlllist(e){
 	
 };
 
-
-function getJson(bno){
+/* DATE Fommation */
+	function getFormattedDate(date) {
+		  var year = date.getFullYear();
+		  var month = (1 + date.getMonth()).toString();
+		  month = month.length > 1 ? month : '0' + month;
+		  var day = date.getDate().toString();
+		  day = day.length > 1 ? day : '0' + day;
+		  
+		  return   year + '-'+ month + '-' + day;
+		}
 	
+
+
+
+	function getJson(bno){
 	if(display.attr("data-display") == "show"){
 	
 	$.getJSON("/reply/"+bno, function (data) {
+		
 		$(data).each(function () {
+			var dt = new Date(this.regdate);
+			var dt_to = getFormattedDate(dt);
 			if(this.depth != 0){
 				urlbuilder =  makeURI(this.bno);
 	
 				replystr += "<div class='agile-blog-grid'><div>"
 				+				"<div class='blog-left-grids'><div class='blog-left-left'>"
-				+				"<div class='ih-item circle bottom_to_top'>"
-				+				"<div class='img'><img src='/resources/images/pic/"+this.writer+".jpg' alt='img' /></div></div>"
+			+"	<div class='ih-item circle bottom_to_top'>"
+			+"	<div class='img'><img src='/resources/images/pic/"+this.writer+".jpg' alt='img' /></div></div>"
 				+				"</div>"
 				+				"<div class='blog-left-right-in'><div class='blog-left-right-top'>"
 				+						"<div class='blog-left-right-top'>";
@@ -43,8 +58,10 @@ function getJson(bno){
 					+								"<span><a href='"+this.bno+"' class='replyBtn' data-display='show'>("+this.boardcount+")</a></span>"
 					+							"</h4>";
 				}
-					
-				replystr+=	 "<p>Writer &nbsp;&nbsp;"+this.writer+"&nbsp;&nbsp;"+this.regdate+"</p>"
+				
+				replystr+="<p><h4>NAME(ID):"+this.mname+"("+this.writer+")</h4>"
+				+			"<h4>"+dt_to+"</h4>"
+				+			"</p>"
 				+						"</div>"
 				+				"</div>"
 				+				"<div class='blog-left-right-bottom'><p>"+this.bno+"</p></div>"

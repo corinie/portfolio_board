@@ -61,8 +61,11 @@
 	</select>
 
 	<select id="total" resultType="int">
-		select /*+INDEX_DESC(tbl_board pk_board) */ count(bno) 
-			from tbl_board where (deleteyn = 'n' or deleteyn = 'm') and depth = 0 and status = #{status}
+			select /*+INDEX_DESC(tbl_board pk_board) */ count(bno) 
+			from (select /*+INDEX_DESC(tbl_board pk_board) */ bno, rbno, pbno, depth, title, content, 
+			writer, mname, status, hit, replycount, boardcount, board.deleteyn, board.regdate, board.updatedate
+			from tbl_board board inner join tbl_member member on board.writer = member.mid) tbl_board
+			where (deleteyn = 'n' or deleteyn = 'm') and depth = 0 and status = #{status}
 	</select>
 
 
@@ -114,8 +117,14 @@
 	</update>
 	
 	<select id="replyList" resultType="org.mvc.domain.BoardVO">
+		select bno, rbno, pbno, depth, title, content, writer, mname, hit, replycount, boardcount, hit, 
+		status, board.deleteyn deleteyn, board.regdate regdate, board.updatedate updatedate from 
+		(
 		select * from tbl_board where pbno = #{bno} and (deleteyn = 'n' or deleteyn = 'm')
-			start with depth = 0 connect by NOCYCLE prior bno = pbno order siblings by rbno desc, bno asc
+		start with depth = 0 connect by NOCYCLE prior bno = pbno order siblings by rbno desc, bno asc
+		) board 
+		inner join
+		tbl_member on board.writer = tbl_member.mid
 	</select>
 	
 	<!-- rootStatus  -->

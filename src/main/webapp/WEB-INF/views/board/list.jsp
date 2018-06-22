@@ -38,7 +38,7 @@
 				</div>
 				
 			</div>
-			<h1></h1>
+			<h4></h4>
 
 			<c:forEach items="${list }" var="item">
 				<div class="agile-blog-grid">
@@ -60,7 +60,6 @@
 						<div class="blog-left-right">
 							<div class="blog-left-right-top">
 								<c:if test="${item.deleteyn eq 'n' }">
-								
 									<h4>
 										<span class="label ${item.status}">${item.status }</span> 
 										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}"> 
@@ -77,18 +76,17 @@
 								</c:if>
 								
 								<p>
-								<h4>NAME(ID): &nbsp;<c:out value="${item.mname}(${item.writer})"></c:out></h4>
-								<h4>Regdate: <c:out value="${item.regdate }"></c:out></h4>
+									<h4>NAME(ID): <c:out value="${item.mname}(${item.writer})"></c:out></h4>
+									<h4><c:out value="${item.regdate }"></c:out></h4>
 								</p>
-								
 							</div>
 							
 
 							<div class="replyList">
-								
+								<div id="${item.bno}"></div>
 							</div>
 							<div class="clearfix"></div>
-							<hr style="border: solid  1px gray">
+							<hr style="border: dashed 1px gray">
 						</div>
 
 					</div>

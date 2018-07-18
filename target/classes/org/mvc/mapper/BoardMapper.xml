@@ -1,1 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mvc.mapper.BoardMapper">
+
+	<!--CRUD -->
+	<insert id="rootInsert">
+		insert into tbl_board (bno, rbno, pbno, title, writer, content)
+			values(seq_board.nextval, seq_board.currval, seq_board.currval, #{title}, #{writer}, #{content})
+	</insert>
+
+	<insert id="branchInsert">
+		insert into tbl_board (bno, rbno, pbno, depth, title, writer, content, status)
+			values(seq_board.nextval, #{rbno}, #{bno}, #{depth}+1, #{title}, #{writer}, #{content}, 'standby')
+	</insert>
+
+	
+	<select id="read" resultType="org.mvc.domain.BoardVO">
+		select * from tbl_board where bno = #{bno}
+	</select>
+	
+	<select id="rootWriter" resultType="string">
+		select writer from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})
+	</select>
+
+	<update id="update">
+		update tbl_board set title = #{title}, content = #{content}, updatedate = sysdate where bno = #{bno}
+	</update>
+
+	<update id="delete">
+		update tbl_board set deleteyn = decode(boardcount, 0, 'y', 'm') where bno = #{bno}
+
+	</update>
+	
+	<update id="checkDeleteYN">
+	update tbl_board set deleteyn = 'y' where bno in (select bno from tbl_board where bno = (select pbno bno from tbl_board where bno = #{bno}) and boardcount = 0 and (deleteyn = 'y' or deleteyn = 'm') union
+	select bno from tbl_board where bno = (select rbno bno from tbl_board where bno = #{bno}) and boardcount = 0 and (deleteyn = 'y' or deleteyn = 'm'))
+	</update>
+	
+
+
+
+	<!--LIST -->
+	<select id="list" resultType="org.mvc.domain.BoardVO">
+		select * from 
+			(
+			select * from
+				(
+				select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, 
+					title, content, writer, mname, status, deleteyn, regdate, updatedate from 
+					(
+					select * from (
+					select /*+INDEX_DESC(tbl_board pk_board) */ bno, rbno, pbno, depth, title, content, writer, mname, status, hit, replycount, boardcount
+					,board.deleteyn, board.regdate, board.updatedate
+					from tbl_board board inner join tbl_member member on board.writer = member.mid
+					) where (deleteyn = 'n' or deleteyn = 'm') and depth = 0 and status = #{status}
+					)
+				) <![CDATA[ where rn <= (#{page} * 10)
+			) where rn > (#{page} - 1) * 10 ]]> 
+	</select>
+
+	<select id="total" resultType="int">
+			select /*+INDEX_DESC(tbl_board pk_board) */ count(bno) 
+			from (select /*+INDEX_DESC(tbl_board pk_board) */ bno, rbno, pbno, depth, title, content, 
+			writer, mname, status, hit, replycount, boardcount, board.deleteyn, board.regdate, board.updatedate
+			from tbl_board board inner join tbl_member member on board.writer = member.mid) tbl_board
+			where (deleteyn = 'n' or deleteyn = 'm') and depth = 0 and status = #{status}
+	</select>
+
+
+
+	<!--SEARCH -->
+	<select id="searchList" resultType="org.mvc.domain.BoardVO">
+		select * from 
+			(
+			select * from 
+				(
+				select rownum rn, bno, pbno, rbno, depth, hit, replycount, boardcount, 
+					title, content, writer, mname, status, deleteyn, regdate, updatedate from 
+					(
+					select * from (
+					select /*+INDEX_DESC(tbl_board pk_board) */ bno, rbno, pbno, depth, title, content, writer, mname, status, hit, replycount, boardcount
+					,board.deleteyn, board.regdate, board.updatedate
+					from tbl_board board inner join tbl_member member on board.writer = member.mid
+					) where (deleteyn = 'n' or deleteyn = 'm') and depth = 0 and status = #{status}
+					) 
+		<include refid="searchoption" />
+    			)<![CDATA[ where rn <= (#{page}* 10)
+    		) where rn > (#{page}-1)*10]]>
+	</select>
+
+	<select id="searchTotal" resultType="int">
+		select count(bno) from 
+			(
+			select /*+INDEX_DESC(tbl_board pk_board) */ * 
+				from tbl_board where deleteyn = 'n' and depth = 0)
+		<include refid="searchoption" />
+	</select>
+
+	<!--REPLY SQL -->
+	<update id="boardInsertCount">
+		update tbl_board set boardcount = boardcount + 1 where bno in (select * from 
+		(select bno from tbl_board start with bno = #{bno} connect by NOCYCLE prior pbno = bno
+		union
+		select bno from tbl_board where bno = (select rbno from tbl_board where bno = #{bno})))
+	</update>
+	
+	<update id="boardDeleteCount">
+		
+		update tbl_board set boardcount = boardcount - 1 where bno in (select bno from (
+		select * from tbl_board where bno != #{bno} start with bno = #{bno} connect by nocycle prior pbno = bno 
+		union 
+		select * from tbl_board where bno = (select rbno from tbl_board where bno = #{bno}  and bno != rbno))
+		where deleteyn = 'n' or deleteyn = 'm')
+		
+	</update>
+	
+	<select id="replyList" resultType="org.mvc.domain.BoardVO">
+		select bno, rbno, pbno, depth, title, content, writer, mname, hit, replycount, boardcount, hit, 
+		status, board.deleteyn deleteyn, board.regdate regdate, board.updatedate updatedate from 
+		(
+		select * from tbl_board where pbno = #{bno} and (deleteyn = 'n' or deleteyn = 'm')
+		start with depth = 0 connect by NOCYCLE prior bno = pbno order siblings by rbno desc, bno asc
+		) board 
+		inner join
+		tbl_member on board.writer = tbl_member.mid
+	</select>
+	
+	<!-- rootStatus  -->
+	<update id="updateStatus">
+		update tbl_board set status = #{status} where bno = #{bno}
+	</update>
+	
+	<update id="updateAllStatus">
+		update tbl_board set status = 'refuse' where bno in (
+		select bno from tbl_board 
+		where rbno = (select rbno from tbl_board where bno = #{bno}) 
+		and depth = (select depth from tbl_board where bno = #{bno})
+		and bno != #{bno})
+	</update>
+	
+	<update id="updateParentStatus">
+		update tbl_board set status = 'choice' where bno = (select bno from (
+		select * from tbl_board where bno = (select pbno from tbl_board where bno = #{bno})
+		) board where board.bno != board.rbno)
+	</update>
+	
+	<update id="updateChildStatus">
+		update tbl_board set status = 'refuse' where bno in (select * from (
+		select bno from tbl_board start with bno = #{bno} connect by NOCYCLE prior bno = pbno
+		) board where board.bno != #{bno})
+	</update>
+
+	<update id="updatePauseStatus">
+		update tbl_board set status = 'pause' where bno IN (select bno from tbl_board where rbno = #{bno})
+	</update>
+	
+	<update id="updateRootStatus">
+		update tbl_board set status = 'completion' where bno = (select rbno from tbl_board where bno = #{bno})
+	</update>
+	<!--SEARCH OPTION -->
+	<sql id="searchoption">
+	
+		<where>
+			<foreach collection="arr" separator=" or " item="key">
+				<if test="key eq 't'.toString()">
+					title like '%'||#{keyword}||'%'
+				</if>
+				<if test="key eq 'c'.toString()">
+					content like '%'||#{keyword}||'%'
+				</if>
+				<if test="key eq 'w'.toString()">
+					writer like '%'||#{keyword}||'%'
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	
+</mapper>

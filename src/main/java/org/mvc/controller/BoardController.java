@@ -1,19 +1,14 @@
 package org.mvc.controller;
 
 
-import java.security.Principal;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.mvc.domain.BoardVO;
 import org.mvc.service.BoardService;
-import org.mvc.service.BoardServiceImpl;
 import org.mvc.service.FileService;
 import org.mvc.util.Criteria;
 import org.mvc.util.PageMaker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +25,6 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/board/*")
 @Log4j
-
 public class BoardController {
 	
 	@Setter(onMethod_={@Autowired})	
@@ -38,11 +32,13 @@ public class BoardController {
 	@Setter(onMethod_={@Autowired})	
 	private FileService fservice;
 	
+	
 	//CRUD
 	@PreAuthorize("hasRole('ROLE_MANAGER')")
 	@GetMapping("/register")
 	public void insert(Model model) {
-		log.info("get insert");		
+		log.info("get insert");
+		
 		
 			
 	}

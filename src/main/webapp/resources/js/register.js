@@ -49,7 +49,7 @@ $(".file-area").on("drop", function(e) {
 
 /* Input File Event */
 $("#fileInput").change(function(e) {
-
+	
 	/* var files = e.originalEvent.dataTransfer.files; */
 	
 	files = e.target.files;
@@ -92,6 +92,7 @@ function uploadAjax(files) {
 
 function showUploadedFile(uploadResultArr) {
 	upstr = "";
+	
 	$(uploadResultArr)
 			.each(
 					function(i, obj) {

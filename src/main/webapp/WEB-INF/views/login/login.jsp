@@ -5,11 +5,7 @@
 
 <!-- //header -->
 <!-- about-heading -->
-<div class="about-heading">
-	<h2>
-		Login <span>Hosting City</span>
-	</h2>
-</div>
+<h1></h1>
 <!-- //about-heading -->
 <div class="registration">
 	<div class="container">
@@ -20,7 +16,9 @@
 					<input type="text" name="username" placeholder="ID" required="">
 					<input type="password" name="password" placeholder="Password"
 						required="">
-					<input type="checkbox" name="remember-me" > Remember-me
+						<input type="checkbox" id="remember-me" name="remember-me">
+																<label for="remember-me">Remember-me</label>
+					
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					<div class="tp">
 						<input type="submit" value="LOGIN NOW">

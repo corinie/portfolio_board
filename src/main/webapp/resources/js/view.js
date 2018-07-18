@@ -116,7 +116,7 @@ var pinfo = $("#pinfo").data("pinfo");
 		uploadList.html("");
 		
 		$.getJSON("/comment/"+bodytarget,function (data) {
-			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='5'style='width : 100%; margin-bottom : 10px' >"+data.comments+"</textarea>"
+			innercstr = "<textarea id='ucomment' data-cno="+data.cno+" cols='70' rows='2'style='width : 100%; margin-bottom : 10px' >"+data.comments+"</textarea>"
 						+"<div class='file-area'>"
 							+"<input id='fileInput' type='file' multiple='multiple' data-cno=" + data.cno + ">"
 							+"<div id='upload'>"
@@ -137,9 +137,9 @@ var pinfo = $("#pinfo").data("pinfo");
 			innercstr +="</div>"
 						+"</div>"
 						+"</div>"
-						+"<button class='label label-default updateSubmit'>SUBMIT</button>"
-						+"<button class='label label-default return'>RETURN</button>";
-				
+						+"<button class='button small updateSubmit inline-right'>SUBMIT</button>"
+						+"<button class='button small return inline-right'>RETURN</button>";
+			
 			$(".A_"+bodytarget).html(innercstr);
 			
 			innercstr = "";
@@ -223,7 +223,6 @@ var pinfo = $("#pinfo").data("pinfo");
 	
 	
 	
-
 	/*BRANCH COMMENT CREATE*/
 	$(".response").on("click", ".resend", function (e) {
 		e.preventDefault();
@@ -234,6 +233,7 @@ var pinfo = $("#pinfo").data("pinfo");
 	
 		branchComments = branch[0].children[1].value;
 		branchCommenter = branch[0].children[0].value;
+		
 		
 		setCSRF(csrftoken);
 		
@@ -388,6 +388,8 @@ var pinfo = $("#pinfo").data("pinfo");
 		$.getJSON("/comment/" + bno + "/" + pageNum, function(data) {
 			
 			$(data.list).each(function() {
+				var dt = new Date(this.regdate);
+				var dt_to = getFormattedDate(dt);
 		 		innercstr = "<div class='media response-info'>"
 			 		 	  +	"<div class='media-left response-text-left'>"
 			   		      +"<h5>"+this.commenter+"</h5>"
@@ -408,23 +410,23 @@ var pinfo = $("#pinfo").data("pinfo");
 				 		innercstr += "</div>";
 				 	}
 				 	
-				 	innercstr +="<ul><li>"+this.regdate+"</li>";
+				 	innercstr +="<ul><li>"+dt_to+"</li>";
 				 
 				if(this.cno == this.gno){
 						cstr += innercstr
-							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='label label-default resendopen'>comment</button>";
+							 +"<li><button data-cno='"+this.cno+"' data-display='hide' class='button small resendopen'>comment</button>";
 						
 						if(this.commenter == pinfo){
-							cstr +="<button data-cno='"+this.cno+"' class='label label-default rdelete'>delete</button>"
-								 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button>";
+							cstr +="<button data-cno='"+this.cno+"' class='button small rdelete'>delete</button>"
+								 +"<button data-cno='"+this.cno+"' class='button small rupdate'>Update</button>";
 						}
 							 
 						cstr +="</li></ul>"
 						 	 +"</div>"
 							 +"<div class='"+this.cno+"' style='display : none;'>"
-							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter' value='"+pinfo+"' readonly='readonly'>"
-							 +"&nbsp; <input name='comment' size='125' placeholder='Message' required='' class='branchcomments'>"
-							 +"&nbsp; <a href='#' class='label label-default resend' id='sendBtn' >SEND</a></div>"
+							 +"<input type='text' name='commenter' placeholder='Name' required='' class='branchcommenter' value='"+pinfo+"' readonly='readonly'><h5></h5>"
+							 +"<input type='text' name='comment' size='125' placeholder='Message' required='' class='branchcomments'><h5></h5>"
+							 +"&nbsp; <a href='#' class='button small primary resend inline-right' id='sendBtn' >SEND</a></div>"
 							 +"</div>"
 							 +"<hr>";
 				}else{
@@ -437,8 +439,8 @@ var pinfo = $("#pinfo").data("pinfo");
 						 	 +innercstr;
 					
 						if(this.commenter == pinfo){
-							cstr +="<li><button data-cno='"+this.cno+"' class='label label-default bdelete'>delete</button>"
-								 +"<button data-cno='"+this.cno+"' class='label label-default rupdate'>Update</button></li>";
+							cstr +="<li><button data-cno='"+this.cno+"' class='button small bdelete'>delete</button>"
+								 +"<button data-cno='"+this.cno+"' class='button small rupdate'>Update</button></li>";
 							}
 								 		
 						
@@ -559,6 +561,17 @@ var pinfo = $("#pinfo").data("pinfo");
 		}
 	
 	}
+	
+	/*Date Fommating */
+	function getFormattedDate(date) {
+		  var year = date.getFullYear();
+		  var month = (1 + date.getMonth()).toString();
+		  month = month.length > 1 ? month : '0' + month;
+		  var day = date.getDate().toString();
+		  day = day.length > 1 ? day : '0' + day;
+		  
+		  return   year + '-'+ month + '-' + day;
+		}
 	
 	
 	

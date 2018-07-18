@@ -149,7 +149,7 @@
 		</dependency>
 		<!-- @Inject -->
 
-		
+
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
@@ -216,20 +216,30 @@
 			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
 			<version>1.16</version>
 		</dependency>
+
+
+
 		<!-- jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.5</version>
 		</dependency>
+		<!-- <dependency> <groupId>com.fasterxml.jackson.dataformat</groupId> <artifactId>jackson-dataformat-xml</artifactId> 
+			<version>2.9.5</version> </dependency> -->
+			
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.9.5</version>
+   			<groupId>org.apache.poi</groupId>
+    		<artifactId>poi</artifactId>
+    		<version>3.17</version>
 		</dependency>
-		
-		
-
+		<dependency>
+        	<groupId>org.apache.poi</groupId>
+        	<artifactId>poi-ooxml</artifactId>
+        	<version>3.17</version>
+    	</dependency>
+	
 	</dependencies>
 	<build>
 		<plugins>

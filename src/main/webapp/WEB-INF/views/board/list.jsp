@@ -1,45 +1,29 @@
 <%@ include file="../includes/header.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<!-- //header -->
-<!-- about-heading -->
-<div class="about-heading" style="margin-bottom: 30px">
-	<h2>
-		Result <span>Board</span>
-	</h2>
-</div>
-
-<div class="blog">
-	<!-- 검색조건-->
+    pageEncoding="UTF-8"%>
+    	
 	
-	<div class="container">
-		<div class="agile-blog-grids">
-			<div >
+		<div>
+			<div class="box" >
 			<div class="two-fifth column first">
 					<h2>
-						Quick<span>Search</span>
+						Quick<span>Bar</span>
 					</h2>
 				</div>
 				<div class="one-fifth button-right">
-					<a href="/board/register"><input type="submit" value="New Project" class="label"></a>
+					<a href="/board/register"><button class="button primary">New Project</button></a>
 				</div>
 
-				<div class="one-fifth column button-left" >
-					<a href="/board/list?status=completion"><input type="submit" name="status" value="comp" class="label" style="background: blue"></a>
+				<div class="one-fifth" >
+					<a href="/board/list?status=ongoing" ><button class="button primary" name="status" value="ongoing" >ONGOING</button></a>
+					<a href="/board/list?status=pause"><button class="button primary" name="status" value="pause" >PAUSE</button></a>
+					<a href="/board/list?status=completion"><button class="button primary" name="status" value="completion" >COMPLETION</button></a>
 				</div>
-				<div class="one-fifth button-left" >
-					<a href="/board/list?status=pause"><input type="submit"
-						name="status" value="pause" class="label" style="background: red"></a>
-				</div>
-				<div class="one-fifth button-left">
-					<a href="/board/list?status=ongoing" ><input type="submit"
-						name="status" value="ongoing" class="label" style="background: green"></a>
-				</div>
+				
 				
 			</div>
 			<h4></h4>
-
+			<div class="block">
 			<c:forEach items="${list }" var="item">
 				<div class="agile-blog-grid">
 					<div class="blog-left-grids">
@@ -64,7 +48,7 @@
 										<span class="label ${item.status}">${item.status }</span> 
 										<a href="/board/view${cri.getUrl(item.bno)}" class="view" data-bno="${item.bno}"> 
 										<c:out value="${item.title}"></c:out></a>&nbsp; 
-										<span><a href="${item.bno }" class="replyBtn" data-display="show">(${item.boardcount })</a></span>
+										<span><a href="${item.bno}" class="replyBtn" data-display="show">(${item.boardcount })</a></span>
 									</h4>
 								</c:if>
 								<c:if test="${item.deleteyn eq 'm' }">
@@ -94,9 +78,12 @@
 				</div>
 
 			</c:forEach>
+			</div>
+			
 
 			<!--SEARCH VAR-->
-			<form action="/board/list">
+			
+			<form action="/board/list" class="inline">
 				<input type="hidden" name="status" value="${cri.status}">
 				<div class="two-fifth column first">
 					<h2>
@@ -123,14 +110,15 @@
 				</div>
 
 				<div class="one-fifth column button-right">
-					<input type="submit" value="Search">
+					<button class="button primary" name="submit">SEARCH</button>
 				</div>
 				<div class="clearfix"></div>
 			</form>
+			
 			<!--SEARCH VAR END-->
-
+			
 			<!--PAGINATION-->
-			<div align="center">
+			<div  align="center">
 				<nav>
 					<ul class="pagination">
 
@@ -138,12 +126,15 @@
 				</nav>
 			</div>
 			<!--PAGINATION END-->
+
+		
 		</div>
 		<div class="col-md-4 agile-blog-grid-right"></div>
 		<div class="clearfix"></div>
-	</div>
-</div>
-</div>
+
+
+
+
 
 
 <!--SCRPIPT START-->
@@ -208,13 +199,17 @@ function paging() {
 		url += "type="+type+"&keyword="+keyword+"&"; 
 	}
 	if(${pm.prev}){
-		str = url+"page="+${pm.start-1}+ "' aria-label='Previous'> <span aria-hidden='true'>◁</span></a></li>";
+		str = url+"page="+${pm.start-1}+ "' aria-label='Previous'><span class='button'>Prev</span></a></li>";
+	}else{
+		str += "<li><span class='button disabled'><h3>Prev</h3></span></li>";
 	}
 	for(var i = ${pm.start}; i<= ${pm.end}; i++){
-		str += url+"page="+i+"'>"+i+"</a></li>";
+		str += url+"page="+i+"'class='page active'>"+i+"</a></li>";
 	}
 	if(${pm.next}){
-		str += url+"page="+${pm.end+1}+"' aria-label='Previous'> <span aria-hidden='true'>▷</span></a></li>";
+		str += url+"page="+${pm.end+1}+"' aria-label='Next'><span class='button'>Next</span></a></li>";
+	}else{
+		str += "<li><span class='button disabled'><h3>Next</h3></span></li>";
 	}
 	pagination.html(str);
 }
@@ -240,6 +235,7 @@ $(document).ready(function () {
 
 
 </script>
+
 
 <script src="/resources/js/list.js"></script>
 <%@ include file="../includes/footer.jsp"%>

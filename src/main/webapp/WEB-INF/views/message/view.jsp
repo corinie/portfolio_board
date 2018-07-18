@@ -8,35 +8,40 @@
 <!--imagebox end-->
 
 
-<div class="about-heading">
-	<h2>
-		Message <span>content</span>
-	</h2>
-</div>
+<h1>REGISTER</h1>
 <!-- //about-heading -->
 <!-- contact -->
-<div class="contact">
-	<div class="container">
-		<div class="agile-contact-form">
-				<div class="contact-form-top">
-					<div align="right">
-					<a href="/message/list?page=${param.page }"><button class="btn1">Return</button></a>
+
+					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+					<div class="row gtr-uniform">
+						
+						
+						
+						<div class="col-6 col-12-xsmall">
+							<input type="text" name="writer" id="writer" value="SENDER:${vo.sender }" readonly="readonly" />
+						</div>
+						<div class="col-6 col-12-xsmall">
+							<input type="text" name="writer" id="writer" value="RECEIVER:${vo.receiver }" readonly="readonly"  />
+						</div>
+						
+						<div class="col-12">
+							<input type="text" name="title" placeholder="title" required="" value="${vo.title }">
+						</div>
+						
+						
+						<!-- Break -->
+						<div class="col-12">
+							<textarea name="content" id="content"
+								placeholder="${vo.message }" rows="6" disabled></textarea>
+						</div>
+						<div>
+							<a href="/message/list?page=${param.page }" class="ahref"><button class="button primary inline-right">Return</button></a>
+						</div>
+						
 					</div>
-				</div>
-				<div class="agileinfo-contact-form-grid">
-					<form>
-						<input type="text" name="title"  required="" readonly="readonly" value="${vo.title }">
-						<input type="text" name="writer"  required="" readonly="readonly" value="${vo.sender }">
-						<input type="text" name="writer"  required="" readonly="readonly" value="${vo.receiver }">
-						<textarea name="content" required="" readonly="readonly"><c:out value="${vo.message }"></c:out></textarea>
-					</form>
-				</div>			
-			<div class="clearfix"></div>
-		</div>
+						
+						
 
-
-	</div>
-</div>
 
 
 

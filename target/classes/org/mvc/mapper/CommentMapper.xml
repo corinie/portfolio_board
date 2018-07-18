@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mvc.mapper.CommentMapper">
+
+	<!--CRUD -->
+	<insert id="rootInsert">
+		insert into tbl_comment (cno, bno, gno, commenter, comments)
+		values (seq_comment.nextval, #{bno}, seq_comment.currval, #{commenter},
+		#{comments})
+	</insert>
+
+	<insert id="branchInsert">
+		insert into tbl_comment(cno, bno, gno, commenter, comments, depth)
+		values(seq_comment.nextval, #{bno}, #{gno}, #{commenter}, #{comments},
+		1)
+	</insert>
+
+	<select id="read" resultMap="commentMap">
+		select * from tbl_comment left outer join tbl_comment_file on tbl_comment.cno = tbl_comment_file.cno where tbl_comment.cno = #{cno}
+	</select>
+
+	<update id="update">
+		update tbl_comment set comments = #{comments}, updatedate = sysdate where cno = #{cno}
+	</update>
+
+	
+	<update id="rootDelete">
+		update tbl_comment set deleteyn = case 
+			<![CDATA[
+			when (select count(cno) from tbl_comment where gno = #{cno} and (deleteyn = 'n' or deleteyn = 'm')) > 1 then 'm' 
+			when (select count(cno) from tbl_comment where gno = #{cno} and (deleteyn = 'n' or deleteyn = 'm')) = 1 then 'y' 
+			]]>
+			end
+		where cno = (select gno from tbl_comment where cno = #{cno})
+	</update>
+	
+	<update id="branchDelete">
+		update tbl_comment set deleteyn = 'y' 
+			where cno in 
+				(select cno from tbl_comment where cno = #{cno} 
+				union 
+				select gno as cno from tbl_comment 
+					where cno = #{cno} and 
+						(select count(*) from tbl_comment where gno = 
+							(
+							select gno as cno from tbl_comment where cno = #{cno}
+							) and deleteyn = 'n'
+						) = 1
+				)
+	</update>
+	
+	<resultMap type="org.mvc.domain.CommentVO" id="commentMap">
+	<id property="cno" column="cno"/>
+	<result property="bno" column="bno"/>
+	<result property="gno" column="gno"/>
+	<result property="comments" column="comments"/>
+	<result property="commenter" column="commenter"/>
+	<result property="depth" column="depth" />
+	<result property="deleteyn" column="deleteyn"/>
+	<result property="regdate" column="regdate"/>
+	<result property="updatedate" column="updatedate"  />
+	<collection property="fileList" resultMap="fileMap"></collection>
+	</resultMap>
+	
+	<resultMap type="org.mvc.domain.CommentFileVO" id="fileMap">
+	<id property="cfno" column="fno"/>
+	<result property="cno" column="cno"/>
+	<result property="uuid" column="uuid"/>
+	<result property="fname" column="fname"/>
+	<result property="datefolder" column="datefolder"/>
+	<result property="regdate" column="regdate"/>
+	<result property="updatedate" column="updatedate" />
+	</resultMap>
+	
+	<!--LIST -->
+	<select id="list" resultMap="commentMap">
+select * from 
+    (
+    select * from 
+    		(
+    		select * from 
+        		(
+        		select rownum rn , ranking, gno, cno, bno, deleteyn, COMMENTER, COMMENTS, regdate, updatedate from 
+            		(
+                    select * from (
+            		select row_number() over(partition by gno order by depth asc, tbl_comment.cno asc) as ranking, gno, tbl_comment.cno, bno, deleteyn, COMMENTER, COMMENTS, tbl_comment.regdate, tbl_comment.updatedate 
+                    from tbl_comment where bno = #{bno} and deleteyn = 'n' or deleteyn = 'm' 
+                    ) order by gno desc, cno asc
+           	 	)) c left outer join tbl_comment_file f  on c.cno = f.cno order by c.gno desc, cfno asc
+        	) <![CDATA[ where rn <=  #{cri.page} * 10
+    ) where rn > (#{cri.page}-1) * 10 order by rn asc]]>
+	</select>
+
+	<select id="total" resultType="int">
+		select count(cno) from tbl_comment where deleteyn = 'n' and bno = #{bno}
+	</select>
+	
+	<update id="commentFullDelete">
+		update tbl_comment set deleteyn = 'y' where bno = #{bno}
+	</update>
+</mapper>

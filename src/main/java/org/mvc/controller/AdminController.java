@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/admin/*")
 @Log4j
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+
 public class AdminController {
 
 	@Setter(onMethod_= {@Autowired})

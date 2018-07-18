@@ -1,4 +1,4 @@
-$(".container").on("click", "span a", function (e) {
+$(".block").on("click", "span a", function (e) {
 	getAlllist(e);
 });
 
@@ -43,8 +43,8 @@ function getAlllist(e){
 	
 				replystr += "<div class='agile-blog-grid'><div>"
 				+				"<div class='blog-left-grids'><div class='blog-left-left'>"
-			+"	<div class='ih-item circle bottom_to_top'>"
-			+"	<div class='img'><img src='/resources/images/pic/"+this.writer+".jpg' alt='img' /></div></div>"
+				+"	<div class='ih-item circle bottom_to_top'>"
+				+"	<div class='img'><img src='/resources/images/pic/"+this.writer+".jpg' alt='img' /></div></div>"
 				+				"</div>"
 				+				"<div class='blog-left-right-in'><div class='blog-left-right-top'>"
 				+						"<div class='blog-left-right-top'>";
@@ -64,7 +64,6 @@ function getAlllist(e){
 				+			"</p>"
 				+						"</div>"
 				+				"</div>"
-				+				"<div class='blog-left-right-bottom'><p>"+this.bno+"</p></div>"
 				+					"<div class='replyList'>"
 				+						"<div id='"+this.bno+"'></div>"
 				+					"</div>"

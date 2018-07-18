@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
@@ -16,10 +17,10 @@
 		<property name="idleTimeout" value="30000" />
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<property name="jdbcUrl"
-			value="jdbc:log4jdbc:oracle:thin:@10.10.10.15:1521:XE"></property>
+			value="jdbc:log4jdbc:oracle:thin:@PC:1521:XE"></property>
 
-		<property name="username" value="portfolio"></property>
-		<property name="password" value="1234"></property>
+		<property name="username" value="pcdb"></property>
+		<property name="password" value="pcdb"></property>
 		<property name="minimumIdle" value="3"></property>
 	</bean>
 	<!-- HikariCP configuration -->

@@ -37,7 +37,7 @@ public class MemberMapperTests {
          vo.setMpw(encoder.encode("admin"));
          vo.setMname("°ü¸®ÀÚ");
          vo.setEmail("admin@corinie.com");
-         mapper.createMember(vo);
+         mapper.insertMember(vo);
          AuthVO avo = new AuthVO();
          avo.setMid("admin");
          avo.setAuth("ROLE_ADMIN");
